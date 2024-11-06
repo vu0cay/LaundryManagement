@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.laundryapp.SignUpPageController">
    <children>
       <AnchorPane id="AnchorPane" fx:id="frm_signUp" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass">
          <stylesheets>
@@ -22,14 +22,14 @@
                <menus>
                   <Menu mnemonicParsing="false" text="File">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="Sign up" />
-                        <MenuItem mnemonicParsing="false" text="Sign in" />
+                        <MenuItem mnemonicParsing="false" onAction="#OnClick_LogIn" text="Sign in" />
+                        <MenuItem mnemonicParsing="false" onAction="#OnClick_SignUp" text="Sign up" />
                      </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Edit">
                      <items>
                         <MenuItem mnemonicParsing="false" text="Delete" />
-                        <MenuItem mnemonicParsing="false" text="Clear" />
+                        <MenuItem mnemonicParsing="false" onAction="#OnClick_Clear" text="Clear" />
                      </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Help">
@@ -59,7 +59,7 @@
                         <TextField fx:id="txtPassword" layoutY="29.0" prefHeight="30.0" prefWidth="200.0" stylesheets="@../../../styles/LoginDesign.css" />
                      </children>
                   </AnchorPane>
-                  <Button fx:id="btnSignUp" layoutX="43.0" layoutY="289.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" styleClass="login" stylesheets="@../../../styles/LoginDesign.css" text="Sign Up" textFill="WHITE" />
+                  <Button fx:id="btnSignUp" layoutX="43.0" layoutY="289.0" mnemonicParsing="false" onAction="#OnClick_SignUp" prefHeight="30.0" prefWidth="200.0" styleClass="login" stylesheets="@../../../styles/LoginDesign.css" text="Sign Up" textFill="WHITE" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="300.0" layoutY="27.0" prefHeight="374.0" prefWidth="300.0">

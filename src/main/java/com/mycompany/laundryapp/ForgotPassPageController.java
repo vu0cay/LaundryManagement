@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.Initializable;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -26,78 +27,50 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author ADMIN
  */
-public class SignUpPageController implements Initializable {
+public class ForgotPassPageController implements Initializable {
+
+    
+    
+    @FXML
+    private Button btnSubmit;
 
     @FXML
-    private Button btnSignUp;
+    private AnchorPane frm_forgotPass;
 
     @FXML
-    private AnchorPane frm_signUp;
-
-    @FXML
-    private TextField txtAddress;
-
-    @FXML
-    private TextField txtFullName;
+    private TextField txtConfirmPass;
 
     @FXML
     private TextField txtPassword;
 
     @FXML
-    private TextField txtPhone;
-
-    @FXML
     private TextField txtUserName;
-    
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }
-    
     
     PreparedStatement pstmt;
     ResultSet res;
     Connection con;
     
-    public void OnClick_SignUp() {
+    public void onClick_Submit() {
         con = database.openConnection();
         try {
             
-            if(txtFullName.getText() == "" || 
+            if(
                txtUserName.getText() == "" || 
-               txtPassword.getText() == "" || 
-               txtPhone.getText() == "" || 
-               txtAddress.getText() == "") {
+               txtPassword.getText() == "" ||
+               txtConfirmPass.getText() == "") {
                 throw new SQLException("Please fill all fields!");
             }
             
-            String sql = "select * from staffs where SF_username = ?";
-            
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, txtUserName.getText());
-            res = pstmt.executeQuery();
-            
-            if(res.next()) {
-                System.out.println(res.getString("SF_username"));
-                throw new SQLException("User name have already used");
+            if(!txtPassword.getText().equals(txtConfirmPass.getText())) {
+                throw new SQLException("Incorrect confirm password!");
             }
+        
             
-            
-            sql = "Insert into staffs (SF_name, SF_username, SF_password, SF_phone, SF_address) "
-                    + "values(?, ?, ?, ?, ?)";
-            
-            
+            String sql = "update staffs set SF_password = ? where SF_username = ?";
             
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, txtFullName.getText());
+            pstmt.setString(1, txtPassword.getText());
             pstmt.setString(2, txtUserName.getText());
-            pstmt.setString(3, txtPassword.getText());
-            pstmt.setString(4, txtPhone.getText());
-            pstmt.setString(5, txtAddress.getText());
-            
             
             int rows = pstmt.executeUpdate();
             
@@ -107,17 +80,17 @@ public class SignUpPageController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
             if(rows > 0) {
-                alert.setContentText("Sign up successfully!");
+                alert.setContentText("Password updated successfully!");
                 alert.showAndWait();
                 
                 try {
-                    App.setRoot("HomePage");
+                    App.setRoot("primary");
                 } catch (IOException ex) {
                     Logger.getLogger(SignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
             } else {
-                alert.setContentText("No change maked!");
+                alert.setContentText("No make change!");
                 alert.showAndWait();
             }
                 
@@ -129,24 +102,20 @@ public class SignUpPageController implements Initializable {
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
         }
-        
-        
     }
-    
-    public void OnClick_Clear() {
-        txtFullName.setText(" "); 
-        txtUserName.setText(""); 
-        txtPassword.setText(""); 
-        txtPhone.setText("");
-        txtAddress.setText("");
-    }
-    
-    public void OnClick_LogIn() {
+     public void OnClick_LogIn() {
         try {
             App.setRoot("primary");
         } catch (IOException ex) {
             Logger.getLogger(SignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    }    
+    
 }

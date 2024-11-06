@@ -43,7 +43,7 @@
                      </children>
                   </AnchorPane>
                   <Label fx:id="lblSignUp" layoutX="90.0" layoutY="353.0" onMouseClicked="#signUp" styleClass="text" stylesheets="@../../../styles/LoginDesign.css" text="Don't have account? Sign up" />
-                  <Label fx:id="lblForgotPass" layoutX="171.0" layoutY="270.0" styleClass="text" stylesheets="@../../../styles/LoginDesign.css" text="Forgot password?" />
+                  <Label fx:id="lblForgotPass" layoutX="171.0" layoutY="270.0" onMouseClicked="#ForgotPassword" styleClass="text" stylesheets="@../../../styles/LoginDesign.css" text="Forgot password?" />
                </children>
             </AnchorPane>
          </children>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.laundryapp.ForgotPassPageController">
+   <children>
+      <AnchorPane fx:id="frm_forgotPass" prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Label layoutX="196.0" layoutY="58.0" text="Laundry Management" textAlignment="CENTER">
+               <font>
+                  <Font name="SansSerif Bold" size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnSubmit" layoutX="200.0" layoutY="340.0" mnemonicParsing="false" onAction="#onClick_Submit" prefHeight="30.0" prefWidth="200.0" styleClass="login" stylesheets="@../../../styles/LoginDesign.css" text="Submit" textFill="WHITE" />
+            <AnchorPane layoutX="200.0" layoutY="110.0">
+               <children>
+                  <Label text="User name" />
+                  <TextField fx:id="txtUserName" layoutY="29.0" prefHeight="30.0" prefWidth="200.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="200.0" layoutY="184.0">
+               <children>
+                  <Label text="New Password" />
+                  <TextField fx:id="txtPassword" accessibleRole="PASSWORD_FIELD" layoutY="29.0" prefHeight="30.0" prefWidth="200.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="200.0" layoutY="257.0">
+               <children>
+                  <Label text="Confirm password" />
+                  <TextField fx:id="txtConfirmPass" accessibleRole="PASSWORD_FIELD" layoutY="29.0" prefHeight="30.0" prefWidth="200.0" />
+               </children>
+            </AnchorPane>
+            <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="600.0">
+               <menus>
+                  <Menu mnemonicParsing="false" text="File">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#OnClick_LogIn" text="Sign In" />
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Edit" />
+                  <Menu mnemonicParsing="false" text="Help">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                     </items>
+                  </Menu>
+               </menus>
+            </MenuBar>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>
