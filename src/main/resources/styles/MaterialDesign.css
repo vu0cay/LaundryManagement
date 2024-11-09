@@ -1,0 +1,155 @@
+/* Global Styles */
+.title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.sidebar {
+    -fx-background-color: #2F60A6;
+}
+.root {
+    -fx-background-color: #F5F5F5;
+    -fx-font-family: "Roboto", sans-serif;
+}
+
+/* ComboBox */
+.combo-box {
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-background-color: white;
+    -fx-padding: 8;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #9E9E9E;
+}
+
+.combo-box:hover {
+    -fx-border-color: #BDBDBD;
+}
+
+.combo-box:focused {
+    -fx-border-color: #2F60A6; /* Google blue */
+    -fx-border-width: 2;
+    -fx-padding: 7;
+}
+
+/* TextField */
+.text-field {
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 0 0 1 0; /* Bottom border only */
+    -fx-background-color: transparent;
+    -fx-padding: 4;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused {
+    -fx-border-color: #2F60A6; /* Google blue */
+    -fx-font-size: 14px;
+}
+
+.text-field:disabled {
+    -fx-opacity: 0.5;
+}
+
+/* Placeholder Text */
+.text-field .text {
+    -fx-fill: #9E9E9E;
+}
+
+/* TableView */
+.table-view {
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 4;
+    -fx-background-color: white;
+}
+
+.table-view .column-header {
+    -fx-background-color: #F5F5F5;
+    -fx-border-color: #E0E0E0;
+    -fx-font-weight: bold;
+    -fx-text-fill: #757575;
+    -fx-padding: 8 4;
+}
+
+.table-view .cell {
+    -fx-background-color: white;
+    -fx-border-color: #E0E0E0;
+    -fx-padding: 8 4;
+}
+
+.table-view .cell:selected {
+    -fx-background-color: #E3F2FD; /* Light blue */
+    -fx-text-fill: #212121;
+}
+
+.table-view .row-cell:focused .table-cell {
+    -fx-border-color: #2F60A6; /* Google blue */
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: #2F60A6;
+    -fx-text-fill: white;
+    -fx-padding: 8 16;
+    -fx-font-size: 14px;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+.button:pressed {
+    -fx-background-color: #2A66C5;
+}
+
+.button:disabled {
+    -fx-background-color: #E0E0E0;
+    -fx-text-fill: #BDBDBD;
+}
+.button:hover {
+    -fx-background-color: #357AE8;
+}
+.sidebar-tab:hover {
+    -fx-background-color:#2F60A6;
+    -fx-font-size:16;
+    -fx-font-weight: bold;
+    -fx-text-fill: white
+}
+/*.sidebar-tab:pressed {
+    -fx-background-color:white;
+}*/
+.tab-active {
+    -fx-background-color: white;
+    -fx-font-size:16;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2F60A6
+}
+
+.tab-active:hover {
+    -fx-background-color:white;
+    -fx-font-size:16;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2F60A6
+}
+
+
+
+
+.card {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20px;
+    -fx-spacing: 15px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0, 5); /* Đổ bóng */
+    -fx-alignment: center;
+    -fx-max-width: 300px;
+}
+
+.card-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+
+
