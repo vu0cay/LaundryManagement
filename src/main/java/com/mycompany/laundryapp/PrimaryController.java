@@ -1,15 +1,19 @@
 package com.mycompany.laundryapp;
 
+import com.mycompany.laundryapp.models.Staff;
 import java.io.Console;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -20,7 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class PrimaryController {
+public class PrimaryController implements Initializable{
 
     @FXML
     private Button btnLogin;
@@ -43,10 +47,14 @@ public class PrimaryController {
     PreparedStatement pstmt;
     ResultSet res;
     Connection con;
-
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        
+    }
     public void login() {
 
-        String sql = "select SF_password from staffs where SF_username = ?";
+        String sql = "select * from staffs where SF_username = ?";
         con = database.openConnection();
 
         try {
@@ -62,12 +70,22 @@ public class PrimaryController {
             if (res.next()) {
                 if (res.getString("SF_password").equals(txtPassword.getText())) {
                     System.out.println("Login successfully");
-
+                    
+                    Staff staff = new Staff(res.getString("SF_name"), res.getString("SF_username"), 
+                                            res.getString("SF_phone"), res.getString("SF_address"));
                     btnLogin.getScene().getWindow().hide();
                     
-                    
+                    System.out.println(staff.getName()+ ", "+staff.getUserName()
+                                        + ", "+ staff.getPhone()+ ", "+staff.getAddress());
                     try {
-                        Parent root = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
+//                        Parent root = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("DashBoard.fxml"));
+                        Parent root = loader.load();
+                        
+                        DashboardController dashboard = loader.getController();
+                        
+                        dashboard.initData(staff);
+                        
                         Stage stage = new Stage();
                         Scene scene = new Scene(root, 1080, 600);
                         
