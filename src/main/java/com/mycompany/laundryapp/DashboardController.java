@@ -15,6 +15,16 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+//import javafx.collections.ObservableListBase;
+//import javafx.collections.ObservableListBase;
+//import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +33,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -113,17 +126,18 @@ public class DashboardController implements Initializable {
     @FXML
     private TextField txtServiceItemUnitPrice;
     
+    @FXML
+    private TableView<Item> tavItem;
 //    @FXML
-//    private TableColumn<?, ?> tabcoID;
-//
-//    @FXML
-//    private TableColumn<?, ?> tabcoSerivceName;
-//
-//    @FXML
-//    private TableColumn<?, ?> tabcoServiceAction;
-//
-//    @FXML
-//    private TableView<?> tavService;
+//    private TableColumn<Item, String> tabcoItemAction;
+
+    @FXML
+    private TableColumn<Item, Number> tabcoItemId;
+    @FXML
+    private TableColumn<Item, String> tabcoItemName;
+    @FXML
+    private TableColumn<Item, Number> tabcoItemPrice;
+    
 
     Connection con;
     ResultSet res;
@@ -131,8 +145,55 @@ public class DashboardController implements Initializable {
     Statement stmt;
     
     Staff staff;
+    
+    
+    public ObservableList<Item> serviceItemListData() {
+        
+        con = database.openConnection();
+        String sql = "select * from items";
+        ObservableList<Item> data = FXCollections.observableArrayList();
+
+        try {
+            stmt = con.createStatement();
+            res = stmt.executeQuery(sql);
+            
+//            data.add(new Item(1,"cloth", 2.5));
+//            data.add(new Item(2,"coat", 3.0));
+            while(res.next()) {
+                Item item = new Item(res.getInt("ITEM_id"), res.getString("ITEM_type"), res.getFloat("ITEM_unit_price"));
+//                System.out.println(item.getId() +", "+ item.getType() +", "+ item.getPricePerUnit()+", "+ "action");
+                data.add(item);
+            }
+//            System.out.println(data.size());
+
+                       
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+        return data;
+    }
+    
+    private ObservableList<Item> addServiceItemData;
+    public void SetUpServiceTableView() {
+        
+        addServiceItemData = serviceItemListData();
+        
+//        tabcoItemId.setCellValueFactory(f -> new SimpleIntegerProperty(f.getValue().getId()));
+//        tabcoItemName.setCellValueFactory(f -> new SimpleStringProperty(f.getValue().getType()));
+//        tabcoItemPrice.setCellValueFactory(f -> new SimpleDoubleProperty(f.getValue().getUnitPrice()));
+        tabcoItemId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tabcoItemName.setCellValueFactory(new PropertyValueFactory<>("type"));
+        tabcoItemPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        
+        tavItem.setItems(addServiceItemData);
+            
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        SetUpServiceTableView();
+
         //
 //        lblAUStaffname.setText(staff.getName());
 //        lblAUStaffAddress.setText(staff.getAddress());
@@ -160,9 +221,13 @@ public class DashboardController implements Initializable {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+       
+
         // TODO
         //Stage stage = (Stage) .getScene().getWindow();
     }
+    
+    
     public void initData(Staff st) {
         
         this.staff = new Staff(st);
@@ -316,6 +381,9 @@ public class DashboardController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
+        SetUpServiceTableView();
     }
     public void OnClick_ServiceItemCancel() {
         txtServiceItemName.setText("");

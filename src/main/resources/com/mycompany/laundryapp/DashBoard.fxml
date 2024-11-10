@@ -121,14 +121,14 @@
                                 </AnchorPane>
                                 <AnchorPane fx:id="servicesForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;">
                                     <children>
-                                        <AnchorPane fx:id="servicesManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0">
+                                        <AnchorPane fx:id="servicesManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0" visible="false">
                                             <children>
                                                 <Label layoutX="7.0" layoutY="33.0" styleClass="title" text="Services" />
-                                                <TableView fx:id="tavService" layoutX="-8.0" layoutY="90.0" prefHeight="354.0" prefWidth="466.0">
+                                                <TableView layoutX="-8.0" layoutY="90.0" prefHeight="354.0" prefWidth="466.0">
                                                     <columns>
-                                                        <TableColumn fx:id="tabcoID" prefWidth="75.0" text="#" />
-                                                        <TableColumn fx:id="tabcoSerivceName" prefWidth="184.00003051757812" text="Service" />
-                                                        <TableColumn fx:id="tabcoServiceAction" prefWidth="204.66665649414062" text="Action" />
+                                                        <TableColumn prefWidth="75.0" text="#" />
+                                                        <TableColumn prefWidth="184.00003051757812" text="Service" />
+                                                        <TableColumn prefWidth="204.66665649414062" text="Action" />
                                                     </columns>
                                                 </TableView>
                                                 <Pane layoutX="506.0" layoutY="117.0" maxWidth="302.0" prefHeight="314.0" prefWidth="302.0" styleClass="card">
@@ -146,16 +146,9 @@
                                                 </Pane>
                                             </children>
                                         </AnchorPane>
-                                        <AnchorPane fx:id="ItemsManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0" visible="false">
+                                        <AnchorPane fx:id="ItemsManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0">
                                             <children>
                                                 <Label layoutX="7.0" layoutY="33.0" styleClass="title" text="Items" />
-                                                <TableView layoutX="-8.0" layoutY="90.0" prefHeight="354.0" prefWidth="466.0">
-                                                    <columns>
-                                                        <TableColumn prefWidth="75.0" text="#" />
-                                                        <TableColumn prefWidth="186.66665649414062" text="Items" />
-                                                        <TableColumn prefWidth="202.00003051757812" text="Action" />
-                                                    </columns>
-                                                </TableView>
                                                 <Pane layoutX="506.0" layoutY="117.0" maxWidth="302.0" prefHeight="314.0" prefWidth="302.0" styleClass="card">
                                                     <children>
                                                         <Label layoutX="21.0" layoutY="25.0" styleClass="card-title" text="Item Form">
@@ -169,6 +162,13 @@
                                                         <Button layoutX="197.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#OnClick_ServiceItemCancel" text="Cancel" />
                                                     </children>
                                                 </Pane>
+                                    <TableView fx:id="tavItem" layoutX="7.0" layoutY="85.0" prefHeight="308.0" prefWidth="406.0" stylesheets="@../../../styles/MaterialDesign.css">
+                                      <columns>
+                                        <TableColumn fx:id="tabcoItemId" prefWidth="94.4000473022461" text="ID" />
+                                        <TableColumn fx:id="tabcoItemName" prefWidth="107.20001220703125" text="Type" />
+                                          <TableColumn fx:id="tabcoItemPrice" prefWidth="203.2000732421875" text="Unit Price" />
+                                      </columns>
+                                    </TableView>
                                             </children>
                                         </AnchorPane>
                                         <Button fx:id="serviceManageBtn" layoutX="335.0" layoutY="520.0" mnemonicParsing="false" onAction="#switchManageCategory" text="Services" />

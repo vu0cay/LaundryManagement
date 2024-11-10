@@ -2,6 +2,7 @@ com\mycompany\laundryapp\SBFrameController.class
 com\mycompany\laundryapp\SignUpPageController.class
 com\mycompany\laundryapp\App.class
 com\mycompany\laundryapp\PrimaryController.class
+com\mycompany\laundryapp\Item.class
 com\mycompany\laundryapp\models\Staff.class
 module-info.class
 com\mycompany\laundryapp\HomePageController.class
