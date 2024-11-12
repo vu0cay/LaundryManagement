@@ -202,6 +202,6 @@
 }
 .statistic-header {
     -fx-alignmet: center-left;
-    -fx-font-size: 30;
+    -fx-font-size: 25;
     -fx-font-weight:bold
 }

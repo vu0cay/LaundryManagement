@@ -29,10 +29,9 @@ public class DashboardController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    
     @FXML
     private ComboBox<String> resultCombobox;
-      
+
     @FXML
     private AnchorPane ItemsManage;
 
@@ -90,6 +89,12 @@ public class DashboardController implements Initializable {
 //        Stage stage = (Stage) .getScene().getWindow();
     }
 
+    public void initResultCbb(){
+        ObservableList<String> options = FXCollections.observableArrayList(
+                    "This month", "This week", "This year"
+            );
+            resultCombobox.setItems(options);
+    }
     public void switchManageCategory(ActionEvent e) {
         if (e.getSource() == serviceManageBtn) {
             servicesManage.setVisible(true);
@@ -151,6 +156,7 @@ public class DashboardController implements Initializable {
 
             piePie.setData(pieChartData);
 
+            
             orderListBtn.getStyleClass().remove("tab-active");
             newOrderBtn.getStyleClass().remove("tab-active");
             servicesBtn.getStyleClass().remove("tab-active");
