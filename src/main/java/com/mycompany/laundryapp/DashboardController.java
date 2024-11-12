@@ -4,6 +4,8 @@
  */
 package com.mycompany.laundryapp;
 
+//import com.mycompany.laundryapp.models.Item;
+//import com.mycompany.laundryapp.models.Staff;
 import com.mycompany.laundryapp.models.Staff;
 import java.io.IOException;
 import java.net.URL;
@@ -15,11 +17,7 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 //import javafx.collections.ObservableListBase;
@@ -32,13 +30,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -128,6 +130,17 @@ public class DashboardController implements Initializable {
     
     @FXML
     private TableView<Item> tavItem;
+//    @FXML 
+//    private ComboBox<?> cbxState;
+    @FXML
+    private DialogPane dipAction;
+    
+    @FXML
+    private Button btnDialCancel;
+
+    @FXML
+    private Button btnDialSave;
+
 //    @FXML
 //    private TableColumn<Item, String> tabcoItemAction;
 
@@ -137,7 +150,10 @@ public class DashboardController implements Initializable {
     private TableColumn<Item, String> tabcoItemName;
     @FXML
     private TableColumn<Item, Number> tabcoItemPrice;
-    
+    @FXML
+    private TableColumn<Item, Void> tabcoAction;
+    @FXML
+    private ComboBox<String> cbxState;
 
     Connection con;
     ResultSet res;
@@ -157,16 +173,12 @@ public class DashboardController implements Initializable {
             stmt = con.createStatement();
             res = stmt.executeQuery(sql);
             
-//            data.add(new Item(1,"cloth", 2.5));
-//            data.add(new Item(2,"coat", 3.0));
             while(res.next()) {
                 Item item = new Item(res.getInt("ITEM_id"), res.getString("ITEM_type"), res.getFloat("ITEM_unit_price"));
-//                System.out.println(item.getId() +", "+ item.getType() +", "+ item.getPricePerUnit()+", "+ "action");
+
                 data.add(item);
             }
-//            System.out.println(data.size());
-
-                       
+            
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
@@ -179,26 +191,55 @@ public class DashboardController implements Initializable {
         
         addServiceItemData = serviceItemListData();
         
-//        tabcoItemId.setCellValueFactory(f -> new SimpleIntegerProperty(f.getValue().getId()));
-//        tabcoItemName.setCellValueFactory(f -> new SimpleStringProperty(f.getValue().getType()));
-//        tabcoItemPrice.setCellValueFactory(f -> new SimpleDoubleProperty(f.getValue().getUnitPrice()));
         tabcoItemId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tabcoItemName.setCellValueFactory(new PropertyValueFactory<>("type"));
         tabcoItemPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+//        tabcoAction.setCellValueFactory(data -> data.getValue().getButton());
+        
+        Callback<TableColumn<Item, Void>, TableCell<Item, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Item, Void> call(TableColumn<Item, Void> param) {
+                return new TableCell<>() {
+                    private final Button btn = new Button("Edit");
+                    {
+                        btn.setOnMouseClicked(event -> {
+                            Item items = getTableView().getItems().get(getIndex());
+                            System.out.println("Button clicked for " + items.getId());
+                            dipAction.setVisible(true);
+                            
+                            
+                            
+                        });
+                    }
+                    
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+            }  
+        };
+        
+        tabcoAction.setCellFactory(cellFactory);
+        
         
         tavItem.setItems(addServiceItemData);
             
+    }
+    public void setLoadComboBoxDialogState() {
+        cbxState.setItems(FXCollections.observableArrayList("Paid", "Complete", "Processing"));
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
         SetUpServiceTableView();
-
-        //
-//        lblAUStaffname.setText(staff.getName());
-//        lblAUStaffAddress.setText(staff.getAddress());
-//        lblAUStaffphone.setText(staff.getPhone());
-        //
+        setLoadComboBoxDialogState();
+        
         
         con = database.openConnection();
         
@@ -388,6 +429,14 @@ public class DashboardController implements Initializable {
     public void OnClick_ServiceItemCancel() {
         txtServiceItemName.setText("");
         txtServiceItemUnitPrice.setText("");
+
+    }
+    public void OnClick_DiaglogCancel() {
+        dipAction.setVisible(false);
+
+    }
+    public void OnClick_DiaglogSave() {
+        System.out.println("Save");
 
     }
 

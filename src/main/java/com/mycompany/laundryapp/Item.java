@@ -4,6 +4,9 @@
  */
 package com.mycompany.laundryapp;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.control.Button;
+
 /**
  *
  * @author ADMIN
@@ -12,6 +15,7 @@ public class Item {
     private int id;
     private String type;
     private float unitPrice;
+//    private Button button;
 //    public Item() {
 //        ITEM_id = 0;
 //        ITEM_type = new String();
@@ -24,14 +28,9 @@ public class Item {
         this.id = id;
         this.type = new String(type);
         this.unitPrice = pricePerUnit;
-//        this.action = new String(action);
-    }
-//    public Item(Item item) {
-//        this.ITEM_id = item.ITEM_id;
-//        this.ITEM_type = new String(item.ITEM_type);
-//        this.ITEM_unit_price = item.ITEM_unit_price;
-//        
-//    }
+//        this.button = new Button("Edit");
+
+    }    
     
     public int getId() {
         return id;
@@ -42,5 +41,11 @@ public class Item {
     public Float getUnitPrice() {
         return unitPrice;
     }
+//    public void setButton(Button act) {
+//        button = act;
+//    }
+//    public SimpleObjectProperty<Button> getButton() {
+//        return new SimpleObjectProperty<>(button);
+//    }
 
 }

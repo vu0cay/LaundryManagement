@@ -73,11 +73,12 @@
     -fx-padding: 8 4;
 }
 
-/*.table-view .cell {
-    -fx-background-color: white;
+.table-view .cell {
+    -fx-alignment: center;
+/*    -fx-background-color: white;
     -fx-border-color: #E0E0E0;
-    -fx-padding: 8 4;
-}*/
+    -fx-padding: 8 4;*/
+}
 
 .table-view .cell:selected {
     -fx-background-color: #E3F2FD;  
@@ -86,6 +87,7 @@
 
 .table-view .row-cell:focused .table-cell {
     -fx-border-color: #2F60A6;  
+    
 }
 
 /* Buttons */
