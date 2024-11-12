@@ -140,6 +140,13 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Button btnDialSave;
+    
+    @FXML
+    private TextField txtDialType;
+
+    @FXML
+    private TextField txtDialUnitPrice;
+    
 
 //    @FXML
 //    private TableColumn<Item, String> tabcoItemAction;
@@ -152,8 +159,6 @@ public class DashboardController implements Initializable {
     private TableColumn<Item, Number> tabcoItemPrice;
     @FXML
     private TableColumn<Item, Void> tabcoAction;
-    @FXML
-    private ComboBox<String> cbxState;
 
     Connection con;
     ResultSet res;
@@ -161,7 +166,7 @@ public class DashboardController implements Initializable {
     Statement stmt;
     
     Staff staff;
-    
+    Item currentItem;
     
     public ObservableList<Item> serviceItemListData() {
         
@@ -205,6 +210,12 @@ public class DashboardController implements Initializable {
                         btn.setOnMouseClicked(event -> {
                             Item items = getTableView().getItems().get(getIndex());
                             System.out.println("Button clicked for " + items.getId());
+                            
+                            // set dialog edit
+                            currentItem = new Item(items.getId(), items.getType(), items.getUnitPrice());
+                            
+                            txtDialType.setText(items.getType());
+                            txtDialUnitPrice.setText(Double.toString(items.getUnitPrice()));
                             dipAction.setVisible(true);
                             
                             
@@ -231,14 +242,14 @@ public class DashboardController implements Initializable {
         tavItem.setItems(addServiceItemData);
             
     }
-    public void setLoadComboBoxDialogState() {
-        cbxState.setItems(FXCollections.observableArrayList("Paid", "Complete", "Processing"));
-    }
+//    public void setLoadComboBoxDialogState() {
+//        cbxState.setItems(FXCollections.observableArrayList("Paid", "Complete", "Processing"));
+//    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
         SetUpServiceTableView();
-        setLoadComboBoxDialogState();
+//        setLoadComboBoxDialogState();
         
         
         con = database.openConnection();
@@ -437,7 +448,51 @@ public class DashboardController implements Initializable {
     }
     public void OnClick_DiaglogSave() {
         System.out.println("Save");
-
+        con = database.openConnection();
+        
+        try {
+            
+            String sql = "UPDATE ITEMS SET ITEM_type = ?, ITEM_unit_price = ? WHERE ITEM_id = ?";
+            
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, txtDialType.getText());
+            pstmt.setDouble(2, Double.parseDouble(txtDialUnitPrice.getText()));
+            pstmt.setInt(3, currentItem.getId());
+            
+            int rows = pstmt.executeUpdate();
+            
+            if(rows > 0) {
+                System.out.println("Update item "+currentItem.getId()+" successfully!");
+                SetUpServiceTableView();
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void OnClick_DiaglogDelete() {
+        System.out.println("Delete");
+        con = database.openConnection();
+        
+        try {
+            
+            String sql = "DELETE FROM ITEMS WHERE ITEM_id = ?";
+            
+            pstmt = con.prepareStatement(sql);
+            
+            pstmt.setInt(1, currentItem.getId());
+            
+            int rows = pstmt.executeUpdate();
+            
+            if(rows > 0) {
+                System.out.println("Delete item "+currentItem.getId()+" successfully!");
+                SetUpServiceTableView();
+                dipAction.setVisible(false);
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

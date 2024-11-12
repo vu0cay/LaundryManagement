@@ -149,7 +149,7 @@
                                         </AnchorPane>
                                         <AnchorPane fx:id="ItemsManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0">
                                             <children>
-                                                <Label layoutX="7.0" layoutY="33.0" styleClass="title" text="Items" />
+                                                <Label layoutX="7.0" layoutY="33.0" styleClass="title" text="Category" />
                                                 <Pane layoutX="508.0" layoutY="82.0" maxWidth="302.0" prefHeight="314.0" prefWidth="302.0" styleClass="card">
                                                     <children>
                                                         <Label layoutX="21.0" layoutY="25.0" styleClass="card-title" text="Item Form">
@@ -171,17 +171,20 @@
                                           <TableColumn fx:id="tabcoAction" prefWidth="132.0000061035156" text="Action" />
                                       </columns>
                                     </TableView>
-                                    <DialogPane fx:id="dipAction" layoutX="293.0" layoutY="152.0" prefHeight="218.0" prefWidth="340.0" visible="false">
+                                    <DialogPane fx:id="dipAction" layoutX="293.0" layoutY="152.0" prefHeight="227.0" prefWidth="340.0" visible="false">
                                        <header>
-                                          <Label text="Action" />
+                                          <Label text="Edit Category" />
                                        </header>
                                        <content>
                                           <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                              <children>
-                                                <ComboBox fx:id="cbxState" layoutX="125.0" layoutY="37.0" prefWidth="150.0" />
-                                                <Label layoutX="45.0" layoutY="50.0" text="State" />
-                                                <Button fx:id="btnDialSave" layoutX="124.0" layoutY="123.0" mnemonicParsing="false" onMouseClicked="#OnClick_DiaglogSave" text="Save" />
-                                                <Button fx:id="btnDialCancel" layoutX="200.0" layoutY="123.0" mnemonicParsing="false" onMouseClicked="#OnClick_DiaglogCancel" text="Cancel" />
+                                                <Label layoutX="45.0" layoutY="50.0" text="Type" />
+                                                <Button fx:id="btnDialSave" layoutX="66.0" layoutY="141.0" mnemonicParsing="false" onMouseClicked="#OnClick_DiaglogSave" text="Save" />
+                                                <Button fx:id="btnDialCancel" layoutX="225.0" layoutY="141.0" mnemonicParsing="false" onMouseClicked="#OnClick_DiaglogCancel" text="Cancel" />
+                                                <TextField fx:id="txtDialType" layoutX="142.0" layoutY="36.0" />
+                                                <TextField fx:id="txtDialUnitPrice" layoutX="142.0" layoutY="76.0" />
+                                                <Label layoutX="45.0" layoutY="96.0" text="Unit Price" />
+                                                <Button fx:id="btnDialDelete" layoutX="142.0" layoutY="141.0" mnemonicParsing="false" onMouseClicked="#OnClick_DiaglogDelete" text="Delete" />
                                              </children>
                                           </AnchorPane>
                                        </content>
