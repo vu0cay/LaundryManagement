@@ -177,6 +177,10 @@ public class DashboardController implements Initializable {
     @FXML
     private TableColumn<Item, Void> tabcoAction;
 
+    
+  //====================================================================================================================================================  
+  //init datas for the app
+        
     Connection con;
     ResultSet res;
     PreparedStatement pstmt;
@@ -185,80 +189,6 @@ public class DashboardController implements Initializable {
     Staff staff;
     Item currentItem;
     
-    public ObservableList<Item> serviceItemListData() {
-        
-        con = database.openConnection();
-        String sql = "select * from items";
-        ObservableList<Item> data = FXCollections.observableArrayList();
-
-        try {
-            stmt = con.createStatement();
-            res = stmt.executeQuery(sql);
-            
-            while(res.next()) {
-                Item item = new Item(res.getInt("ITEM_id"), res.getString("ITEM_type"), res.getFloat("ITEM_unit_price"));
-
-                data.add(item);
-            }
-            
-            con.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-        }        
-        return data;
-    }
-    
-    private ObservableList<Item> addServiceItemData;
-    public void SetUpServiceTableView() {
-        
-        addServiceItemData = serviceItemListData();
-        
-        tabcoItemId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tabcoItemName.setCellValueFactory(new PropertyValueFactory<>("type"));
-        tabcoItemPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
-//        tabcoAction.setCellValueFactory(data -> data.getValue().getButton());
-        
-        Callback<TableColumn<Item, Void>, TableCell<Item, Void>> cellFactory = new Callback<>() {
-            @Override
-            public TableCell<Item, Void> call(TableColumn<Item, Void> param) {
-                return new TableCell<>() {
-                    private final Button btn = new Button("Edit");
-                    {
-                        btn.setOnMouseClicked(event -> {
-                            Item items = getTableView().getItems().get(getIndex());
-                            System.out.println("Button clicked for " + items.getId());
-                            
-                            // set dialog edit
-                            currentItem = new Item(items.getId(), items.getType(), items.getUnitPrice());
-                            
-                            txtDialType.setText(items.getType());
-                            txtDialUnitPrice.setText(Double.toString(items.getUnitPrice()));
-                            dipAction.setVisible(true);
-                            
-                            
-                            
-                        });
-                    }
-                    
-                    @Override
-                    protected void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(btn);
-                        }
-                    }
-                };
-            }  
-        };
-        
-        tabcoAction.setCellFactory(cellFactory);
-        
-        
-        tavItem.setItems(addServiceItemData);
-            
-    }
 //    public void setLoadComboBoxDialogState() {
 //        cbxState.setItems(FXCollections.observableArrayList("Paid", "Complete", "Processing"));
 //    }
@@ -303,16 +233,11 @@ public class DashboardController implements Initializable {
         lblAUStaffAddress.setText(staff.getAddress());
         
     }
-    public void switchManageCategory(ActionEvent e) {
-        if (e.getSource() == serviceManageBtn) {
-            servicesManage.setVisible(true);
-            ItemsManage.setVisible(false);
-        } else {
-            servicesManage.setVisible(false);
-            ItemsManage.setVisible(true);
-        }
-    }
-
+    
+        
+  //====================================================================================================================================================  
+  //Navigation tab bar switching
+     
     public void switchForm(ActionEvent event) {
         if (event.getSource() == orderListBtn) {
             orderListBtn.getStyleClass().add("tab-active");
@@ -417,6 +342,104 @@ public class DashboardController implements Initializable {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    
+    
+  //====================================================================================================================================================  
+  //Order List functions
+        
+    
+    
+  //====================================================================================================================================================  
+  //New Order functions
+        
+    
+    
+  //====================================================================================================================================================  
+  //services functions
+        public ObservableList<Item> serviceItemListData() {
+        
+        con = database.openConnection();
+        String sql = "select * from items";
+        ObservableList<Item> data = FXCollections.observableArrayList();
+
+        try {
+            stmt = con.createStatement();
+            res = stmt.executeQuery(sql);
+            
+            while(res.next()) {
+                Item item = new Item(res.getInt("ITEM_id"), res.getString("ITEM_type"), res.getFloat("ITEM_unit_price"));
+
+                data.add(item);
+            }
+            
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+        return data;
+    }
+    
+    private ObservableList<Item> addServiceItemData;
+    public void SetUpServiceTableView() {
+        
+        addServiceItemData = serviceItemListData();
+        
+        tabcoItemId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tabcoItemName.setCellValueFactory(new PropertyValueFactory<>("type"));
+        tabcoItemPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+//        tabcoAction.setCellValueFactory(data -> data.getValue().getButton());
+        
+        Callback<TableColumn<Item, Void>, TableCell<Item, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Item, Void> call(TableColumn<Item, Void> param) {
+                return new TableCell<>() {
+                    private final Button btn = new Button("Edit");
+                    {
+                        btn.setOnMouseClicked(event -> {
+                            Item items = getTableView().getItems().get(getIndex());
+                            System.out.println("Button clicked for " + items.getId());
+                            
+                            // set dialog edit
+                            currentItem = new Item(items.getId(), items.getType(), items.getUnitPrice());
+                            
+                            txtDialType.setText(items.getType());
+                            txtDialUnitPrice.setText(Double.toString(items.getUnitPrice()));
+                            dipAction.setVisible(true);
+                            
+                            
+                            
+                        });
+                    }
+                    
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+            }  
+        };
+        
+        tabcoAction.setCellFactory(cellFactory);
+        
+        
+        tavItem.setItems(addServiceItemData);
+            
+    }
+    
+    public void switchManageCategory(ActionEvent e) {
+        if (e.getSource() == serviceManageBtn) {
+            servicesManage.setVisible(true);
+            ItemsManage.setVisible(false);
+        } else {
+            servicesManage.setVisible(false);
+            ItemsManage.setVisible(true);
+        }
     }
     
     public void OnClick_ServiceSave() {
@@ -528,5 +551,9 @@ public class DashboardController implements Initializable {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+        
+
+  //====================================================================================================================================================  
+  //Statistics functions
 
 }
