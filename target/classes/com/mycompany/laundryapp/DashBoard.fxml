@@ -97,7 +97,6 @@
                                         <Label layoutX="35.0" layoutY="79.0" text="Customer Name" />
                                         <TextField fx:id="NO_Phone_txt" layoutX="33.0" layoutY="160.0" prefWidth="200.0" />
                                         <Label layoutX="35.0" layoutY="140.0" prefWidth="64.0" text="Phone" />
-
                                         <TextField fx:id="NO_Customer_Search_txt" layoutX="317.0" layoutY="132.0" prefHeight="42.0" prefWidth="252.0" promptText="Search customer by phone#" />
                                         <Label layoutX="35.0" layoutY="29.0" styleClass="title" text="New Laundry">
                                             <font>
