@@ -4,20 +4,48 @@
  */
 package com.mycompany.laundryapp;
 
+//import com.mycompany.laundryapp.models.Item;
+//import com.mycompany.laundryapp.models.Staff;
+import com.mycompany.laundryapp.models.Staff;
+import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+//import javafx.collections.ObservableListBase;
+//import javafx.collections.ObservableListBase;
+//import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
+
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.shape.Circle;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -46,7 +74,8 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Button itemManageBtn;
-
+    @FXML
+    private Label lblUserName;
     @FXML
     private Button newOrderBtn;
 
@@ -82,18 +111,197 @@ public class DashboardController implements Initializable {
 
     @FXML
     private AnchorPane statisticsForm;
+    @FXML
+    private Label lblAddress;
 
+    @FXML
+    private Label lblContact;
+
+    @FXML
+    private Label lblShopName;
+    @FXML
+    private Label lblAUStaffAddress;
+
+    @FXML
+    private Label lblAUStaffname;
+
+    @FXML
+    private Label lblAUStaffphone;
+    @FXML
+    private Label lblLogout;
+    @FXML
+    private TextField txtServiceMultiplier;
+
+    @FXML
+    private TextField txtServiceName;
+    
+    @FXML
+    private Button btnServiceSave;
+    @FXML
+    private Button btnServiceItemSave;
+    @FXML
+    private TextField txtServiceItemName;
+
+    @FXML
+    private TextField txtServiceItemUnitPrice;
+    
+    @FXML
+    private TableView<Item> tavItem;
+//    @FXML 
+//    private ComboBox<?> cbxState;
+    @FXML
+    private DialogPane dipAction;
+    
+    @FXML
+    private Button btnDialCancel;
+
+    @FXML
+    private Button btnDialSave;
+    
+    @FXML
+    private TextField txtDialType;
+
+    @FXML
+    private TextField txtDialUnitPrice;
+    
+
+//    @FXML
+//    private TableColumn<Item, String> tabcoItemAction;
+
+    @FXML
+    private TableColumn<Item, Number> tabcoItemId;
+    @FXML
+    private TableColumn<Item, String> tabcoItemName;
+    @FXML
+    private TableColumn<Item, Number> tabcoItemPrice;
+    @FXML
+    private TableColumn<Item, Void> tabcoAction;
+
+    Connection con;
+    ResultSet res;
+    PreparedStatement pstmt;
+    Statement stmt;
+    
+    Staff staff;
+    Item currentItem;
+    
+    public ObservableList<Item> serviceItemListData() {
+        
+        con = database.openConnection();
+        String sql = "select * from items";
+        ObservableList<Item> data = FXCollections.observableArrayList();
+
+        try {
+            stmt = con.createStatement();
+            res = stmt.executeQuery(sql);
+            
+            while(res.next()) {
+                Item item = new Item(res.getInt("ITEM_id"), res.getString("ITEM_type"), res.getFloat("ITEM_unit_price"));
+
+                data.add(item);
+            }
+            
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+        return data;
+    }
+    
+    private ObservableList<Item> addServiceItemData;
+    public void SetUpServiceTableView() {
+        
+        addServiceItemData = serviceItemListData();
+        
+        tabcoItemId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tabcoItemName.setCellValueFactory(new PropertyValueFactory<>("type"));
+        tabcoItemPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+//        tabcoAction.setCellValueFactory(data -> data.getValue().getButton());
+        
+        Callback<TableColumn<Item, Void>, TableCell<Item, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Item, Void> call(TableColumn<Item, Void> param) {
+                return new TableCell<>() {
+                    private final Button btn = new Button("Edit");
+                    {
+                        btn.setOnMouseClicked(event -> {
+                            Item items = getTableView().getItems().get(getIndex());
+                            System.out.println("Button clicked for " + items.getId());
+                            
+                            // set dialog edit
+                            currentItem = new Item(items.getId(), items.getType(), items.getUnitPrice());
+                            
+                            txtDialType.setText(items.getType());
+                            txtDialUnitPrice.setText(Double.toString(items.getUnitPrice()));
+                            dipAction.setVisible(true);
+                            
+                            
+                            
+                        });
+                    }
+                    
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+            }  
+        };
+        
+        tabcoAction.setCellFactory(cellFactory);
+        
+        
+        tavItem.setItems(addServiceItemData);
+            
+    }
+//    public void setLoadComboBoxDialogState() {
+//        cbxState.setItems(FXCollections.observableArrayList("Paid", "Complete", "Processing"));
+//    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        SetUpServiceTableView();
+//        setLoadComboBoxDialogState();
+        
+        
+        con = database.openConnection();
+        
+        String sql = "select * from LAUNDRYSHOPS";
+        
+        try {
+            
+            stmt = con.createStatement();
+            res = stmt.executeQuery(sql);
+            
+            if(res.next()) {
+                lblShopName.setText(res.getString("L_name"));
+                lblContact.setText(res.getString("L_phone"));
+                lblAddress.setText(res.getString("L_address"));
+            }
+            
+            con.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         // TODO
-//        Stage stage = (Stage) .getScene().getWindow();
+        //Stage stage = (Stage) .getScene().getWindow();
     }
-
-    public void initResultCbb(){
-        ObservableList<String> options = FXCollections.observableArrayList(
-                    "This month", "This week", "This year"
-            );
-            resultCombobox.setItems(options);
+    
+    
+    public void initData(Staff st) {
+        
+        this.staff = new Staff(st);
+        lblUserName.setText(staff.getName());
+        lblAUStaffphone.setText(staff.getPhone());
+        lblAUStaffAddress.setText(staff.getAddress());
+        
     }
     public void switchManageCategory(ActionEvent e) {
         if (e.getSource() == serviceManageBtn) {
@@ -183,6 +391,141 @@ public class DashboardController implements Initializable {
             servicesForm.setVisible(false);
             statisticsForm.setVisible(false);
             aboutUsForm.setVisible(true);
+        
+            
+        }
+    }
+    
+    public void OnClick_Logout() {
+        lblUserName.getScene().getWindow().hide();
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"));
+            Parent root;
+            root = loader.load();
+//            DashboardController dashboard = loader.getController();
+
+//            dashboard.initData(staff);
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(root, 600, 400);
+
+            stage.setScene(scene);
+            stage.show();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    public void OnClick_ServiceSave() {
+        con = database.openConnection();
+        String sql = "INSERT INTO LAUNDRY_SERVICES (LS_name, LS_multiplier) VALUES (?,?)";
+        
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, txtServiceName.getText());
+            pstmt.setString(2, txtServiceMultiplier.getText());
+            
+            int rows = pstmt.executeUpdate();
+            
+            if(rows > 0){
+                System.out.println("Insert service successfully!");
+                txtServiceName.setText("");
+                txtServiceMultiplier.setText("");
+            }
+            
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void OnClick_ServiceCancel() {
+        txtServiceName.setText("");
+        txtServiceMultiplier.setText("");
+    }
+    public void OnClick_ServiceItemSave() {
+        con = database.openConnection();
+        String sql = "INSERT INTO ITEMS (ITEM_type, ITEM_unit_price) VALUES (?,?)";
+        
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, txtServiceItemName.getText());
+            pstmt.setString(2, txtServiceItemUnitPrice.getText());
+            
+            int rows = pstmt.executeUpdate();
+            
+            if(rows > 0) {
+                System.out.println("Insert item successfully!");
+                txtServiceItemName.setText("");
+                txtServiceItemUnitPrice.setText("");
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        SetUpServiceTableView();
+    }
+    public void OnClick_ServiceItemCancel() {
+        txtServiceItemName.setText("");
+        txtServiceItemUnitPrice.setText("");
+
+    }
+    public void OnClick_DiaglogCancel() {
+        dipAction.setVisible(false);
+
+    }
+    public void OnClick_DiaglogSave() {
+        System.out.println("Save");
+        con = database.openConnection();
+        
+        try {
+            
+            String sql = "UPDATE ITEMS SET ITEM_type = ?, ITEM_unit_price = ? WHERE ITEM_id = ?";
+            
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, txtDialType.getText());
+            pstmt.setDouble(2, Double.parseDouble(txtDialUnitPrice.getText()));
+            pstmt.setInt(3, currentItem.getId());
+            
+            int rows = pstmt.executeUpdate();
+            
+            if(rows > 0) {
+                System.out.println("Update item "+currentItem.getId()+" successfully!");
+                SetUpServiceTableView();
+                dipAction.setVisible(false);
+
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void OnClick_DiaglogDelete() {
+        System.out.println("Delete");
+        con = database.openConnection();
+        
+        try {
+            
+            String sql = "DELETE FROM ITEMS WHERE ITEM_id = ?";
+            
+            pstmt = con.prepareStatement(sql);
+            
+            pstmt.setInt(1, currentItem.getId());
+            
+            int rows = pstmt.executeUpdate();
+            
+            if(rows > 0) {
+                System.out.println("Delete item "+currentItem.getId()+" successfully!");
+                SetUpServiceTableView();
+                dipAction.setVisible(false);
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
