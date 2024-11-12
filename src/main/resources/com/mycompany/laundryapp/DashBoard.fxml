@@ -13,8 +13,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
@@ -113,7 +116,7 @@
                                             </columns>
                                         </TableView>
                                         <TextField layoutX="317.0" layoutY="132.0" prefHeight="42.0" prefWidth="252.0" promptText="Search customer..." />
-                                        <Label layoutX="35.0" layoutY="29.0" styleClass="title" text="New Laundry">
+                                        <Label layoutX="35.0" layoutY="29.0" styleClass="title" text="New Laundry" visible="false">
                                             <font>
                                                 <Font name="System Bold" size="18.0" />
                                             </font>
@@ -192,15 +195,142 @@
                                         <Button fx:id="itemManageBtn" layoutX="453.0" layoutY="519.0" mnemonicParsing="false" onAction="#switchManageCategory" prefHeight="36.0" prefWidth="83.0" text="Items" />
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="statisticsForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: blue;" visible="false">
+                                <AnchorPane fx:id="statisticsForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: blue;">
                            <children>
-                              <AnchorPane fx:id="pieArea" layoutX="37.0" layoutY="160.0" prefHeight="266.0" prefWidth="245.0">
+                              <AnchorPane fx:id="pieArea" layoutX="43.0" layoutY="215.0" prefHeight="335.0" prefWidth="334.0">
                                  <children>
-                                    <PieChart layoutX="-127.0" layoutY="-89.0" />
+                                    <PieChart fx:id="piePie" layoutX="26.0" layoutY="1.6666666666666665" prefHeight="281.0" prefWidth="283.0" stylesheets="@../../../styles/MaterialDesign.css" AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="1.6666666666666665" />
+                                    <Circle fx:id="circleDraw" fill="DODGERBLUE" layoutX="167.0" layoutY="127.0" radius="78.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" visible="false" />
                                  </children>
                               </AnchorPane>
-                           </children>
-                        </AnchorPane>
+                              <AnchorPane layoutX="432.0" layoutY="138.0" prefHeight="414.0" prefWidth="411.0">
+                                 <children>
+                                    <VBox layoutX="41.0" layoutY="137.0" prefHeight="200.0" prefWidth="300.0">
+                                       <children>
+                                          <HBox prefHeight="50.0" prefWidth="200.0">
+                                             <children>
+                                                <VBox prefHeight="60.0" prefWidth="220.0" styleClass="result-box">
+                                                   <children>
+                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="content-text" text="Orders recieived" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
+                                                   <children>
+                                                      <Label alignment="CENTER" text="100" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="50.0" prefWidth="200.0">
+                                             <children>
+                                                <VBox prefHeight="60.0" prefWidth="220.0" styleClass="result-box">
+                                                   <children>
+                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="content-text" text="Paid" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
+                                                   <children>
+                                                      <Label text="2" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="50.0" prefWidth="200.0">
+                                             <children>
+                                                <VBox prefHeight="60.0" prefWidth="220.0" styleClass="result-box">
+                                                   <children>
+                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="content-text" text="Completed" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
+                                                   <children>
+                                                      <Label text="30" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="50.0" prefWidth="200.0">
+                                             <children>
+                                                <VBox prefHeight="60.0" prefWidth="220.0" styleClass="result-box">
+                                                   <children>
+                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="content-text" text="Processing" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
+                                                   <children>
+                                                      <Label text="50" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <HBox layoutX="40.0" layoutY="347.0" prefHeight="60.0" prefWidth="354.0">
+                                       <children>
+                                          <VBox prefHeight="60.0" prefWidth="217.0" styleClass="result-box">
+                                             <children>
+                                                <Label prefHeight="32.0" prefWidth="123.0" styleClass="result" text="Revenue">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" styleClass="result-box">
+                                             <children>
+                                                <Label styleClass="result" text="150" />
+                                                <Label styleClass="result" text="\$" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <styleClass>
+                                          <String fx:value="result-box" />
+                                          <String fx:value="result" />
+                                       </styleClass>
+                                    </HBox>
+                                    <HBox layoutX="-350.0" layoutY="-4.0" prefHeight="100.0" prefWidth="200.0" />
+                                    <HBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="38.0" prefHeight="91.0" prefWidth="362.0">
+                                       <children>
+                                          <Label prefHeight="27.0" prefWidth="190.0" style="-fx-font-size: 18;" styleClass="content-text" text="Show results in" />
+                                          <ComboBox prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </AnchorPane>
+                               <HBox layoutX="69.0" layoutY="80.0" prefHeight="73.0" prefWidth="768.0">
+                                 <children>
+                                    <HBox prefHeight="100.0" prefWidth="384.0" styleClass="statistic-header">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="184.0" styleClass="statistic-header">
+                                             <children>
+                                                <Label prefHeight="45.0" prefWidth="181.0" text="Total orders" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="statistic-header">
+                                             <children>
+                                                <Label text="1000" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="384.0" styleClass="statistic-header">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="184.0" styleClass="statistic-header">
+                                             <children>
+                                                <Label prefHeight="32.0" prefWidth="123.0" text="Revenue" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="statistic-header">
+                                             <children>
+                                                <Label text="1000" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+         
+                           </children></AnchorPane>
                                 <AnchorPane fx:id="aboutUsForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
                            <children>
                               <Label fx:id="lblContact" layoutX="372.0" layoutY="371.0" prefHeight="32.0" prefWidth="476.0" styleClass="title" text="info@gmail.com" />

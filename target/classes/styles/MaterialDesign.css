@@ -152,6 +152,58 @@
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
 }
+/* Style toàn bộ PieChart */
+.chart {
+    /*-fx-effect:*/
+    -fx-clockvise:true;
+    -fx-pie-label-visible:false;
+    -fx-start-angle:90;
+    -fx-legend-side:bottom;
+}
 
 
+.default-color0.chart-pie {
+    -fx-pie-color:#2F60A6 ;
+    -fx-border-color:transparent;
+}
+.default-color1.chart-pie {
+    -fx-pie-color:#4893FF;
+    -fx-border-color:transparent;
 
+}
+
+.default-color2.chart-pie {
+    -fx-pie-color:white;
+    -fx-border-color:transparent;
+
+}
+
+.circle {
+    -fx-fill:white;
+    -fx-stroke:white
+}
+.chart-legend {
+    -fx-background-color:transparent;
+    -fx-border-color:transparent;
+}
+
+.content-text {
+    -fx-fill:red;
+    -fx-font-size:14
+}
+.result-box {
+    -fx-alignment: center-left;
+}
+
+.result-box .result {
+    -fx-font-size:19;
+    -fx-font-weight:bold;
+}
+.vbox {
+    -fx-pref-height:40;
+}
+.statistic-header {
+    -fx-alignmet: center-left;
+    -fx-font-size: 25;
+    -fx-font-weight:bold
+}
