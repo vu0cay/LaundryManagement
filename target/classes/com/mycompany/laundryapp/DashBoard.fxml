@@ -73,7 +73,7 @@
                     <center>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <children>
-                                <AnchorPane fx:id="orderListForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;">
+                                <AnchorPane fx:id="orderListForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
                                     <children>
                                         <TableView layoutX="12.0" layoutY="167.0" prefHeight="334.0" prefWidth="833.0">
                                             <columns>
@@ -227,7 +227,7 @@
                                                 </VBox>
                                                 <VBox layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
                                                    <children>
-                                                      <Label alignment="CENTER" text="100" />
+                                                      <Label fx:id="lblOrders_recieved" alignment="CENTER" text="100" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -239,9 +239,9 @@
                                                       <Label prefHeight="32.0" prefWidth="123.0" styleClass="content-text" text="Paid" />
                                                    </children>
                                                 </VBox>
-                                                <VBox layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
+                                                <VBox fx:id="vboxPaid" layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
                                                    <children>
-                                                      <Label text="2" />
+                                                      <Label fx:id="lblPaid" text="2" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -255,7 +255,7 @@
                                                 </VBox>
                                                 <VBox prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
                                                    <children>
-                                                      <Label text="30" />
+                                                      <Label fx:id="lblComplete" text="30" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -269,7 +269,7 @@
                                                 </VBox>
                                                 <VBox layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
                                                    <children>
-                                                      <Label text="50" />
+                                                      <Label fx:id="lblProcessing" text="50" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -303,7 +303,7 @@
                                     <HBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="38.0" prefHeight="91.0" prefWidth="362.0">
                                        <children>
                                           <Label prefHeight="27.0" prefWidth="190.0" style="-fx-font-size: 18;" styleClass="content-text" text="Show results in" />
-                                          <ComboBox prefWidth="150.0" />
+                                          <ComboBox fx:id="resultStatisticCombobox" prefWidth="150.0" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -340,6 +340,7 @@
                                     </HBox>
                                  </children>
                               </HBox>
+                              <Button fx:id="btnTry" layoutX="347.0" layoutY="383.0" mnemonicParsing="false" onAction="#TRYY" text="Button" />
                            </children>
                         </AnchorPane>
                                 <AnchorPane fx:id="aboutUsForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
