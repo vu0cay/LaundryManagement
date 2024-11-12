@@ -464,6 +464,8 @@ public class DashboardController implements Initializable {
             if(rows > 0) {
                 System.out.println("Update item "+currentItem.getId()+" successfully!");
                 SetUpServiceTableView();
+                dipAction.setVisible(false);
+
             }
             con.close();
         } catch (SQLException ex) {
