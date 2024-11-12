@@ -8,3 +8,4 @@ module-info.class
 com\mycompany\laundryapp\HomePageController.class
 com\mycompany\laundryapp\database.class
 com\mycompany\laundryapp\DashboardController.class
+com\mycompany\laundryapp\Option.class

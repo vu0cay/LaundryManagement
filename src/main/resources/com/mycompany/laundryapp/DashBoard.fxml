@@ -69,7 +69,7 @@
                     <center>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <children>
-                                <AnchorPane fx:id="orderListForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
+                                <AnchorPane fx:id="orderListForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;">
                                     <children>
                                         <TableView layoutX="12.0" layoutY="167.0" prefHeight="334.0" prefWidth="833.0">
                                             <columns>
@@ -89,37 +89,45 @@
                                 </AnchorPane>
                                 <AnchorPane fx:id="newOrderForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
                                     <children>
-                                        <TextField layoutX="32.0" layoutY="102.0" prefWidth="200.0" />
+                                        <TextField fx:id="NO_CustomerName_txt" layoutX="32.0" layoutY="102.0" prefWidth="200.0" />
                                         <Label layoutX="35.0" layoutY="79.0" text="Customer Name" />
-                                        <TextField layoutX="33.0" layoutY="160.0" prefWidth="200.0" />
+                                        <TextField fx:id="NO_Phone_txt" layoutX="33.0" layoutY="160.0" prefWidth="200.0" />
                                         <Label layoutX="35.0" layoutY="140.0" prefWidth="64.0" text="Phone" />
-                                        <Label layoutX="36.0" layoutY="222.0" prefHeight="17.0" prefWidth="109.0" text="Laundry Category" />
-                                        <TextField layoutX="280.0" layoutY="260.0" prefHeight="28.0" prefWidth="164.0" />
-                                        <Label layoutX="282.0" layoutY="221.0" prefWidth="64.0" text="Weight" />
-                                        <ComboBox layoutX="37.0" layoutY="244.0" maxWidth="400.0" prefHeight="28.0" prefWidth="180.0" />
-                                        <Label layoutX="513.0" layoutY="223.0" prefHeight="17.0" prefWidth="109.0" text="Service" />
-                                        <ComboBox layoutX="512.0" layoutY="245.0" prefHeight="28.0" prefWidth="165.0" />
-                                        <Button layoutX="762.0" layoutY="249.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" text="+ Add" />
-                                        <Button layoutX="687.0" layoutY="535.0" mnemonicParsing="false" text="Save" />
-                                        <Button layoutX="774.0" layoutY="535.0" mnemonicParsing="false" text="Cancel" />
-                                        <TableView layoutX="37.0" layoutY="323.0" prefHeight="189.0" prefWidth="809.0">
-                                            <columns>
-                                                <TableColumn prefWidth="180.0" text="Category" />
-                                                <TableColumn prefWidth="100.0" text="Weight" />
-                                                <TableColumn prefWidth="170.0" text="Unit Price" />
-                                                <TableColumn prefWidth="150.0" text="Service Price" />
-                                                <TableColumn prefWidth="190.0" text="Total Amount" />
-                                            </columns>
-                                        </TableView>
-                                        <TextField layoutX="317.0" layoutY="132.0" prefHeight="42.0" prefWidth="252.0" promptText="Search customer..." />
+                                        <TextField fx:id="NO_Customer_Search_txt" layoutX="317.0" layoutY="132.0" prefHeight="42.0" prefWidth="252.0" promptText="Search customer by phone#" />
                                         <Label layoutX="35.0" layoutY="29.0" styleClass="title" text="New Laundry">
                                             <font>
                                                 <Font name="System Bold" size="18.0" />
                                             </font>
                                         </Label>
+                              <AnchorPane fx:id="NO_AddDetail_pane" layoutX="-1.0" layoutY="208.0" prefHeight="346.0" prefWidth="900.0" visible="false">
+                                 <children>
+                                    <Label layoutX="52.0" layoutY="15.0" prefHeight="17.0" prefWidth="109.0" text="Laundry Category" />
+                                    <Label layoutX="298.0" layoutY="14.0" prefWidth="64.0" text="Weight" />
+                                    <ComboBox fx:id="NO_Category_add" layoutX="53.0" layoutY="37.0" maxWidth="400.0" prefHeight="28.0" prefWidth="180.0" />
+                                    <Label layoutX="529.0" layoutY="16.0" prefHeight="17.0" prefWidth="109.0" text="Service" />
+                                    <ComboBox fx:id="NO_Service_add" layoutX="528.0" layoutY="38.0" prefHeight="28.0" prefWidth="165.0" />
+                                    <Button fx:id="NO_Add_btn" layoutX="778.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" text="+ Add" />
+                                    <Button fx:id="NO_Save_btn1" layoutX="703.0" layoutY="328.0" mnemonicParsing="false" text="Save" />
+                                    <Button fx:id="NO_Cancel_btn1" layoutX="790.0" layoutY="328.0" mnemonicParsing="false" onAction="#OnClick_NO_Cancel_btn" text="Cancel" />
+                                    <TableView fx:id="NO_Detail_table" layoutX="53.0" layoutY="116.0" prefHeight="189.0" prefWidth="809.0">
+                                       <columns>
+                                          <TableColumn fx:id="NO_table_Category_col" prefWidth="151.20000457763672" text="Category" />
+                                          <TableColumn fx:id="NO_table_Weight_col" prefWidth="146.39996337890625" text="Weight" />
+                                          <TableColumn fx:id="NO_table_Service_col" prefWidth="127.199951171875" text="Service" />
+                                          <TableColumn fx:id="NO_table_PricePerKilo_col" prefWidth="122.39999389648438" text="Price per kilo" />
+                                          <TableColumn fx:id="NO_table_ServiceMulti_col" prefWidth="142.39990234375" text="Service multiplier" />
+                                          <TableColumn fx:id="NO_table_Total_col" prefWidth="117.60003662109375" text="Total Amount" />
+                                       </columns>
+                                    </TableView>
+                                    <TextField fx:id="NO_Weight_add" layoutX="298.0" layoutY="41.0" prefHeight="37.0" prefWidth="178.0" promptText="0.0 ..." />
+                                    <Label layoutX="469.0" layoutY="51.0" text="Kg" />
+                                 </children>
+                              </AnchorPane>
+                              <Button fx:id="NO_CreateNewOder_btn" layoutX="326.0" layoutY="293.0" mnemonicParsing="false" onAction="#OnClick_NO_Create_Order_btn" prefHeight="52.0" prefWidth="246.0" text="Create new order" />
+                              <Button fx:id="NO_CreateCus_btn" layoutX="637.0" layoutY="122.0" mnemonicParsing="false" text="+ Create new customer" />
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="servicesForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;">
+                                <AnchorPane fx:id="servicesForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
                                     <children>
                                         <AnchorPane fx:id="servicesManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0" visible="false">
                                             <children>

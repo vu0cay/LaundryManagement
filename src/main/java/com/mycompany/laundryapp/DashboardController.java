@@ -19,6 +19,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,7 +33,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -137,8 +141,110 @@ public class DashboardController implements Initializable {
     private TableColumn<Item, String> tabcoItemName;
     @FXML
     private TableColumn<Item, Number> tabcoItemPrice;
-    
+   
+    //Service components
+     @FXML
+    private AnchorPane NO_AddDetail_pane;
 
+    @FXML
+    private Button NO_Add_btn;
+
+    @FXML
+    private Button NO_Cancel_btn1;
+
+    @FXML
+    private ComboBox<Option> NO_Category_add;
+
+    @FXML
+    private Button NO_CreateCus_btn;
+
+    @FXML
+    private Button NO_CreateNewOder_btn;
+
+    @FXML
+    private TextField NO_CustomerName_txt;
+
+    @FXML
+    private TextField NO_Customer_Search_txt;
+
+    @FXML
+    private TableView<?> NO_Detail_table;
+
+    @FXML
+    private TextField NO_Phone_txt;
+
+    @FXML
+    private Button NO_Save_btn1;
+
+    @FXML
+    private ComboBox<Option> NO_Service_add;
+
+    @FXML
+    private TextField NO_Weight_add;
+
+    @FXML
+    private TableColumn<?, ?> NO_table_Category_col;
+
+    @FXML
+    private TableColumn<?, ?> NO_table_PricePerKilo_col;
+
+    @FXML
+    private TableColumn<?, ?> NO_table_ServiceMulti_col;
+
+    @FXML
+    private TableColumn<?, ?> NO_table_Service_col;
+
+    @FXML
+    private TableColumn<?, ?> NO_table_Total_col;
+
+    @FXML
+    private TableColumn<?, ?> NO_table_Weight_col;
+    
+    
+   /* public void initComponents(){
+        NO_Service_add.setCellFactory(lv -> new ListCell<Option>() {
+            @Override
+            protected void updateItem(Option item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item.getType());
+            }
+        });
+        NO_Service_add.setButtonCell(new ListCell<Option>() {
+            @Override
+            protected void updateItem(Option item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item.getType());  
+            }
+        });
+        
+        NO_Category_add.setCellFactory(lv -> new ListCell<Option>() {
+            @Override
+            protected void updateItem(Option item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item.getType());
+            }
+        });
+        NO_Category_add.setButtonCell(new ListCell<Option>() {
+            @Override
+            protected void updateItem(Option item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item.getType());  
+            }
+        });
+        
+        NO_Weight_add.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*(\\.\\d*)?")) {
+                NO_Weight_add.setText(oldValue); // Allows decimal numbers
+            }
+        });
+        
+    }*/
+    
+    
+        
+  //====================================================================================================================================================  
+  //init datas for the app
+    
     Connection con;
     ResultSet res;
     PreparedStatement pstmt;
@@ -146,9 +252,9 @@ public class DashboardController implements Initializable {
     
     Staff staff;
     
-    
-    public ObservableList<Item> serviceItemListData() {
-        
+    //list for services
+    public void SetUpServiceTableView() {
+                
         con = database.openConnection();
         String sql = "select * from items";
         ObservableList<Item> data = FXCollections.observableArrayList();
@@ -170,15 +276,9 @@ public class DashboardController implements Initializable {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-        }        
-        return data;
-    }
-    
-    private ObservableList<Item> addServiceItemData;
-    public void SetUpServiceTableView() {
+        } 
         
-        addServiceItemData = serviceItemListData();
-        
+//        addServiceItemData = data;
 //        tabcoItemId.setCellValueFactory(f -> new SimpleIntegerProperty(f.getValue().getId()));
 //        tabcoItemName.setCellValueFactory(f -> new SimpleStringProperty(f.getValue().getType()));
 //        tabcoItemPrice.setCellValueFactory(f -> new SimpleDoubleProperty(f.getValue().getUnitPrice()));
@@ -186,20 +286,11 @@ public class DashboardController implements Initializable {
         tabcoItemName.setCellValueFactory(new PropertyValueFactory<>("type"));
         tabcoItemPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
         
-        tavItem.setItems(addServiceItemData);
-            
+        tavItem.setItems(data);    
     }
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        
-        SetUpServiceTableView();
-
-        //
-//        lblAUStaffname.setText(staff.getName());
-//        lblAUStaffAddress.setText(staff.getAddress());
-//        lblAUStaffphone.setText(staff.getPhone());
-        //
-        
+    
+    //about us
+    public void aboutUs(){
         con = database.openConnection();
         
         String sql = "select * from LAUNDRYSHOPS";
@@ -220,8 +311,72 @@ public class DashboardController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    //setting up data for New Order
+    public ObservableList<Option> GetServices(){
+        con = database.openConnection();
+        String sql = "select * from LAUNDRY_SERVICES";
+        ObservableList<Option> data = FXCollections.observableArrayList();
         
-       
+        try {
+            stmt = con.createStatement();
+            res = stmt.executeQuery(sql);            
+//            data.add(new Item(1,"cloth", 2.5));
+//            data.add(new Item(2,"coat", 3.0));
+            while(res.next()) {
+                Option option = new Option(res.getInt("LS_id"), res.getString("LS_name"));
+                data.add(option);
+            }
+//            System.out.println(data.size());                  
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return data;
+    }
+   
+
+    public ObservableList<Option> GetCategory(){
+        con = database.openConnection();
+        String sql = "select * from ITEMS";
+        ObservableList<Option> data = FXCollections.observableArrayList();
+        
+        try {
+            stmt = con.createStatement();
+            res = stmt.executeQuery(sql);            
+//            data.add(new Item(1,"cloth", 2.5));
+//            data.add(new Item(2,"coat", 3.0));
+            while(res.next()) {
+                Option option = new Option(res.getInt("ITEM_id"), res.getString("ITEM_type"));
+                data.add(option);
+            }
+//            System.out.println(data.size());                  
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return data;
+    }
+    
+    
+    public void SetUpNewOrder() {
+        NO_Service_add.setItems(GetServices());
+        NO_Category_add.setItems(GetCategory());
+    }
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        
+        //initComponents();
+        SetUpServiceTableView();
+        SetUpNewOrder();
+        aboutUs();
+        //
+//        lblAUStaffname.setText(staff.getName());
+//        lblAUStaffAddress.setText(staff.getAddress());
+//        lblAUStaffphone.setText(staff.getPhone());
+        //
 
         // TODO
         //Stage stage = (Stage) .getScene().getWindow();
@@ -236,16 +391,11 @@ public class DashboardController implements Initializable {
         lblAUStaffAddress.setText(staff.getAddress());
         
     }
-    public void switchManageCategory(ActionEvent e) {
-        if (e.getSource() == serviceManageBtn) {
-            servicesManage.setVisible(true);
-            ItemsManage.setVisible(false);
-        } else {
-            servicesManage.setVisible(false);
-            ItemsManage.setVisible(true);
-        }
-    }
-
+    
+        
+  //====================================================================================================================================================  
+  //Navigation tab bar switching
+    
     public void switchForm(ActionEvent event) {
         if (event.getSource() == orderListBtn) {
             orderListBtn.getStyleClass().add("tab-active");
@@ -335,6 +485,41 @@ public class DashboardController implements Initializable {
 
     }
     
+    
+  //====================================================================================================================================================  
+  //Order List functions
+    
+    
+  //====================================================================================================================================================  
+  //New Order functions
+    
+    public void OnClick_NO_Cancel_btn() {
+        System.out.println("Cancel Clicked");
+    }
+    
+    public void OnClick_NO_Add_btn() {
+        System.out.println("Add Clicked");
+        System.out.println(Float.parseFloat(NO_Weight_add.getText()));
+    }
+    
+    public void OnClick_NO_Create_Order_btn() {
+        NO_AddDetail_pane.setVisible(true);
+    }
+    
+    
+  //====================================================================================================================================================  
+  //services functions
+    
+    public void switchManageCategory(ActionEvent e) {
+        if (e.getSource() == serviceManageBtn) {
+            servicesManage.setVisible(true);
+            ItemsManage.setVisible(false);
+        } else {
+            servicesManage.setVisible(false);
+            ItemsManage.setVisible(true);
+        }
+    }
+        
     public void OnClick_ServiceSave() {
         con = database.openConnection();
         String sql = "INSERT INTO LAUNDRY_SERVICES (LS_name, LS_multiplier) VALUES (?,?)";
@@ -390,5 +575,12 @@ public class DashboardController implements Initializable {
         txtServiceItemUnitPrice.setText("");
 
     }
+    
 
-}
+  //====================================================================================================================================================  
+  //Statistics functions
+    
+  
+  //====================================================================================================================================================  
+
+}   
