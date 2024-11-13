@@ -75,20 +75,22 @@
                             <children>
                                 <AnchorPane fx:id="orderListForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;">
                                     <children>
-                                        <TableView fx:id="tavOrderList" layoutX="12.0" layoutY="167.0" prefHeight="334.0" prefWidth="833.0">
+                                        <TableView fx:id="tavOrderList" layoutX="12.0" layoutY="167.0" prefHeight="400.0" prefWidth="834.0">
                                             <columns>
-                                                <TableColumn fx:id="tabcoOrderListDate" prefWidth="200.0" text="Date " />
-                                                <TableColumn fx:id="tabcoOrderListCustomer" prefWidth="250.0" text="Customer" />
-                                                <TableColumn fx:id="tabcoOrderListStatus" prefWidth="170.0" text="Status" />
-                                                <TableColumn fx:id="tabcoOrderListAction" prefWidth="231.0" text="Action" />
+                                                <TableColumn fx:id="tabcoOrderListId" prefWidth="30.39991569519043" text="ID" />
+                                                <TableColumn fx:id="tabcoOrderListDate" prefWidth="115.20000457763672" text="Date" />
+                                                <TableColumn fx:id="tabcoOrderListCustomer" prefWidth="146.40005493164062" text="Customer" />
+                                                <TableColumn fx:id="tabcoOrderListPhone" prefWidth="140.79998779296875" text="Phone#" />
+                                    <TableColumn fx:id="tabcoOrderListPrice" prefWidth="171.19992065429688" text="Price" />
+                                    <TableColumn fx:id="tabcoOrderListStatus" prefWidth="120.80010986328125" text="Status" />
+                                    <TableColumn fx:id="tabcoOrderListAction" prefWidth="113.59991455078125" text="Action" />
                                             </columns>
                                         </TableView>
                                         <Label layoutX="20.0" layoutY="108.0" text="Show" />
-                                        <ComboBox layoutX="65.0" layoutY="94.0" prefHeight="39.0" prefWidth="74.0" />
-                                        <Label layoutX="151.0" layoutY="106.0" text="rows" />
-                                        <TextField layoutX="532.0" layoutY="97.0" prefHeight="44.0" prefWidth="314.0" promptText="Search..." />
-                                        <Button layoutX="804.0" layoutY="530.0" mnemonicParsing="false" text="&gt;" />
-                                        <Button layoutX="744.0" layoutY="530.0" mnemonicParsing="false" text="&lt;" />
+                                        <ComboBox fx:id="rmenuOrderListRows" layoutX="65.0" layoutY="94.0" prefHeight="43.0" prefWidth="110.0" visibleRowCount="4" />
+                                        <Label layoutX="182.0" layoutY="107.0" text="rows" />
+                                        <TextField fx:id="txtOrderListSearch" layoutX="532.0" layoutY="97.0" onKeyPressed="#setUpOrderListTable" prefHeight="44.0" prefWidth="314.0" promptText="Search..." />
+                              <Button fx:id="btnOrderListRefresh" layoutX="441.0" layoutY="106.0" mnemonicParsing="false" onAction="#OnClick_btnOrderListRefresh" text="Refresh" />
                                     </children>
                                 </AnchorPane>
                                 <AnchorPane fx:id="newOrderForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
@@ -376,6 +378,20 @@
                               <Label fx:id="lblAUStaffAddress" layoutX="406.0" layoutY="159.0" prefHeight="32.0" prefWidth="476.0" styleClass="title" text="name info" />
                            </children>
                         </AnchorPane>
+                        <DialogPane fx:id="paneOrderList_editStatus" layoutX="303.0" layoutY="162.0" prefHeight="227.0" prefWidth="340.0" visible="false">
+                           <header>
+                              <Label text="Edit status" />
+                           </header>
+                           <content>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <Button fx:id="btnOrderListEditSave" layoutX="66.0" layoutY="141.0" mnemonicParsing="false" onAction="#OnClick_btnOrderListEditSave" text="Save" />
+                                    <Button fx:id="btnOrderListEditCancel" layoutX="225.0" layoutY="141.0" mnemonicParsing="false" onAction="#OnClick_btnOrderListEditCancel" onMouseClicked="#OnClick_DiaglogCancel" text="Cancel" />
+                                    <ComboBox fx:id="rmenuOrderListEdit" layoutX="95.0" layoutY="55.0" prefHeight="43.0" prefWidth="150.0" visibleRowCount="4" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </DialogPane>
       
                             </children>
                         </AnchorPane>

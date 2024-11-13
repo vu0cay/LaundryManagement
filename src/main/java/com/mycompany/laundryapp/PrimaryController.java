@@ -71,7 +71,7 @@ public class PrimaryController implements Initializable{
                 if (res.getString("SF_password").equals(txtPassword.getText())) {
                     System.out.println("Login successfully");
                     
-                    Staff staff = new Staff(res.getString("SF_name"), res.getString("SF_username"), 
+                    Staff staff = new Staff(res.getInt("SF_id"), res.getString("SF_name"), res.getString("SF_username"), 
                                             res.getString("SF_phone"), res.getString("SF_address"));
                     btnLogin.getScene().getWindow().hide();
                     

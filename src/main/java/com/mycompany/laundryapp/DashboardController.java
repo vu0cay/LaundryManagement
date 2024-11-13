@@ -15,8 +15,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -192,9 +195,21 @@ public class DashboardController implements Initializable {
     private TableColumn<Item, Void> tabcoAction;
 
     
-    // order list components
+
+
+    //Orderlist components
+    @FXML
+    private ComboBox<Integer> rmenuOrderListRows;
+        
+    @FXML
+    private TextField txtOrderListSearch;
+        
+    @FXML
+    private Button btnOrderListRefresh;
+    
     @FXML
     private TableView<OrderListTable> tavOrderList;
+    
     @FXML
     private TableColumn<OrderListTable, Void> tabcoOrderListAction;
 
@@ -205,11 +220,29 @@ public class DashboardController implements Initializable {
     private TableColumn<OrderListTable, Date> tabcoOrderListDate;
 
     @FXML
-    private TableColumn<OrderListTable, String> tabcoOrderListStatus;
-    //////////////////////////////////////////////
+    private TableColumn<OrderListTable, Integer> tabcoOrderListId;
 
-        
-   
+    @FXML
+    private TableColumn<OrderListTable, String> tabcoOrderListPhone;
+
+    @FXML
+    private TableColumn<OrderListTable, Float> tabcoOrderListPrice;
+
+    @FXML
+    private TableColumn<OrderListTable, String> tabcoOrderListStatus;
+    
+    @FXML
+    private Button btnOrderListEditCancel;
+
+    @FXML
+    private Button btnOrderListEditSave;
+    
+    @FXML
+    private ComboBox<String> rmenuOrderListEdit;    
+
+    @FXML
+    private DialogPane paneOrderList_editStatus;
+    
     //New Order components
     @FXML
     private AnchorPane NO_AddDetail_pane;
@@ -290,7 +323,6 @@ public class DashboardController implements Initializable {
 
     @FXML
     private TableColumn<NO_Detail, Float> NO_table_Weight_col;
-       
     
         
   //====================================================================================================================================================  
@@ -339,9 +371,9 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
+        initComponents_OL();
         initComponents_NO();
         SetUpServiceTableView();
-        setUpOrderListTable();
         aboutUs();
         //
 //        lblAUStaffname.setText(staff.getName());
@@ -476,39 +508,16 @@ public class DashboardController implements Initializable {
     
   //====================================================================================================================================================  
   //Order List functions
-    public ObservableList<OrderListTable> OrderListData() {
+    private int OLCurrentId;
+    public void initComponents_OL() {
+        rmenuOrderListRows.getItems().addAll(50, 100, 500, 1000);
+        rmenuOrderListRows.setValue(50);
         
-//        con = database.openConnection();
-//        String sql = "select * from items";
-        ObservableList<OrderListTable> data = FXCollections.observableArrayList();
-
-//        try {
-//            stmt = con.createStatement();
-//            res = stmt.executeQuery(sql);
-//            
-//            Item item = new Item(1, "Loai", res.getFloat("ITEM_unit_price"));
-//            while(res.next()) {
-//                Item item = new Item(res.getInt("ITEM_id"), res.getString("ITEM_type"), res.getFloat("ITEM_unit_price"));
-//
-//            }
-            
-//            con.close();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-//        }        
-
-        OrderListTable odt = new OrderListTable(new Date(2024,11,13), "Hoang Vu", "processing");
-        data.add(odt);
-        return data;
-    }
-    
-    private ObservableList<OrderListTable> addOrderListData;
-    public void setUpOrderListTable() {
-        
-        addOrderListData = OrderListData();
-        
-        tabcoOrderListDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        tabcoOrderListId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tabcoOrderListCustomer.setCellValueFactory(new PropertyValueFactory<>("customer"));
+        tabcoOrderListPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        tabcoOrderListDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        tabcoOrderListPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         tabcoOrderListStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 //        tabcoAction.setCellValueFactory(data -> data.getValue().getButton());
         
@@ -520,14 +529,15 @@ public class DashboardController implements Initializable {
                     {
                         btn.setOnMouseClicked(event -> {
                             OrderListTable items = getTableView().getItems().get(getIndex());
-                            System.out.println("Button clicked for " + items.getCustomer());
+                            System.out.println("Button clicked for " + items.getId());
                             
                             // set dialog edit
-//                            currentItem = new Item(items.getId(), items.getType(), items.getUnitPrice());
-//                            
-//                            txtDialType.setText(items.getType());
+                            OLCurrentId = items.getId();
+                            
+                            rmenuOrderListEdit.getItems().clear();  
+                            rmenuOrderListEdit.getItems().addAll("Pending", "In Progress", "Completed");  
 //                            txtDialUnitPrice.setText(Double.toString(items.getUnitPrice()));
-//                            dipAction.setVisible(true);
+                            paneOrderList_editStatus.setVisible(true);
                             
                             
                             
@@ -549,10 +559,172 @@ public class DashboardController implements Initializable {
         
         
         tabcoOrderListAction.setCellFactory(cellFactory);
-        
-        
-        tavOrderList.setItems(addOrderListData);
-            
+        OnClick_btnOrderListRefresh();
+    }
+    
+    //database stuffs
+    public List<Integer> getRecentOrderIds(int amount, String excludeStatus) {
+        List<Integer> orderIds = new ArrayList<>();
+        String sql = "SELECT TOP " + amount + " o.ORDER_id " +
+                     "FROM ORDERS o " +
+                     "JOIN STATUS_DETAILS sd ON o.ORDER_id = sd.ORDER_id " +
+                     "WHERE sd.SD_status <> ? " +
+                     "AND sd.SD_timestamp = (" +
+                     "    SELECT MAX(inner_sd.SD_timestamp) " +
+                     "    FROM STATUS_DETAILS inner_sd " +
+                     "    WHERE inner_sd.ORDER_id = o.ORDER_id" +
+                     ") " +
+                     "ORDER BY o.ORDER_order_date DESC";
+
+        try {
+            con = database.openConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, excludeStatus);
+            res = pstmt.executeQuery();
+
+            while (res.next()) {
+                orderIds.add(res.getInt("ORDER_id"));
+            }
+
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        }
+
+        return orderIds;
+    }
+
+    public List<Integer> findOrderIdsByPhoneNumber(String phoneNumber) {
+        List<Integer> orderIds = new ArrayList<>();
+        String sql = "SELECT o.ORDER_id " +
+                     "FROM ORDERS o " +
+                     "JOIN CUSTOMERS c ON o.CUS_id = c.CUS_id " +
+                     "WHERE c.CUS_phone LIKE ?";
+
+        try {
+            Connection con = database.openConnection();  // Assume database.openConnection() opens your DB connection
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, "%" + phoneNumber + "%");
+            ResultSet res = pstmt.executeQuery();
+
+            while (res.next()) {
+                orderIds.add(res.getInt("ORDER_id"));
+            }
+
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Error: " + ex.getMessage());
+            alert.showAndWait();
+        }
+        return orderIds;
+    }
+    
+    public OrderListTable GetDataForOrderListTable(int OrderId) {
+        OrderListTable orderRow = null;
+        String sql = "SELECT " +
+                     "o.ORDER_id AS OrderID, " +
+                     "c.CUS_name AS CustomerName, " +
+                     "c.CUS_phone AS CustomerPhone, " +
+                     "o.ORDER_order_date AS OrderDate, " +
+                     "o.ORDER_total_price AS TotalPrice, " +
+                     "(SELECT TOP 1 SD_status " +
+                     " FROM STATUS_DETAILS sd " +
+                     " WHERE sd.ORDER_id = o.ORDER_id " +
+                     " ORDER BY sd.SD_timestamp DESC) AS LatestStatus " +
+                     "FROM ORDERS o " +
+                     "JOIN CUSTOMERS c ON o.CUS_id = c.CUS_id " +
+                     "WHERE o.ORDER_id = ?";
+
+        try {
+            con = database.openConnection();
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, OrderId);
+            ResultSet res = pstmt.executeQuery();
+
+            if (res.next()) {
+                int id = res.getInt("OrderID");
+                String customerName = res.getString("CustomerName");
+                String customerPhone = res.getString("CustomerPhone");
+                Date orderDate = res.getDate("OrderDate");
+                float totalPrice = res.getFloat("TotalPrice");
+                String latestStatus = res.getString("LatestStatus");
+
+                orderRow = new OrderListTable(id, customerName, customerPhone, orderDate, totalPrice, latestStatus);
+            } else {
+                System.out.println("No order found with ID: " + OrderId);
+            }
+
+            con.close();
+        } catch (SQLException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        }
+
+        return orderRow;
+    }
+    
+    public void insertStatus(int staffId, int orderId, String status) {
+        // SQL statement without the timestamp column
+        String sql = "INSERT INTO STATUS_DETAILS (SF_id, ORDER_id, SD_status) VALUES (?, ?, ?)";
+
+        try (Connection con = database.openConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
+
+            pstmt.setInt(1, staffId);  // Set staffId
+            pstmt.setInt(2, orderId);  // Set orderId
+            pstmt.setString(3, status);  // Set status
+
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        }
+    }
+    //in-app stuffs
+    //i don't know which button use this
+      public void setUpOrderListTable() {
+      }   
+      
+    public void OnClick_btnOrderListRefresh() {
+        ObservableList<OrderListTable> data = FXCollections.observableArrayList();
+        List<Integer> orderIds ;
+        if(txtOrderListSearch.getText() == "") {
+            orderIds = getRecentOrderIds(rmenuOrderListRows.getValue(), "Completed");
+        }else {
+            orderIds = findOrderIdsByPhoneNumber(txtOrderListSearch.getText());
+        }
+        for(int id : orderIds) {
+            data.add(GetDataForOrderListTable(id));
+        }
+        tavOrderList.setItems(data);
+        tavOrderList.refresh();
+    }
+    
+    public void OnClick_btnOrderListEditCancel() {
+        paneOrderList_editStatus.setVisible(false);
+    }
+    
+    
+    public void OnClick_btnOrderListEditSave() {
+        if(rmenuOrderListEdit.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select a status before proceeding.");
+            alert.showAndWait();  
+            return;
+        }
+        insertStatus(staff.getId(), OLCurrentId, rmenuOrderListEdit.getValue());
+        OnClick_btnOrderListRefresh();
+        paneOrderList_editStatus.setVisible(false);
     }
     
     

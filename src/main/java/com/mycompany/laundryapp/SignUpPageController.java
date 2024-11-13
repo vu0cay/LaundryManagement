@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.mycompany.laundryapp;
 
 import com.mycompany.laundryapp.models.Staff;
@@ -15,7 +11,6 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.Initializable;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -66,10 +61,11 @@ public class SignUpPageController implements Initializable {
     ResultSet res;
     Connection con;
     final private int laundryId = 1;
+
     public void OnClick_SignUp() {
         con = database.openConnection();
         try {
-
+            // Check if any field is empty
             if (txtFullName.getText() == ""
                     || txtUserName.getText() == ""
                     || txtPassword.getText() == ""
@@ -78,69 +74,74 @@ public class SignUpPageController implements Initializable {
                 throw new SQLException("Please fill all fields!");
             }
 
-            String sql = "select * from staffs where SF_username = ?";
-
+            // Check if the username already exists
+            String sql = "SELECT * FROM staffs WHERE SF_username = ?";
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1, txtUserName.getText());
             res = pstmt.executeQuery();
 
             if (res.next()) {
-                System.out.println(res.getString("SF_username"));
-                throw new SQLException("User name have already used");
+                throw new SQLException("User name has already been used");
             }
 
-            sql = "Insert into staffs (SF_name, SF_username, SF_password, SF_phone, SF_address, L_id) "
-                    + "values(?, ?, ?, ?, ?, ?)";
-
-            pstmt = con.prepareStatement(sql);
+            // Insert new staff record
+            sql = "INSERT INTO staffs (SF_name, SF_username, SF_password, SF_phone, SF_address, L_id) "
+                    + "VALUES (?, ?, ?, ?, ?, ?)";
+            pstmt = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);  // Get generated keys
             pstmt.setString(1, txtFullName.getText());
             pstmt.setString(2, txtUserName.getText());
             pstmt.setString(3, txtPassword.getText());
             pstmt.setString(4, txtPhone.getText());
             pstmt.setString(5, txtAddress.getText());
             pstmt.setInt(6, laundryId);
+
             int rows = pstmt.executeUpdate();
 
-//            alert.setTitle("Information");
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
+            // If insertion was successful, retrieve the generated staff ID
             if (rows > 0) {
-                alert.setContentText("Sign up successfully!");
-                alert.showAndWait();
-                Staff staff = new Staff(txtFullName.getText(),txtUserName.getText(),
-                                        txtPhone.getText(),txtAddress.getText());
-                btnSignUp.getScene().getWindow().hide();
+                res = pstmt.getGeneratedKeys();
+                if (res.next()) {
+                    int staffId = res.getInt(1);  // Assuming the first column is the auto-generated ID
 
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
-//                        Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
-                    Parent root = loader.load();
-                    DashboardController dbController = loader.getController();
+                    // Show success alert
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("Sign up successful!");
+                    alert.showAndWait();
 
-                    dbController.initData(staff);
+                    // Create Staff object with the generated id
+                    Staff staff = new Staff(staffId, txtFullName.getText(), txtUserName.getText(),
+                                            txtPhone.getText(), txtAddress.getText());
 
-                    Stage stage = new Stage();
-                    Scene scene = new Scene(root, 1080, 800);
+                    // Close the current window and open the dashboard
+                    btnSignUp.getScene().getWindow().hide();
 
-                    stage.setScene(scene);
-                    stage.show();
-                } catch (IOException ex) {
-                    Logger.getLogger(SignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
+                        Parent root = loader.load();
+                        DashboardController dbController = loader.getController();
+
+                        // Initialize Dashboard with the staff data
+                        dbController.initData(staff);
+
+                        Stage stage = new Stage();
+                        Scene scene = new Scene(root, 1080, 800);
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (IOException ex) {
+                        Logger.getLogger(SignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-
             } else {
-                alert.setContentText("No change maked!");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("No changes made!");
                 alert.showAndWait();
             }
 
             con.close();
         } catch (SQLException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
         }
-
     }
-
 }
