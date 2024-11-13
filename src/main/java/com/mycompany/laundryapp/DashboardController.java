@@ -18,6 +18,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -228,11 +229,6 @@ public class DashboardController implements Initializable {
 
     @FXML
     private TextField NO_CreateCus_phone_txt;
-
-    @FXML
-    private Label NO_CreateOrderHint_lbl;
-    @FXML
-    private Button NO_CreateNewOder_btn;
 
     @FXML
     private TextField NO_CustomerName_txt;
@@ -534,6 +530,9 @@ public class DashboardController implements Initializable {
         // Total column: Float type
         NO_table_Total_col.setCellValueFactory(new PropertyValueFactory<>("total"));
         
+        ObservableList<NO_Detail> data = FXCollections.observableArrayList();
+        NO_Detail_table.setItems(data);
+        NO_Order_id.setText("");
     }
     
     //----------
@@ -620,7 +619,7 @@ public class DashboardController implements Initializable {
         } 
     }
     
-    public int CreateOrder(String phone) {
+    public int CreateOrder(String phone, float total) {
         int orderId = -1;
         LocalDate currentDate = LocalDate.now();
         Date sqlDate = Date.valueOf(currentDate);
@@ -632,7 +631,7 @@ public class DashboardController implements Initializable {
             pstmt.setInt(1, cusId);
             pstmt.setDate(2, sqlDate);
             pstmt.setDate(3, sqlDate);
-            pstmt.setFloat(4, 0);
+            pstmt.setFloat(4, total);
             pstmt.executeUpdate();    
             
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
@@ -657,8 +656,12 @@ public class DashboardController implements Initializable {
         try {
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, catId);
-            res = pstmt.executeQuery();            
-            ppk = res.getFloat("ITEM_unit_price");
+            res = pstmt.executeQuery();  
+            if (res.next()) {
+                ppk = res.getFloat("ITEM_unit_price");
+            } else{
+                System.out.println("No record found for catId: " + catId);
+            }
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
@@ -669,6 +672,7 @@ public class DashboardController implements Initializable {
         return ppk;
     }
     public float GetSMultiplier(int SId){
+        System.out.println(SId);
         float multiplier = 0;
         con = database.openConnection();
         String sql = "select * from LAUNDRY_SERVICES where LS_id = ?";
@@ -676,7 +680,11 @@ public class DashboardController implements Initializable {
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, SId);
             res = pstmt.executeQuery();            
+            if (res.next()) {
             multiplier = res.getFloat("LS_multiplier");
+            } else {
+                System.out.println("No record found for SId: " + SId);
+            }
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
@@ -685,6 +693,89 @@ public class DashboardController implements Initializable {
             alert.showAndWait();
         } 
         return multiplier;
+    }
+    
+    public void DeleteOrder(int orderID) {
+        con = database.openConnection();
+        String sql = "delete from orders where ORDER_id = ?";
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, orderID);
+            pstmt.executeUpdate();            
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        } 
+    }
+    
+    public int GetServiceId(String service){
+        int id = 0;
+        con = database.openConnection();
+        String sql = "select * from Laundry_services where LS_name = ?;";
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, service);
+            res = pstmt.executeQuery(); 
+            if (res.next()) {
+            id = res.getInt("LS_id");
+            } else {
+                System.out.println("something went wrong");
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        } 
+        return id;
+    }
+    
+    public int GetCategoryId(String cat){
+        int id = 0;
+        con = database.openConnection();
+        String sql = "select * from ITEMS where ITEM_type = ?;";
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, cat);
+            res = pstmt.executeQuery(); 
+            if (res.next()) {
+            id = res.getInt("ITEM_id");
+            } else {
+                System.out.println("something went wrong");
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        } 
+        return id;
+    }
+        
+    
+    public void AddOrderDetail(NO_Detail detail) {
+        String sql = "insert into ORDER_DETAILS (LS_id, ITEM_id, ORDER_id, OD_kilos) values(?, ?, ?, ?);";
+        Detail add = new Detail(GetServiceId(detail.getService()), GetCategoryId(detail.getCategory()), Integer.parseInt(NO_Order_id.getText()), detail.getWeight());
+        con = database.openConnection();
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, add.getServiceId());
+            pstmt.setInt(2, add.getCatId());
+            pstmt.setInt(3, add.getOrderId());
+            pstmt.setFloat(4, add.getKilos());
+            pstmt.executeUpdate();            
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        } 
     }
     //----------
     //in-app stuff
@@ -704,7 +795,6 @@ public class DashboardController implements Initializable {
             alert.showAndWait();
             NO_CustomerName_txt.setText(result.getName());
             NO_Phone_txt.setText(result.getPhone());
-            NO_CreateNewOder_btn.setDisable(false);
         }
     }
     
@@ -749,30 +839,8 @@ public class DashboardController implements Initializable {
         NO_CreateCus_pane.setVisible(false);
     }
     
-    
-    //create order
-    public void OnClick_NO_Create_Order_btn() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION); 
-        alert.setHeaderText(null);
-        int orderId = CreateOrder(NO_Phone_txt.getText());
-        if(orderId == -1){
-            alert.setTitle("error");
-            alert.setContentText("something went wrong while creating order!");
-            alert.showAndWait();
-            return;
-        }
-        initComponents_NO();
-        NO_Order_id.setText(String.valueOf(orderId));
-            alert.setTitle("success");
-            alert.setContentText("new order created with ID: " + NO_Order_id.getText());
-            alert.showAndWait();
-        NO_CreateOrderHint_lbl.setVisible(false);
-        NO_CreateNewOder_btn.setDisable(true);
-        NO_CreateNewOder_btn.setVisible(false);
-        NO_AddDetail_pane.setVisible(true);
-    }
-    
-    //TO DO add detail
+
+    //add detail
     public void OnClick_NO_Add_btn() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION); 
         alert.setHeaderText(null);
@@ -782,29 +850,73 @@ public class DashboardController implements Initializable {
             alert.showAndWait();
             return;
         }
-        NO_Detail noDetail = new NO_Detail(NO_Service_add.getValue().getType(), 
+        NO_Detail newDetail = new NO_Detail(NO_Category_add.getValue().getType(), 
                                            Float.parseFloat(NO_Weight_add.getText()), 
                                            NO_Service_add.getValue().getType(), 
                                            GetPPK(NO_Category_add.getSelectionModel().getSelectedItem().getId()),
                                            GetSMultiplier(NO_Service_add.getSelectionModel().getSelectedItem().getId()));
-        Option selectedOption = NO_Service_add.getSelectionModel().getSelectedItem();
-        System.out.println("Add Clicked");
-        System.out.println(Float.parseFloat(NO_Weight_add.getText()));
+        ObservableList<NO_Detail> data = NO_Detail_table.getItems();
+        boolean found = false;
+        for (NO_Detail detail : data) {
+            if(newDetail.getCategory().equals(detail.getCategory()) && newDetail.getService().equals(detail.getService())){
+                System.out.println("update row");
+                detail.setWeight(newDetail.getWeight() + detail.getWeight());
+                found = true;
+                break;
+            }
+        }
+        if(!found) 
+            data.add(newDetail);
+        NO_Detail_table.setItems(data);
+        NO_Detail_table.refresh();
     }
     
-    //TODO
+    //save order and details
     public void OnClick_NO_Save_btn(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION); 
+        alert.setHeaderText(null);
+        if(NO_CustomerName_txt.getText() == "" || NO_Phone_txt.getText() == "")
+        {
+            alert.setTitle("Warning");
+            alert.setContentText("Please choose customer");
+            alert.showAndWait();
+            return;
+        }
+        float total = 0;
+        ObservableList<NO_Detail> data = NO_Detail_table.getItems();
+        if (data.isEmpty()) {
+            alert.setTitle("Warning");
+            alert.setContentText("The table is empty. Please add items before saving the order.");
+            alert.showAndWait();
+            return;
+        }
+        for (NO_Detail detail : data) {
+            total += detail.getTotal();
+        }
         
+
+        int orderId = CreateOrder(NO_Phone_txt.getText(), total);
+        if(orderId == -1){
+            alert.setTitle("error");
+            alert.setContentText("something went wrong while creating order!");
+            alert.showAndWait();
+            return;
+        }
+        NO_Order_id.setText(String.valueOf(orderId));
+        for (NO_Detail detail : data) {
+            AddOrderDetail(detail);
+        }
+        data = FXCollections.observableArrayList();
+        NO_Detail_table.setItems(data);
+        alert.setTitle("success");
+        alert.setContentText("new order created with ID: " + NO_Order_id.getText());
+        alert.showAndWait();
+        NO_Order_id.setText("");
     }
     
     //TODO
     public void OnClick_NO_Cancel_btn() {
-        System.out.println("Cancel Clicked");
-        NO_Order_id.setText("-1");
-        NO_CreateOrderHint_lbl.setVisible(true);
-        NO_CreateNewOder_btn.setDisable(true);
-        NO_CreateNewOder_btn.setVisible(true);
-        NO_AddDetail_pane.setVisible(false);
+        initComponents_NO();
     }
     
 
