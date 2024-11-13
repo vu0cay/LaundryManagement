@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -377,7 +378,7 @@ public class DashboardController implements Initializable {
         SetUpServiceTableView();
         SetUpNewOrder();
         aboutUs();
-        statistics();
+//        statistics();
         //
 //        lblAUStaffname.setText(staff.getName());
 //        lblAUStaffAddress.setText(staff.getAddress());
@@ -442,14 +443,7 @@ public class DashboardController implements Initializable {
             aboutUsForm.setVisible(false);
 
         } else if (event.getSource() == statisticsBtn) {
-//            ObservableList<PieChart.Data> pieChartData
-//                    = FXCollections.observableArrayList(
-//                            new PieChart.Data("Paid", 13),
-//                            new PieChart.Data("Completed", 25),
-//                            new PieChart.Data("Processing", 10));
-//
-//            piePie.setData(pieChartData);
-
+            statistics();
             orderListBtn.getStyleClass().remove("tab-active");
             newOrderBtn.getStyleClass().remove("tab-active");
             servicesBtn.getStyleClass().remove("tab-active");
@@ -726,9 +720,6 @@ public class DashboardController implements Initializable {
     private ComboBox<String> resultStatisticCombobox;
 
     @FXML
-    private Button btnTry;
-
-    @FXML
     private Label lblOrders_recieved;
     @FXML
     private Label lblComplete;
@@ -736,10 +727,17 @@ public class DashboardController implements Initializable {
     private Label lblPaid;
     @FXML
     private Label lblProcessing;
+    
+    @FXML
+    private Label lblToday;
 
-    private int paidNum = 0, completedNum = 0, processingNum = 0, totalNum = 0;
+    private int paidNum, completedNum, processingNum, totalNum;
 
     public void getOrderQuantity(String timeChosen) {
+        paidNum = 0;
+        completedNum = 0;
+        processingNum = 0;
+        totalNum = 0;
         con = database.openConnection();
         String sql = "with latestStatus as"
                 + "(select ORDER_id,SD_status, ROW_NUMBER() "
@@ -766,18 +764,21 @@ public class DashboardController implements Initializable {
         try {
             stmt = con.createStatement();
             res = stmt.executeQuery(sql);
+            int i = 1;
             while (res.next()) {
+                System.out.println(i);
                 String stt = res.getString("sd_status");
-                System.out.println("stt");
+                System.out.println("stt " + stt);
                 int count = res.getInt("num");
-                System.out.println("count");
-                if (stt == "paid") {
+                System.out.println("count " + count);
+                if ("paid".equals(stt)) {
                     paidNum = count;
-                } else if (stt == "completed") {
+                } else if ("completed".equals(stt)) {
                     completedNum = count;
                 } else {
                     processingNum = count;
                 }
+                i++;
             }
             totalNum = paidNum + processingNum + completedNum;
             System.out.println(res);
@@ -788,6 +789,7 @@ public class DashboardController implements Initializable {
     }
 
     public void setPieChart() {
+        
         ObservableList<PieChart.Data> pieChartData
                 = FXCollections.observableArrayList(
                         new PieChart.Data("Paid", paidNum),
@@ -795,6 +797,7 @@ public class DashboardController implements Initializable {
                         new PieChart.Data("Processing", processingNum));
 
         piePie.setData(pieChartData);
+        
     }
 
     public void setValuesToInterface() {
@@ -802,22 +805,38 @@ public class DashboardController implements Initializable {
         lblProcessing.setText(String.valueOf(processingNum));
         lblOrders_recieved.setText(String.valueOf(totalNum));
         lblComplete.setText(String.valueOf(completedNum));
+        
+        LocalDate today = LocalDate.now();
+        lblToday.setText("Date: "+today);
     }
 
     public void statistics() {
         ObservableList<String> ol = FXCollections.observableArrayList();
         ol.add("Today");
-        ol.add("This week");
+        ol.add("In 7 days");
+        ol.add("This month");
         resultStatisticCombobox.setItems(ol);
+        resultStatisticCombobox.setOnAction(e -> showResultInTime());
 
         getOrderQuantity("today");
         setPieChart();
         setValuesToInterface();
     }
 
-    public void TRYY() {
-        getOrderQuantity("month");
+    public void showResultInTime() {
+        String selectedTime = resultStatisticCombobox.getValue();
+        if (selectedTime.equals("Today")) {
+            getOrderQuantity("today");
+        } else if (selectedTime.equals("In 7 days")) {
+            getOrderQuantity("seven");
+        } else {
+            getOrderQuantity("month");
+        }
+        setPieChart();
+        setValuesToInterface();
     }
+
+
     //====================================================================================================================================================  
     //Statistics functions
 
