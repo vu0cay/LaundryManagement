@@ -192,6 +192,21 @@ public class DashboardController implements Initializable {
     private TableColumn<Item, Void> tabcoAction;
 
     
+    // order list components
+    @FXML
+    private TableView<OrderListTable> tavOrderList;
+    @FXML
+    private TableColumn<OrderListTable, Void> tabcoOrderListAction;
+
+    @FXML
+    private TableColumn<OrderListTable, String> tabcoOrderListCustomer;
+
+    @FXML
+    private TableColumn<OrderListTable, Date> tabcoOrderListDate;
+
+    @FXML
+    private TableColumn<OrderListTable, String> tabcoOrderListStatus;
+    //////////////////////////////////////////////
 
         
    
@@ -326,6 +341,7 @@ public class DashboardController implements Initializable {
         
         initComponents_NO();
         SetUpServiceTableView();
+        setUpOrderListTable();
         aboutUs();
         //
 //        lblAUStaffname.setText(staff.getName());
@@ -460,6 +476,84 @@ public class DashboardController implements Initializable {
     
   //====================================================================================================================================================  
   //Order List functions
+    public ObservableList<OrderListTable> OrderListData() {
+        
+//        con = database.openConnection();
+//        String sql = "select * from items";
+        ObservableList<OrderListTable> data = FXCollections.observableArrayList();
+
+//        try {
+//            stmt = con.createStatement();
+//            res = stmt.executeQuery(sql);
+//            
+//            Item item = new Item(1, "Loai", res.getFloat("ITEM_unit_price"));
+//            while(res.next()) {
+//                Item item = new Item(res.getInt("ITEM_id"), res.getString("ITEM_type"), res.getFloat("ITEM_unit_price"));
+//
+//            }
+            
+//            con.close();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+//        }        
+
+        OrderListTable odt = new OrderListTable(new Date(2024,11,13), "Hoang Vu", "processing");
+        data.add(odt);
+        return data;
+    }
+    
+    private ObservableList<OrderListTable> addOrderListData;
+    public void setUpOrderListTable() {
+        
+        addOrderListData = OrderListData();
+        
+        tabcoOrderListDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        tabcoOrderListCustomer.setCellValueFactory(new PropertyValueFactory<>("customer"));
+        tabcoOrderListStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+//        tabcoAction.setCellValueFactory(data -> data.getValue().getButton());
+        
+        Callback<TableColumn<OrderListTable, Void>, TableCell<OrderListTable, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<OrderListTable, Void> call(TableColumn<OrderListTable, Void> param) {
+                return new TableCell<>() {
+                    private final Button btn = new Button("Edit");
+                    {
+                        btn.setOnMouseClicked(event -> {
+                            OrderListTable items = getTableView().getItems().get(getIndex());
+                            System.out.println("Button clicked for " + items.getCustomer());
+                            
+                            // set dialog edit
+//                            currentItem = new Item(items.getId(), items.getType(), items.getUnitPrice());
+//                            
+//                            txtDialType.setText(items.getType());
+//                            txtDialUnitPrice.setText(Double.toString(items.getUnitPrice()));
+//                            dipAction.setVisible(true);
+                            
+                            
+                            
+                        });
+                    }
+                    
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+            }  
+        };
+        
+        
+        tabcoOrderListAction.setCellFactory(cellFactory);
+        
+        
+        tavOrderList.setItems(addOrderListData);
+            
+    }
     
     
   //====================================================================================================================================================  

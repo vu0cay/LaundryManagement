@@ -73,14 +73,14 @@
                     <center>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <children>
-                                <AnchorPane fx:id="orderListForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
+                                <AnchorPane fx:id="orderListForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;">
                                     <children>
-                                        <TableView layoutX="12.0" layoutY="167.0" prefHeight="334.0" prefWidth="833.0">
+                                        <TableView fx:id="tavOrderList" layoutX="12.0" layoutY="167.0" prefHeight="334.0" prefWidth="833.0">
                                             <columns>
-                                                <TableColumn prefWidth="200.0" text="Date " />
-                                                <TableColumn prefWidth="250.0" text="Customer" />
-                                                <TableColumn prefWidth="170.0" text="Status" />
-                                                <TableColumn prefWidth="231.0" text="Action" />
+                                                <TableColumn fx:id="tabcoOrderListDate" prefWidth="200.0" text="Date " />
+                                                <TableColumn fx:id="tabcoOrderListCustomer" prefWidth="250.0" text="Customer" />
+                                                <TableColumn fx:id="tabcoOrderListStatus" prefWidth="170.0" text="Status" />
+                                                <TableColumn fx:id="tabcoOrderListAction" prefWidth="231.0" text="Action" />
                                             </columns>
                                         </TableView>
                                         <Label layoutX="20.0" layoutY="108.0" text="Show" />
@@ -91,7 +91,7 @@
                                         <Button layoutX="744.0" layoutY="530.0" mnemonicParsing="false" text="&lt;" />
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="newOrderForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;">
+                                <AnchorPane fx:id="newOrderForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
                                     <children>
                               <Button fx:id="NO_CustomerSearch_btn" layoutX="572.0" layoutY="135.0" mnemonicParsing="false" onAction="#OnClick_NO_CustomerSearch_btn" text="Search" />
                               <Label fx:id="NO_CreateOrderHint_lbl" layoutX="335.0" layoutY="268.0" text="Enter customer information to create order" />
