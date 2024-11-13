@@ -73,7 +73,7 @@
                     <center>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <children>
-                                <AnchorPane fx:id="orderListForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;">
+                                <AnchorPane fx:id="orderListForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
                                     <children>
                                         <TableView layoutX="12.0" layoutY="167.0" prefHeight="334.0" prefWidth="833.0">
                                             <columns>
@@ -91,9 +91,11 @@
                                         <Button layoutX="744.0" layoutY="530.0" mnemonicParsing="false" text="&lt;" />
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="newOrderForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
+                                <AnchorPane fx:id="newOrderForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;">
                                     <children>
-                                        <TextField fx:id="NO_CustomerName_txt" layoutX="32.0" layoutY="102.0" prefWidth="200.0" />
+                              <Button fx:id="NO_CustomerSearch_btn" layoutX="572.0" layoutY="135.0" mnemonicParsing="false" onAction="#OnClick_NO_CustomerSearch_btn" text="Search" />
+                              <Label fx:id="NO_CreateOrderHint_lbl" layoutX="335.0" layoutY="268.0" text="Enter customer information to create order" />
+                                        <TextField fx:id="NO_CustomerName_txt" editable="false" layoutX="32.0" layoutY="102.0" prefWidth="200.0" />
                                         <Label layoutX="35.0" layoutY="79.0" text="Customer Name" />
                                         <TextField fx:id="NO_Phone_txt" layoutX="33.0" layoutY="160.0" prefWidth="200.0" />
                                         <Label layoutX="35.0" layoutY="140.0" prefWidth="64.0" text="Phone" />
@@ -111,8 +113,8 @@
                                     <Label layoutX="529.0" layoutY="16.0" prefHeight="17.0" prefWidth="109.0" text="Service" />
                                     <ComboBox fx:id="NO_Service_add" layoutX="528.0" layoutY="38.0" prefHeight="28.0" prefWidth="165.0" />
                                     <Button fx:id="NO_Add_btn" layoutX="778.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" text="+ Add" />
-                                    <Button fx:id="NO_Save_btn1" layoutX="703.0" layoutY="328.0" mnemonicParsing="false" text="Save" />
-                                    <Button fx:id="NO_Cancel_btn1" layoutX="790.0" layoutY="328.0" mnemonicParsing="false" onAction="#OnClick_NO_Cancel_btn" text="Cancel" />
+                                    <Button fx:id="NO_Save_btn" layoutX="703.0" layoutY="328.0" mnemonicParsing="false" text="Save" />
+                                    <Button fx:id="NO_Cancel_btn" layoutX="790.0" layoutY="328.0" mnemonicParsing="false" onAction="#OnClick_NO_Cancel_btn" text="Cancel" />
                                     <TableView fx:id="NO_Detail_table" layoutX="53.0" layoutY="116.0" prefHeight="189.0" prefWidth="809.0">
                                        <columns>
                                           <TableColumn fx:id="NO_table_Category_col" prefWidth="151.20000457763672" text="Category" />
@@ -127,8 +129,26 @@
                                     <Label layoutX="469.0" layoutY="51.0" text="Kg" />
                                  </children>
                               </AnchorPane>
-                              <Button fx:id="NO_CreateNewOder_btn" layoutX="326.0" layoutY="293.0" mnemonicParsing="false" onAction="#OnClick_NO_Create_Order_btn" prefHeight="52.0" prefWidth="246.0" text="Create new order" />
-                              <Button fx:id="NO_CreateCus_btn" layoutX="637.0" layoutY="122.0" mnemonicParsing="false" text="+ Create new customer" />
+                              <Button fx:id="NO_CreateNewOder_btn" disable="true" layoutX="326.0" layoutY="293.0" mnemonicParsing="false" onAction="#OnClick_NO_Create_Order_btn" prefHeight="52.0" prefWidth="246.0" text="Create new order" />
+                              <Button fx:id="NO_CreateCus_btn" layoutX="694.0" layoutY="131.0" mnemonicParsing="false" onAction="#OnClick_NO_CreateCus_btn" text="+ Create new customer" />
+                              <DialogPane fx:id="NO_CreateCus_pane" layoutX="232.0" layoutY="160.0" prefHeight="227.0" prefWidth="340.0" visible="false">
+                                 <header>
+                                    <Label text="Create new customer" />
+                                 </header>
+                                 <content>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <Label layoutX="14.0" layoutY="40.0" text="Customer's name :" />
+                                          <Label layoutX="14.0" layoutY="89.0" text="Customer's phone numbers :" />
+                                          <TextField fx:id="NO_CreateCus_name_txt" layoutX="175.0" layoutY="35.0" />
+                                          <TextField fx:id="NO_CreateCus_phone_txt" layoutX="175.0" layoutY="83.0" />
+                                          <Button fx:id="NO_CreateCus_cancel_btn" layoutX="258.0" layoutY="157.0" mnemonicParsing="false" onAction="#OnClick_NO_CreateCus_cancel_btn" text="Cancel" />
+                                          <Button fx:id="NO_CreateCus_create_btn" layoutX="160.0" layoutY="157.0" mnemonicParsing="false" onAction="#OnClick_NO_CreateCus_create_btn" text="Create" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </DialogPane>
+                              <Label fx:id="NO_Order_id" layoutX="851.0" layoutY="6.0" text="-1" visible="false" />
                                     </children>
                                 </AnchorPane>
                                 <AnchorPane fx:id="servicesForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
@@ -182,7 +202,7 @@
                                           <TableColumn fx:id="tabcoAction" prefWidth="132.0000061035156" text="Action" />
                                       </columns>
                                     </TableView>
-                                    <DialogPane fx:id="dipAction" layoutX="293.0" layoutY="152.0" prefHeight="227.0" prefWidth="340.0" visible="false">
+                                    <DialogPane fx:id="dipAction" layoutX="293.0" layoutY="152.0" prefHeight="227.0" prefWidth="340.0">
                                        <header>
                                           <Label text="Edit Category" />
                                        </header>
@@ -206,7 +226,7 @@
                                         <Button fx:id="itemManageBtn" layoutX="453.0" layoutY="519.0" mnemonicParsing="false" onAction="#switchManageCategory" prefHeight="36.0" prefWidth="83.0" text="Items" />
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="statisticsForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0">
+                                <AnchorPane fx:id="statisticsForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" visible="false">
                            <children>
                               <AnchorPane fx:id="pieArea" layoutX="43.0" layoutY="215.0" prefHeight="335.0" prefWidth="334.0">
                                  <children>

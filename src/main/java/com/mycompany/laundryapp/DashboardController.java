@@ -10,10 +10,13 @@ import com.mycompany.laundryapp.models.Staff;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,6 +56,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.shape.Circle;
 import javafx.util.Callback;
@@ -191,22 +195,42 @@ public class DashboardController implements Initializable {
 
         
    
-    //Service components
-     @FXML
+    //New Order components
+    @FXML
     private AnchorPane NO_AddDetail_pane;
 
     @FXML
     private Button NO_Add_btn;
 
     @FXML
-    private Button NO_Cancel_btn1;
+    private Button NO_Cancel_btn;
 
     @FXML
     private ComboBox<Option> NO_Category_add;
+    
+    @FXML
+    private Button NO_CustomerSearch_btn;
 
     @FXML
     private Button NO_CreateCus_btn;
+    
+    @FXML
+    private DialogPane NO_CreateCus_pane;
+    
+    @FXML
+    private Button NO_CreateCus_cancel_btn;
 
+    @FXML
+    private Button NO_CreateCus_create_btn;
+
+    @FXML
+    private TextField NO_CreateCus_name_txt;
+
+    @FXML
+    private TextField NO_CreateCus_phone_txt;
+
+    @FXML
+    private Label NO_CreateOrderHint_lbl;
     @FXML
     private Button NO_CreateNewOder_btn;
 
@@ -217,13 +241,16 @@ public class DashboardController implements Initializable {
     private TextField NO_Customer_Search_txt;
 
     @FXML
-    private TableView<?> NO_Detail_table;
+    private TableView<NO_Detail> NO_Detail_table;
 
     @FXML
     private TextField NO_Phone_txt;
+    
+    @FXML
+    private Label NO_Order_id;
 
     @FXML
-    private Button NO_Save_btn1;
+    private Button NO_Save_btn;
 
     @FXML
     private ComboBox<Option> NO_Service_add;
@@ -232,64 +259,23 @@ public class DashboardController implements Initializable {
     private TextField NO_Weight_add;
 
     @FXML
-    private TableColumn<?, ?> NO_table_Category_col;
+    private TableColumn<NO_Detail, String> NO_table_Category_col;
 
     @FXML
-    private TableColumn<?, ?> NO_table_PricePerKilo_col;
+    private TableColumn<NO_Detail, Float> NO_table_PricePerKilo_col;
 
     @FXML
-    private TableColumn<?, ?> NO_table_ServiceMulti_col;
+    private TableColumn<NO_Detail, Float> NO_table_ServiceMulti_col;
 
     @FXML
-    private TableColumn<?, ?> NO_table_Service_col;
+    private TableColumn<NO_Detail, String> NO_table_Service_col;
 
     @FXML
-    private TableColumn<?, ?> NO_table_Total_col;
+    private TableColumn<NO_Detail, Float> NO_table_Total_col;
 
     @FXML
-    private TableColumn<?, ?> NO_table_Weight_col;
-    
-      //====================================================================================================================================================  
-  //init datas for the app
-   /* public void initComponents(){
-        NO_Service_add.setCellFactory(lv -> new ListCell<Option>() {
-            @Override
-            protected void updateItem(Option item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? null : item.getType());
-            }
-        });
-        NO_Service_add.setButtonCell(new ListCell<Option>() {
-            @Override
-            protected void updateItem(Option item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? null : item.getType());  
-            }
-        });
-        
-        NO_Category_add.setCellFactory(lv -> new ListCell<Option>() {
-            @Override
-            protected void updateItem(Option item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? null : item.getType());
-            }
-        });
-        NO_Category_add.setButtonCell(new ListCell<Option>() {
-            @Override
-            protected void updateItem(Option item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? null : item.getType());  
-            }
-        });
-        
-        NO_Weight_add.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*(\\.\\d*)?")) {
-                NO_Weight_add.setText(oldValue); // Allows decimal numbers
-            }
-        });
-        
-    }*/
-    
+    private TableColumn<NO_Detail, Float> NO_table_Weight_col;
+       
     
         
   //====================================================================================================================================================  
@@ -331,64 +317,15 @@ public class DashboardController implements Initializable {
         }
     }
     
-    //setting up data for New Order
-    public ObservableList<Option> GetServices(){
-        con = database.openConnection();
-        String sql = "select * from LAUNDRY_SERVICES";
-        ObservableList<Option> data = FXCollections.observableArrayList();
-        
-        try {
-            stmt = con.createStatement();
-            res = stmt.executeQuery(sql);            
-//            data.add(new Item(1,"cloth", 2.5));
-//            data.add(new Item(2,"coat", 3.0));
-            while(res.next()) {
-                Option option = new Option(res.getInt("LS_id"), res.getString("LS_name"));
-                data.add(option);
-            }
-//            System.out.println(data.size());                  
-            con.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        return data;
-    }
-   
+    
+    
 
-    public ObservableList<Option> GetCategory(){
-        con = database.openConnection();
-        String sql = "select * from ITEMS";
-        ObservableList<Option> data = FXCollections.observableArrayList();
-        
-        try {
-            stmt = con.createStatement();
-            res = stmt.executeQuery(sql);            
-//            data.add(new Item(1,"cloth", 2.5));
-//            data.add(new Item(2,"coat", 3.0));
-            while(res.next()) {
-                Option option = new Option(res.getInt("ITEM_id"), res.getString("ITEM_type"));
-                data.add(option);
-            }
-//            System.out.println(data.size());                  
-            con.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        return data;
-    }
-    
-    
-    public void SetUpNewOrder() {
-        NO_Service_add.setItems(GetServices());
-        NO_Category_add.setItems(GetCategory());
-    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        //initComponents();
+        initComponents_NO();
         SetUpServiceTableView();
-        SetUpNewOrder();
         aboutUs();
         //
 //        lblAUStaffname.setText(staff.getName());
@@ -527,21 +464,350 @@ public class DashboardController implements Initializable {
     
   //====================================================================================================================================================  
   //New Order functions
-    
-    public void OnClick_NO_Cancel_btn() {
-        System.out.println("Cancel Clicked");
+    //----------
+    //init components
+    public void initComponents_NO(){
+        NO_Service_add.setCellFactory(lv -> new ListCell<Option>() {
+            @Override
+            protected void updateItem(Option item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item.getType());
+            }
+        });
+        NO_Service_add.setButtonCell(new ListCell<Option>() {
+            @Override
+            protected void updateItem(Option item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item.getType());  
+            }
+        });
+        
+        NO_Category_add.setCellFactory(lv -> new ListCell<Option>() {
+            @Override
+            protected void updateItem(Option item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item.getType());
+            }
+        });
+        NO_Category_add.setButtonCell(new ListCell<Option>() {
+            @Override
+            protected void updateItem(Option item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item.getType());  
+            }
+        });
+        
+        NO_Weight_add.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*(\\.\\d*)?")) {
+                NO_Weight_add.setText(oldValue); // Allows decimal numbers
+            }
+        });
+        
+        NO_CreateCus_phone_txt.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                NO_CreateCus_phone_txt.setText(newValue.replaceAll("[^\\d]", "")); // Allow only digits
+            }
+        });
+        
+        NO_Customer_Search_txt.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                NO_Customer_Search_txt.setText(newValue.replaceAll("[^\\d]", "")); // Allow only digits
+            }
+        });
+        NO_Service_add.setItems(GetServices());
+        NO_Category_add.setItems(GetCategory());
+        
+        NO_table_Category_col.setCellValueFactory(new PropertyValueFactory<>("category"));
+
+        // Weight column: Float type
+        NO_table_Weight_col.setCellValueFactory(new PropertyValueFactory<>("weight"));
+
+        // Service column: String type
+        NO_table_Service_col.setCellValueFactory(new PropertyValueFactory<>("service"));
+
+        // PricePerKilo column: Float type
+        NO_table_PricePerKilo_col.setCellValueFactory(new PropertyValueFactory<>("pricePerKilo"));
+
+        // ServiceMultiplier column: Float type
+        NO_table_ServiceMulti_col.setCellValueFactory(new PropertyValueFactory<>("serviceMultiplier"));
+
+        // Total column: Float type
+        NO_table_Total_col.setCellValueFactory(new PropertyValueFactory<>("total"));
+        
     }
     
+    //----------
+    //database connect
+     public ObservableList<Option> GetServices(){
+        con = database.openConnection();
+        String sql = "select * from LAUNDRY_SERVICES";
+        ObservableList<Option> data = FXCollections.observableArrayList();
+        
+        try {
+            stmt = con.createStatement();
+            res = stmt.executeQuery(sql);            
+            while(res.next()) {
+                Option option = new Option(res.getInt("LS_id"), res.getString("LS_name"));
+                data.add(option);
+            }              
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return data;
+    }
+   
+    public ObservableList<Option> GetCategory(){
+        con = database.openConnection();
+        String sql = "select * from ITEMS";
+        ObservableList<Option> data = FXCollections.observableArrayList();
+        
+        try {
+            stmt = con.createStatement();
+            res = stmt.executeQuery(sql);            
+            while(res.next()) {
+                Option option = new Option(res.getInt("ITEM_id"), res.getString("ITEM_type"));
+                data.add(option);
+            }                
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return data;
+    }
+    
+    public Customer CustomerSearch(String phone){
+        
+        Customer result = new Customer();
+        con = database.openConnection();
+        String sql = "select * from Customers where CUS_phone = ?";
+        
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, phone);
+            res = pstmt.executeQuery();            
+            if (res.next()){
+                result.setId(res.getInt("CUS_id"));           
+                result.setName(res.getString("CUS_name"));
+                result.setPhone(res.getString("CUS_phone"));
+            }                  
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        } 
+        return result;
+    }
+    
+    public boolean CreateCustomer(Customer cus){
+        con = database.openConnection();
+        String sql = "insert into customers (CUS_name, CUS_phone) values (?, ?);";
+        try {
+                pstmt = con.prepareStatement(sql);
+                pstmt.setString(1, cus.getName());
+                pstmt.setString(2, cus.getPhone());
+                pstmt.executeUpdate();                     
+                con.close();
+                return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+            return false;
+        } 
+    }
+    
+    public int CreateOrder(String phone) {
+        int orderId = -1;
+        LocalDate currentDate = LocalDate.now();
+        Date sqlDate = Date.valueOf(currentDate);
+        int cusId = CustomerSearch(phone).getId();
+        con = database.openConnection();
+        String sql = "insert into ORDERS (CUS_id, ORDER_order_date, ORDER_pickup_date, ORDER_total_price) values (?, ?, ?, ?);";
+        try {
+            pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setInt(1, cusId);
+            pstmt.setDate(2, sqlDate);
+            pstmt.setDate(3, sqlDate);
+            pstmt.setFloat(4, 0);
+            pstmt.executeUpdate();    
+            
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                orderId = generatedKeys.getInt(1); 
+            }
+
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        }
+        return orderId;
+    }
+    
+    public float GetPPK(int catId){
+        float ppk = 0;
+        con = database.openConnection();
+        String sql = "select * from ITEMS where ITEM_id = ?";
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, catId);
+            res = pstmt.executeQuery();            
+            ppk = res.getFloat("ITEM_unit_price");
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        } 
+        return ppk;
+    }
+    public float GetSMultiplier(int SId){
+        float multiplier = 0;
+        con = database.openConnection();
+        String sql = "select * from LAUNDRY_SERVICES where LS_id = ?";
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, SId);
+            res = pstmt.executeQuery();            
+            multiplier = res.getFloat("LS_multiplier");
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        } 
+        return multiplier;
+    }
+    //----------
+    //in-app stuff
+    public void OnClick_NO_CustomerSearch_btn(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);   
+        alert.setHeaderText(null);
+        String phone = new String(NO_Customer_Search_txt.getText());
+        Customer result = CustomerSearch(phone);
+        if(result.getName().equals("")) {
+            alert.setTitle("warning");
+            alert.setContentText("Customer don't exist");
+            alert.showAndWait();
+        }
+        else{
+            alert.setTitle("success");
+            alert.setContentText("Customer found with name " + result.getName());
+            alert.showAndWait();
+            NO_CustomerName_txt.setText(result.getName());
+            NO_Phone_txt.setText(result.getPhone());
+            NO_CreateNewOder_btn.setDisable(false);
+        }
+    }
+    
+    //create customer
+    public void OnClick_NO_CreateCus_btn(){
+        NO_CreateCus_pane.setVisible(true);
+    }
+    
+    public void OnClick_NO_CreateCus_create_btn(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION); 
+        alert.setHeaderText(null);
+        if(NO_CreateCus_name_txt.getText() == "" || NO_CreateCus_phone_txt.getText() == "") {
+            alert.setTitle("waring");
+            alert.setContentText("please fill all the fields");
+            alert.showAndWait();
+            return;
+        }
+        Customer cus = new Customer(0, NO_CreateCus_name_txt.getText(), NO_CreateCus_phone_txt.getText());
+        if(!CustomerSearch(cus.getPhone()).getPhone().equals("")) {
+            alert.setTitle("waring");
+            alert.setContentText("Customer already exist");
+            alert.showAndWait();
+            return;
+        }
+        if(CreateCustomer(cus)){
+            alert.setTitle("Success");
+            alert.setContentText("New customer created");
+            alert.showAndWait();
+            NO_CreateCus_pane.setVisible(false);
+            NO_Customer_Search_txt.setText(cus.getPhone());
+            OnClick_NO_CustomerSearch_btn();
+        }else{
+            alert.setTitle("warning");
+            alert.setContentText("something went wrong when creating!");
+            alert.showAndWait();
+        }
+    }
+    
+    public void OnClick_NO_CreateCus_cancel_btn(){
+        NO_CreateCus_name_txt.setText("");
+        NO_CreateCus_phone_txt.setText("");
+        NO_CreateCus_pane.setVisible(false);
+    }
+    
+    
+    //create order
+    public void OnClick_NO_Create_Order_btn() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION); 
+        alert.setHeaderText(null);
+        int orderId = CreateOrder(NO_Phone_txt.getText());
+        if(orderId == -1){
+            alert.setTitle("error");
+            alert.setContentText("something went wrong while creating order!");
+            alert.showAndWait();
+            return;
+        }
+        initComponents_NO();
+        NO_Order_id.setText(String.valueOf(orderId));
+            alert.setTitle("success");
+            alert.setContentText("new order created with ID: " + NO_Order_id.getText());
+            alert.showAndWait();
+        NO_CreateOrderHint_lbl.setVisible(false);
+        NO_CreateNewOder_btn.setDisable(true);
+        NO_CreateNewOder_btn.setVisible(false);
+        NO_AddDetail_pane.setVisible(true);
+    }
+    
+    //TO DO add detail
     public void OnClick_NO_Add_btn() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION); 
+        alert.setHeaderText(null);
+        if(NO_Weight_add.getText().equals("") || NO_Service_add.getValue() == null || NO_Service_add.getValue() == null){
+            alert.setTitle("warning");
+            alert.setContentText("please fill all the fields");
+            alert.showAndWait();
+            return;
+        }
+        NO_Detail noDetail = new NO_Detail(NO_Service_add.getValue().getType(), 
+                                           Float.parseFloat(NO_Weight_add.getText()), 
+                                           NO_Service_add.getValue().getType(), 
+                                           GetPPK(NO_Category_add.getSelectionModel().getSelectedItem().getId()),
+                                           GetSMultiplier(NO_Service_add.getSelectionModel().getSelectedItem().getId()));
+        Option selectedOption = NO_Service_add.getSelectionModel().getSelectedItem();
         System.out.println("Add Clicked");
         System.out.println(Float.parseFloat(NO_Weight_add.getText()));
     }
     
-    public void OnClick_NO_Create_Order_btn() {
-        NO_AddDetail_pane.setVisible(true);
+    //TODO
+    public void OnClick_NO_Save_btn(){
+        
     }
     
+    //TODO
+    public void OnClick_NO_Cancel_btn() {
+        System.out.println("Cancel Clicked");
+        NO_Order_id.setText("-1");
+        NO_CreateOrderHint_lbl.setVisible(true);
+        NO_CreateNewOder_btn.setDisable(true);
+        NO_CreateNewOder_btn.setVisible(true);
+        NO_AddDetail_pane.setVisible(false);
+    }
     
+
   //====================================================================================================================================================  
   //services functions
         public ObservableList<Item> serviceItemListData() {
