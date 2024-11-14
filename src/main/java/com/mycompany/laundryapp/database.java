@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class database {
     private static String connectionUrl = "jdbc:sqlserver://localhost:1433;"
-                    + "databaseName=LaundryServices;user=sa;password=root;"
+                    + "databaseName=LaundryServices;user=root;password=root;"
                     + "encrypt=true;trustServerCertificate=true";
 //    public static Connection con;
     public static Connection openConnection() {

@@ -1174,6 +1174,7 @@ public class DashboardController implements Initializable {
         }
         data = FXCollections.observableArrayList();
         NO_Detail_table.setItems(data);
+        insertStatus(staff.getId(), Integer.parseInt(NO_Order_id.getText()), "Pending");
         alert.setTitle("success");
         alert.setContentText("new order created with ID: " + NO_Order_id.getText());
         alert.showAndWait();
