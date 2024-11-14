@@ -407,7 +407,6 @@ public class DashboardController implements Initializable {
     }*/
     //====================================================================================================================================================  
     //init datas for the app
->>>>>>> origin/vu-domain-expansion
     Connection con;
     ResultSet res;
     PreparedStatement pstmt;
@@ -1186,9 +1185,6 @@ public class DashboardController implements Initializable {
 
     //add detail
 
-    public void OnClick_NO_Cancel_btn() {
-        System.out.println("Cancel Clicked");
-    }
 
     public void OnClick_NO_Add_btn() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION); 
@@ -1273,7 +1269,6 @@ public class DashboardController implements Initializable {
 
   //====================================================================================================================================================  
   //services functions
-    public ObservableList<Item> serviceItemListData() {
         
     // init data for tableview's Service-Service page
 
@@ -1612,5 +1607,4 @@ public class DashboardController implements Initializable {
     //====================================================================================================================================================  
     //Statistics functions
     //====================================================================================================================================================  
-}
 }
