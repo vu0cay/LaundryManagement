@@ -1,3 +1,4 @@
+
 package com.mycompany.laundryapp;
 
 import javafx.beans.property.*;
@@ -106,5 +107,5 @@ public class OrderListTable {
     public StringProperty statusProperty() {
         return status;
     }
-
 }
+
