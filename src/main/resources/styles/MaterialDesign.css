@@ -80,19 +80,19 @@
 
 .table-view .cell {
     -fx-alignment: center;
-/*    -fx-background-color: white;
-    -fx-border-color: #E0E0E0;
-    -fx-padding: 8 4;*/
+    /*    -fx-background-color: white;
+        -fx-border-color: #E0E0E0;
+        -fx-padding: 8 4;*/
 }
 
 .table-view .cell:selected {
-    -fx-background-color: #E3F2FD;  
+    -fx-background-color: #E3F2FD;
     -fx-text-fill: #212121;
 }
 
 .table-view .row-cell:focused .table-cell {
-    -fx-border-color: #2F60A6;  
-    
+    -fx-border-color: #2F60A6;
+
 }
 
 /* Buttons */
@@ -180,7 +180,30 @@
 .default-color2.chart-pie {
     -fx-pie-color:white;
     -fx-border-color:transparent;
+}
 
+.default-color3.chart-pie {
+    -fx-pie-color:#2F60A6;
+    -fx-border-color:transparent;
+}
+
+.default-color4.chart-pie {
+    -fx-pie-color:#4893FF;
+    -fx-border-color:transparent;
+}
+
+.default-color5.chart-pie {
+    -fx-pie-color:white;
+    -fx-border-color:transparent;
+}
+
+.default-color6.chart-pie {
+    -fx-pie-color:#2F60A6 ;
+    -fx-border-color:transparent;
+}
+.default-color9.chart-pie {
+    -fx-pie-color:#2F60A6 ;
+    -fx-border-color:transparent;
 }
 
 .circle {
@@ -193,16 +216,17 @@
 }
 
 .content-text {
-    -fx-fill:red;
-    -fx-font-size:14
+    -fx-fill:#202124;
+    -fx-font-size:14;
+    -fx-font-weight:bold
 }
 .result-box {
     -fx-alignment: center-left;
 }
 
 .result-box .result {
-    -fx-font-size:19;
-    -fx-font-weight:bold;
+    -fx-font-size:8;
+    /*-fx-font-weight:bold;*/
 }
 .vbox {
     -fx-pref-height:40;
@@ -211,4 +235,9 @@
     -fx-alignmet: center-left;
     -fx-font-size: 25;
     -fx-font-weight:bold
+}
+
+.result-card {
+/*    -fx-font: system;*/
+    -fx-font-size:15;
 }

@@ -4,6 +4,7 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -263,18 +264,27 @@
                               </AnchorPane>
                               <AnchorPane layoutX="432.0" layoutY="138.0" prefHeight="414.0" prefWidth="411.0">
                                  <children>
-                                    <VBox layoutX="41.0" layoutY="137.0" prefHeight="200.0" prefWidth="300.0">
+                                    <VBox layoutX="38.0" layoutY="77.0" prefHeight="255.0" prefWidth="300.0" style="-fx-padding: 10; -fx-border-radius: 7;" styleClass="combo-box">
                                        <children>
                                           <HBox prefHeight="50.0" prefWidth="200.0">
                                              <children>
                                                 <VBox prefHeight="60.0" prefWidth="220.0" styleClass="result-box">
                                                    <children>
-                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="content-text" text="Orders recieived" />
+                                                      <Label prefHeight="32.0" prefWidth="123.0" style="-fx-font-weight: bold; -fx-text-fill: #2F60A6;" styleClass="result-card" text="Orders recieived">
+                                                         <VBox.margin>
+                                                            <Insets left="20.0" />
+                                                         </VBox.margin>
+                                                         <font>
+                                                            <Font name="Candara Light" size="12.0" />
+                                                         </font></Label>
                                                    </children>
                                                 </VBox>
                                                 <VBox layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
                                                    <children>
-                                                      <Label alignment="CENTER" text="100" />
+                                                      <Label fx:id="lblOrders_recieved" alignment="CENTER" style="-fx-font-weight: bold; -fx-text-fill: #2F60A6;" styleClass="result-card" text="100">
+                                                         <padding>
+                                                            <Insets left="50.0" />
+                                                         </padding></Label>
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -283,13 +293,19 @@
                                              <children>
                                                 <VBox prefHeight="60.0" prefWidth="220.0" styleClass="result-box">
                                                    <children>
-                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="content-text" text="Paid" />
+                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="result-card" text="Paid">
+                                                         <VBox.margin>
+                                                            <Insets left="20.0" />
+                                                         </VBox.margin></Label>
                                                    </children>
                                                 </VBox>
-                                                <VBox layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
+                                                <VBox fx:id="vboxPaid" layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
                                                    <children>
-                                                      <Label text="2" />
+                                                      <Label fx:id="lblPaid" style="-fx-font-weight: normal;" styleClass="result-card" text="2" />
                                                    </children>
+                                                   <padding>
+                                                      <Insets left="50.0" />
+                                                   </padding>
                                                 </VBox>
                                              </children>
                                           </HBox>
@@ -297,12 +313,18 @@
                                              <children>
                                                 <VBox prefHeight="60.0" prefWidth="220.0" styleClass="result-box">
                                                    <children>
-                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="content-text" text="Completed" />
+                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="result-card" text="Completed">
+                                                         <VBox.margin>
+                                                            <Insets left="20.0" />
+                                                         </VBox.margin></Label>
                                                    </children>
                                                 </VBox>
                                                 <VBox prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
                                                    <children>
-                                                      <Label text="30" />
+                                                      <Label fx:id="lblComplete" style="-fx-font-weight: normal;" styleClass="result-card" text="30">
+                                                         <padding>
+                                                            <Insets left="50.0" />
+                                                         </padding></Label>
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -311,12 +333,40 @@
                                              <children>
                                                 <VBox prefHeight="60.0" prefWidth="220.0" styleClass="result-box">
                                                    <children>
-                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="content-text" text="Processing" />
+                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="result-card" text="Processing">
+                                                         <VBox.margin>
+                                                            <Insets left="20.0" />
+                                                         </VBox.margin></Label>
                                                    </children>
                                                 </VBox>
                                                 <VBox layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
                                                    <children>
-                                                      <Label text="50" />
+                                                      <Label fx:id="lblProcessing" style="-fx-font-weight: normal;" styleClass="result-card" text="50">
+                                                         <padding>
+                                                            <Insets left="50.0" />
+                                                         </padding></Label>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox layoutX="12.0" layoutY="162.0" prefHeight="50.0" prefWidth="200.0">
+                                             <children>
+                                                <VBox prefHeight="60.0" prefWidth="220.0" styleClass="result-box">
+                                                   <children>
+                                                      <Label prefHeight="32.0" prefWidth="123.0" style="-fx-text-fill: #2F60A6;" styleClass="result-card" text="Revenue">
+                                                         <VBox.margin>
+                                                            <Insets left="20.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                                <VBox layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" style="-fx-text-fill: #2F60A6;" styleClass="result-box">
+                                                   <children>
+                                                      <Label fx:id="lblProcessing1" style="-fx-font-weight: normal; -fx-text-fill: #2F60A6;" styleClass="result-card" text="50">
+                                                         <padding>
+                                                            <Insets left="50.0" />
+                                                         </padding>
+                                                      </Label>
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -325,21 +375,8 @@
                                     </VBox>
                                     <HBox layoutX="40.0" layoutY="347.0" prefHeight="60.0" prefWidth="354.0">
                                        <children>
-                                          <VBox prefHeight="60.0" prefWidth="217.0" styleClass="result-box">
-                                             <children>
-                                                <Label prefHeight="32.0" prefWidth="123.0" styleClass="result" text="Revenue">
-                                                   <font>
-                                                      <Font name="System Bold" size="12.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                          </VBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" styleClass="result-box">
-                                             <children>
-                                                <Label styleClass="result" text="150" />
-                                                <Label styleClass="result" text="\$" />
-                                             </children>
-                                          </HBox>
+                                          <VBox prefHeight="60.0" prefWidth="217.0" styleClass="result-box" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0" styleClass="result-box" />
                                        </children>
                                        <styleClass>
                                           <String fx:value="result-box" />
@@ -347,46 +384,30 @@
                                        </styleClass>
                                     </HBox>
                                     <HBox layoutX="-350.0" layoutY="-4.0" prefHeight="100.0" prefWidth="200.0" />
-                                    <HBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="38.0" prefHeight="91.0" prefWidth="362.0">
-                                       <children>
-                                          <Label prefHeight="27.0" prefWidth="190.0" style="-fx-font-size: 18;" styleClass="content-text" text="Show results in" />
-                                          <ComboBox prefWidth="150.0" />
-                                       </children>
-                                    </HBox>
                                  </children>
                               </AnchorPane>
-                              <HBox layoutX="69.0" layoutY="80.0" prefHeight="73.0" prefWidth="768.0">
+                              <Label layoutX="37.0" layoutY="22.0" styleClass="title" text="Laundry Report" />
+                              <VBox layoutX="39.0" layoutY="53.0" prefHeight="120.0" prefWidth="240.0">
                                  <children>
-                                    <HBox prefHeight="100.0" prefWidth="384.0" styleClass="statistic-header">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="184.0" styleClass="statistic-header">
-                                             <children>
-                                                <Label prefHeight="45.0" prefWidth="181.0" text="Total orders" />
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="statistic-header">
-                                             <children>
-                                                <Label text="1000" />
-                                             </children>
-                                          </HBox>
+                                          <Label fx:id="lblToday" alignment="CENTER" style="-fx-font-size: 20;" text="Date: 13/11/2024" />
                                        </children>
                                     </HBox>
-                                    <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="384.0" styleClass="statistic-header">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="91.0" prefWidth="362.0">
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="184.0" styleClass="statistic-header">
-                                             <children>
-                                                <Label prefHeight="32.0" prefWidth="123.0" text="Revenue" />
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="statistic-header">
-                                             <children>
-                                                <Label text="1000" />
-                                             </children>
-                                          </HBox>
+                                          <Label alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="76.0" style="-fx-font-size: 10; -fx-text-fill: #2F60A6;" styleClass="content-text" text="Show results ">
+                                             <font>
+                                                <Font size="8.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets right="10.0" />
+                                             </HBox.margin></Label>
+                                          <ComboBox fx:id="resultStatisticCombobox" onAction="#showResultInTime" prefHeight="44.0" prefWidth="148.0" />
                                        </children>
                                     </HBox>
                                  </children>
-                              </HBox>
+                              </VBox>
                            </children>
                         </AnchorPane>
                                 <AnchorPane fx:id="aboutUsForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
