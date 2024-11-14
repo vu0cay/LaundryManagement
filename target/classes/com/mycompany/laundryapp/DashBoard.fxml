@@ -2,6 +2,7 @@
 
 <!--<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>-->
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import java.lang.String?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
@@ -11,6 +12,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -36,34 +39,39 @@
                     <left>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <children>
-                                <AnchorPane layoutX="-14.0" layoutY="27.0" prefHeight="554.6666666666666" prefWidth="200.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane prefHeight="554.6666666666666" prefWidth="200.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.5999999999999943" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <!--<FontAwesomeIcon glyphName="USER" layoutX="67.0" layoutY="114.0" size="7em" />-->
-                                        <Label fx:id="lblUserName" alignment="CENTER" layoutY="132.0" prefHeight="22.0" prefWidth="200.0" text="Kim Tran" textFill="WHITE">
+                                        <Label fx:id="lblUserName" alignment="CENTER" layoutX="11.0" layoutY="131.0" prefHeight="22.0" prefWidth="200.0" text="Kim Tran" textFill="WHITE">
                                             <font>
                                                 <Font name="Arial Rounded MT Bold" size="18.0" />
                                             </font>
                                         </Label>
-                                        <Line endX="82.16667175292969" layoutX="108.0" layoutY="171.0" startX="-100.0" stroke="WHITE" />
-                                        <Button fx:id="orderListBtn" layoutX="2.0" layoutY="224.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" text="Order List">
+                                        <Line endX="82.16667175292969" layoutX="118.0" layoutY="171.0" startX="-100.0" stroke="WHITE" />
+                                        <Button fx:id="orderListBtn" layoutX="10.0" layoutY="224.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" text="Order List">
                                  <styleClass>
                                     <String fx:value="button" />
                                     <String fx:value="sidebar-tab" />
                                     <String fx:value="tab-active" />
                                  </styleClass></Button>
                                         <!--<FontAwesomeIcon glyphName="LIST" layoutX="49.0" layoutY="230.0" />-->
-                                        <Button fx:id="newOrderBtn" layoutX="2.0" layoutY="278.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" text="New Order">
+                                        <Button fx:id="newOrderBtn" layoutX="10.0" layoutY="278.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" text="New Order">
                                  <styleClass>
                                     <String fx:value="button" />
                                     <String fx:value="sidebar-tab" />
                                  </styleClass></Button>
                                         <!--<FontAwesomeIcon glyphName="PLUS" layoutX="49.0" layoutY="265.0" />-->
-                                        <Button fx:id="servicesBtn" layoutX="2.0" layoutY="332.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" styleClass="sidebar-tab" text="Services" />
+                                        <Button fx:id="servicesBtn" layoutX="10.0" layoutY="332.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" styleClass="sidebar-tab" text="Services" />
                                         <!--<FontAwesomeIcon glyphName="" layoutX="48.0" layoutY="299.0" />-->
-                                        <Button fx:id="statisticsBtn" layoutX="2.0" layoutY="386.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" styleClass="sidebar-tab" text="Statistics" />
+                                        <Button fx:id="statisticsBtn" layoutX="10.0" layoutY="386.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" styleClass="sidebar-tab" text="Statistics" />
                                         <!--<FontAwesomeIcon glyphName="MONEY" layoutX="48.0" layoutY="335.0" />-->
-                                        <Button fx:id="aboutUsBtn" layoutX="2.0" layoutY="438.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" styleClass="sidebar-tab" text="About Us" />
-                                        <Label fx:id="lblLogout" layoutX="73.0" layoutY="544.0" onMouseClicked="#OnClick_Logout" text="Logout" textFill="WHITE" />
+                                        <Button fx:id="aboutUsBtn" layoutX="9.0" layoutY="440.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" styleClass="sidebar-tab" text="About Us" />
+                              <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="104.0" layoutY="77.0" scaleX="7.0" scaleY="7.0" />
+                              <Button layoutX="42.0" layoutY="512.0" mnemonicParsing="false" onMouseClicked="#OnClick_Logout" text="Sign out">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" size="3em" />
+                                 </graphic>
+                              </Button>
                                         <!--<FontAwesomeIcon glyphName="INFO" layoutX="52.0" layoutY="369.0" />-->
                                     </children>
                                 </AnchorPane>
@@ -73,7 +81,7 @@
                     <center>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <children>
-                                <AnchorPane fx:id="orderListForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;">
+                                <AnchorPane fx:id="orderListForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
                                     <children>
                                         <TableView fx:id="tavOrderList" layoutX="12.0" layoutY="167.0" prefHeight="400.0" prefWidth="834.0">
                                             <columns>
@@ -151,16 +159,17 @@
                               <Label fx:id="NO_Order_id" layoutX="851.0" layoutY="6.0" text="-1" visible="false" />
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="servicesForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
+                                <AnchorPane fx:id="servicesForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;">
                                     <children>
-                                        <AnchorPane fx:id="servicesManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0" visible="false">
+                                        <AnchorPane fx:id="servicesManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0">
                                             <children>
                                                 <Label layoutX="7.0" layoutY="33.0" styleClass="title" text="Services" />
-                                                <TableView layoutX="-8.0" layoutY="90.0" prefHeight="354.0" prefWidth="466.0">
+                                                <TableView fx:id="tavServiceType" layoutX="-8.0" layoutY="90.0" prefHeight="354.0" prefWidth="466.0">
                                                     <columns>
-                                                        <TableColumn prefWidth="75.0" text="#" />
-                                                        <TableColumn prefWidth="184.00003051757812" text="Service" />
-                                                        <TableColumn prefWidth="204.66665649414062" text="Action" />
+                                                        <TableColumn fx:id="tabcoServiceTypeId" prefWidth="75.0" text="#" />
+                                                        <TableColumn fx:id="tabcoServiceTypeName" prefWidth="184.00003051757812" text="Service" />
+                                                        <TableColumn fx:id="tabcoServiceTypeMultiplier" prefWidth="80.79995727539062" text="Multiplier" />
+                                          <TableColumn fx:id="tabcoServiceTypeAction" prefWidth="123.20004882812498" text="Action" />
                                                     </columns>
                                                 </TableView>
                                                 <Pane layoutX="506.0" layoutY="117.0" maxWidth="302.0" prefHeight="314.0" prefWidth="302.0" styleClass="card">
@@ -176,9 +185,27 @@
                                                         <Button layoutX="197.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#OnClick_ServiceCancel" text="Cancel" />
                                                     </children>
                                                 </Pane>
+                                    <DialogPane fx:id="dipServiceTypeAction" layoutX="316.0" layoutY="149.0" prefHeight="227.0" prefWidth="340.0" visible="false">
+                                       <header>
+                                          <Label text="Edit Service" />
+                                       </header>
+                                       <content>
+                                          <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                             <children>
+                                                <Label layoutX="45.0" layoutY="50.0" text="Service name" />
+                                                <Button fx:id="btnDialServiceTypeSave" layoutX="66.0" layoutY="141.0" mnemonicParsing="false" onMouseClicked="#OnClick_DiaglogServiceSave" text="Save" />
+                                                <Button fx:id="btnDialServiceTypeCancel" layoutX="225.0" layoutY="141.0" mnemonicParsing="false" onMouseClicked="#OnClick_DiaglogServiceCancel" text="Cancel" />
+                                                <TextField fx:id="txtDialServiceTypeName" layoutX="142.0" layoutY="36.0" />
+                                                <TextField fx:id="txtDialServiceTypeMul" layoutX="142.0" layoutY="76.0" />
+                                                <Label layoutX="45.0" layoutY="96.0" text="Multiplier" />
+                                                <Button fx:id="btnDialServiceTypeDelete" layoutX="142.0" layoutY="141.0" mnemonicParsing="false" onMouseClicked="#OnClick_DiaglogServiceDelete" text="Delete" />
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </DialogPane>
                                             </children>
                                         </AnchorPane>
-                                        <AnchorPane fx:id="ItemsManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0">
+                                        <AnchorPane fx:id="ItemsManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0" visible="false">
                                             <children>
                                                 <Label layoutX="7.0" layoutY="33.0" styleClass="title" text="Category" />
                                                 <Pane layoutX="508.0" layoutY="82.0" maxWidth="302.0" prefHeight="314.0" prefWidth="302.0" styleClass="card">
@@ -364,16 +391,53 @@
                         </AnchorPane>
                                 <AnchorPane fx:id="aboutUsForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
                            <children>
-                              <Label fx:id="lblContact" layoutX="372.0" layoutY="371.0" prefHeight="32.0" prefWidth="476.0" styleClass="title" text="info@gmail.com" />
-                              <Label fx:id="lblAddress" layoutX="372.0" layoutY="429.0" prefHeight="32.0" prefWidth="476.0" styleClass="title" text="address info" />
-                              <Label fx:id="lblShopName" layoutX="372.0" layoutY="318.0" prefHeight="32.0" prefWidth="476.0" styleClass="title" text="name info" />
-                              <Label layoutX="97.0" layoutY="318.0" prefHeight="32.0" prefWidth="195.0" styleClass="title" text="Shop:" />
-                              <Label layoutX="97.0" layoutY="371.0" prefHeight="32.0" prefWidth="195.0" styleClass="title" text="Contact us:" />
-                              <Label layoutX="97.0" layoutY="429.0" prefHeight="32.0" prefWidth="195.0" styleClass="title" text="Address:" />
-                              <Label layoutX="261.0" layoutY="111.0" prefHeight="32.0" prefWidth="195.0" styleClass="title" text="phone:" />
-                              <Label layoutX="261.0" layoutY="159.0" prefHeight="32.0" prefWidth="195.0" styleClass="title" text="address:" />
-                              <Label fx:id="lblAUStaffphone" layoutX="406.0" layoutY="111.0" prefHeight="32.0" prefWidth="476.0" styleClass="title" text="name info" />
-                              <Label fx:id="lblAUStaffAddress" layoutX="406.0" layoutY="159.0" prefHeight="32.0" prefWidth="476.0" styleClass="title" text="name info" />
+                              <AnchorPane layoutX="17.0" layoutY="388.0">
+                                 <children>
+                                    <Label fx:id="lblContact" layoutY="35.857147216796875" prefHeight="32.0" prefWidth="220.0" styleClass="title" text="Email" />
+                                    <FontAwesomeIcon fill="#2f60a6" glyphName="ENVELOPE" layoutX="93.0" layoutY="31.0" size="3em" />
+                                    <Label fx:id="lblContactMail" layoutX="4.0" layoutY="67.85714721679688" prefHeight="20.0" prefWidth="214.0" styleClass="text" stylesheets="@../../../styles/MaterialDesign.css" text="info@gmail.com" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="17.0" layoutY="82.0">
+                                 <children>
+                                    <Label layoutY="43.857147216796875" prefHeight="32.0" prefWidth="220.0" stylesheets="@../../../styles/MaterialDesign.css" text="Address" textAlignment="CENTER">
+                                       <styleClass>
+                                          <String fx:value="title" />
+                                          <String fx:value="title" />
+                                       </styleClass>
+                                    </Label>
+                                    <FontAwesomeIcon fill="#2f60a6" glyphName="MAP_MARKER" layoutX="100.0" layoutY="38.0" size="3em" />
+                                    <Label fx:id="lblAddress" layoutY="77.85714721679688" prefHeight="20.0" prefWidth="220.0" styleClass="text" stylesheets="@../../../styles/MaterialDesign.css" text="Address" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="347.0" layoutY="110.0">
+                                 <children>
+                                    <Label fx:id="lblShopName" layoutX="127.0" prefHeight="32.0" prefWidth="149.0" styleClass="text" text="name info" textFill="#2f60a6">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="302.0" fitWidth="540.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../images/27Z_2103.w028.n002.14A.p15.14.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <Label layoutX="12.0" layoutY="8.0" text="Thank for supporting " />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="17.0" layoutY="237.14285278320312">
+                                 <children>
+                                    <FontAwesomeIcon fill="#2f60a6" glyphName="PHONE" layoutX="96.0" layoutY="31.0" size="3em" />
+                                    <Label fx:id="lblContact" layoutX="2.0" layoutY="68.85714721679688" prefHeight="20.0" prefWidth="216.0" styleClass="text" stylesheets="@../../../styles/MaterialDesign.css" text="phone" />
+                                    <Label fx:id="lblContact1" layoutY="36.857147216796875" prefHeight="32.0" prefWidth="220.0" styleClass="title" text="Phone" />
+                                 </children>
+                              </AnchorPane>
+                              <Line endX="-99.99996948242188" endY="297.0" layoutX="360.0" layoutY="154.0" startX="-99.99996948242188" startY="-40.600006103515625" stroke="#2f60a6" strokeWidth="2.0" />
+                              <Label layoutX="648.0" layoutY="563.0" text="2024 NOHTAKCAH, All rights reserved.">
+                                 <graphic>
+                                    <FontAwesomeIcon glyphName="COPYRIGHT" />
+                                 </graphic>
+                              </Label>
                            </children>
                         </AnchorPane>
                         <DialogPane fx:id="paneOrderList_editStatus" layoutX="303.0" layoutY="162.0" prefHeight="227.0" prefWidth="340.0" visible="false">

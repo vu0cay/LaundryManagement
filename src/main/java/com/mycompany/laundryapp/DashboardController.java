@@ -134,17 +134,19 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Label lblContact;
+    @FXML
+    private Label lblContactMail;
 
     @FXML
     private Label lblShopName;
-    @FXML
-    private Label lblAUStaffAddress;
+//    @FXML
+//    private Label lblAUStaffAddress;
 
     @FXML
     private Label lblAUStaffname;
 
-    @FXML
-    private Label lblAUStaffphone;
+//    @FXML
+//    private Label lblAUStaffphone;
     @FXML
     private Label lblLogout;
     @FXML
@@ -152,7 +154,7 @@ public class DashboardController implements Initializable {
 
     @FXML
     private TextField txtServiceName;
-    
+
     @FXML
     private Button btnServiceSave;
     @FXML
@@ -162,30 +164,28 @@ public class DashboardController implements Initializable {
 
     @FXML
     private TextField txtServiceItemUnitPrice;
-    
+
     @FXML
     private TableView<Item> tavItem;
 //    @FXML 
 //    private ComboBox<?> cbxState;
     @FXML
     private DialogPane dipAction;
-    
+
     @FXML
     private Button btnDialCancel;
 
     @FXML
     private Button btnDialSave;
-    
+
     @FXML
     private TextField txtDialType;
 
     @FXML
     private TextField txtDialUnitPrice;
-    
 
 //    @FXML
 //    private TableColumn<Item, String> tabcoItemAction;
-
     @FXML
     private TableColumn<Item, Number> tabcoItemId;
     @FXML
@@ -193,9 +193,7 @@ public class DashboardController implements Initializable {
     @FXML
     private TableColumn<Item, Number> tabcoItemPrice;
     @FXML
-    private TableColumn<Item, Void> tabcoAction;
-
-    
+    private TableColumn<Item, Void> tabcoAction;    
 
 
     //Orderlist components
@@ -244,7 +242,7 @@ public class DashboardController implements Initializable {
     @FXML
     private DialogPane paneOrderList_editStatus;
     
-    //New Order components
+    //Service components
     @FXML
     private AnchorPane NO_AddDetail_pane;
 
@@ -324,52 +322,138 @@ public class DashboardController implements Initializable {
   //====================================================================================================================================================  
   //init datas for the app
     
+    
+    
+    
+    // Service - Service page component
+    @FXML
+    private TableView<Service> tavServiceType;
+    
+    @FXML
+    private TableColumn<Service, Void> tabcoServiceTypeAction;
+
+    @FXML
+    private TableColumn<Service, Integer> tabcoServiceTypeId;
+
+    @FXML
+    private TableColumn<Service, String> tabcoServiceTypeName;
+    @FXML
+    private TableColumn<Service, Float> tabcoServiceTypeMultiplier;
+    
+    
+    // dialog
+   
+    @FXML
+    private DialogPane dipServiceTypeAction;
+    @FXML
+    private Button btnDialServiceTypeCancel;
+
+    @FXML
+    private Button btnDialServiceTypeDelete;
+
+    @FXML
+    private Button btnDialServiceTypeSave;
+    
+    @FXML
+    private TextField txtDialServiceTypeMul;
+
+    @FXML
+    private TextField txtDialServiceTypeName;
+    
+
+    //====================================================================================================================================================  
+
+    
+
+    //====================================================================================================================================================  
+    //init datas for the app
+    /* public void initComponents(){
+        NO_Service_add.setCellFactory(lv -> new ListCell<Option>() {
+            @Override
+            protected void updateItem(Option item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item.getType());
+            }
+        });
+        NO_Service_add.setButtonCell(new ListCell<Option>() {
+            @Override
+            protected void updateItem(Option item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item.getType());  
+            }
+        });
+        
+        NO_Category_add.setCellFactory(lv -> new ListCell<Option>() {
+            @Override
+            protected void updateItem(Option item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item.getType());
+            }
+        });
+        NO_Category_add.setButtonCell(new ListCell<Option>() {
+            @Override
+            protected void updateItem(Option item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item.getType());  
+            }
+        });
+        
+        NO_Weight_add.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*(\\.\\d*)?")) {
+                NO_Weight_add.setText(oldValue); // Allows decimal numbers
+            }
+        });
+        
+    }*/
+    //====================================================================================================================================================  
+    //init datas for the app
+>>>>>>> origin/vu-domain-expansion
     Connection con;
     ResultSet res;
     PreparedStatement pstmt;
     Statement stmt;
-    
+
     Staff staff;
     Item currentItem;
-    
+    Service currentService;
+
 //    public void setLoadComboBoxDialogState() {
 //        cbxState.setItems(FXCollections.observableArrayList("Paid", "Complete", "Processing"));
 //    }
-    
     //about us
-    public void aboutUs(){
+    public void aboutUs() {
         con = database.openConnection();
-        
+
         String sql = "select * from LAUNDRYSHOPS";
-        
+
         try {
-            
+
             stmt = con.createStatement();
             res = stmt.executeQuery(sql);
-            
-            if(res.next()) {
+
+            if (res.next()) {
                 lblShopName.setText(res.getString("L_name"));
                 lblContact.setText(res.getString("L_phone"));
                 lblAddress.setText(res.getString("L_address"));
+                lblContactMail.setText(res.getString("L_email"));
             }
-            
+
             con.close();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     
-    
-
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
         initComponents_OL();
         initComponents_NO();
-        SetUpServiceTableView();
+       SetUpServiceTableView();
+        SetUpServiceTypeTableView();
+
         aboutUs();
         //
 //        lblAUStaffname.setText(staff.getName());
@@ -380,21 +464,18 @@ public class DashboardController implements Initializable {
         // TODO
         //Stage stage = (Stage) .getScene().getWindow();
     }
-    
-    
+
     public void initData(Staff st) {
-        
+
         this.staff = new Staff(st);
         lblUserName.setText(staff.getName());
-        lblAUStaffphone.setText(staff.getPhone());
-        lblAUStaffAddress.setText(staff.getAddress());
-        
+//        lblAUStaffphone.setText(staff.getPhone());
+//        lblAUStaffAddress.setText(staff.getAddress());
+
     }
-    
-        
-  //====================================================================================================================================================  
-  //Navigation tab bar switching
-     
+
+    //====================================================================================================================================================  
+    //Navigation tab bar switching
     public void switchForm(ActionEvent event) {
         if (event.getSource() == orderListBtn) {
             orderListBtn.getStyleClass().add("tab-active");
@@ -446,7 +527,6 @@ public class DashboardController implements Initializable {
 
             piePie.setData(pieChartData);
 
-            
             orderListBtn.getStyleClass().remove("tab-active");
             newOrderBtn.getStyleClass().remove("tab-active");
             servicesBtn.getStyleClass().remove("tab-active");
@@ -473,14 +553,13 @@ public class DashboardController implements Initializable {
             servicesForm.setVisible(false);
             statisticsForm.setVisible(false);
             aboutUsForm.setVisible(true);
-        
-            
+
         }
     }
-    
+
     public void OnClick_Logout() {
         lblUserName.getScene().getWindow().hide();
-        
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"));
             Parent root;
@@ -488,13 +567,12 @@ public class DashboardController implements Initializable {
 //            DashboardController dashboard = loader.getController();
 
 //            dashboard.initData(staff);
-
             Stage stage = new Stage();
             Scene scene = new Scene(root, 600, 400);
 
             stage.setScene(scene);
             stage.show();
-            
+
         } catch (IOException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1107,6 +1185,11 @@ public class DashboardController implements Initializable {
     
 
     //add detail
+
+    public void OnClick_NO_Cancel_btn() {
+        System.out.println("Cancel Clicked");
+    }
+
     public void OnClick_NO_Add_btn() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION); 
         alert.setHeaderText(null);
@@ -1180,8 +1263,9 @@ public class DashboardController implements Initializable {
         alert.showAndWait();
         NO_Order_id.setText("");
     }
+
     
-    //TODO
+    
     public void OnClick_NO_Cancel_btn() {
         initComponents_NO();
     }
@@ -1189,61 +1273,61 @@ public class DashboardController implements Initializable {
 
   //====================================================================================================================================================  
   //services functions
-        public ObservableList<Item> serviceItemListData() {
+    public ObservableList<Item> serviceItemListData() {
         
+    // init data for tableview's Service-Service page
+
+    private ObservableList<Service> addServiceTypeData;
+    public ObservableList<Service> serviceTypeListData() {
+
         con = database.openConnection();
-        String sql = "select * from items";
-        ObservableList<Item> data = FXCollections.observableArrayList();
+        String sql = "select * from LAUNDRY_SERVICES";
+        ObservableList<Service> data = FXCollections.observableArrayList();
 
         try {
             stmt = con.createStatement();
             res = stmt.executeQuery(sql);
-            
-            while(res.next()) {
-                Item item = new Item(res.getInt("ITEM_id"), res.getString("ITEM_type"), res.getFloat("ITEM_unit_price"));
 
+            while (res.next()) {
+                Service item = new Service(res.getInt("LS_id"), res.getString("LS_name"), res.getFloat("LS_multiplier"));
+                System.out.println(item.getId()+", "+item.getName()+", "+item.getMultiplier());
                 data.add(item);
             }
-            
+
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
         return data;
     }
-    
-    private ObservableList<Item> addServiceItemData;
-    public void SetUpServiceTableView() {
-        
-        addServiceItemData = serviceItemListData();
-        
-        tabcoItemId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tabcoItemName.setCellValueFactory(new PropertyValueFactory<>("type"));
-        tabcoItemPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
-//        tabcoAction.setCellValueFactory(data -> data.getValue().getButton());
-        
-        Callback<TableColumn<Item, Void>, TableCell<Item, Void>> cellFactory = new Callback<>() {
+    public void SetUpServiceTypeTableView() {
+
+        addServiceTypeData = serviceTypeListData();
+
+        tabcoServiceTypeId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tabcoServiceTypeName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tabcoServiceTypeMultiplier.setCellValueFactory(new PropertyValueFactory<>("multiplier"));
+
+        Callback<TableColumn<Service, Void>, TableCell<Service, Void>> cellFactory = new Callback<>() {
             @Override
-            public TableCell<Item, Void> call(TableColumn<Item, Void> param) {
+            public TableCell<Service, Void> call(TableColumn<Service, Void> param) {
                 return new TableCell<>() {
                     private final Button btn = new Button("Edit");
+
                     {
                         btn.setOnMouseClicked(event -> {
-                            Item items = getTableView().getItems().get(getIndex());
+                            Service items = getTableView().getItems().get(getIndex());
                             System.out.println("Button clicked for " + items.getId());
-                            
+
                             // set dialog edit
-                            currentItem = new Item(items.getId(), items.getType(), items.getUnitPrice());
-                            
-                            txtDialType.setText(items.getType());
-                            txtDialUnitPrice.setText(Double.toString(items.getUnitPrice()));
-                            dipAction.setVisible(true);
-                            
-                            
-                            
+                            currentService = new Service(items.getId(), items.getName(), items.getMultiplier());
+                            txtDialServiceTypeName.setText(items.getName());
+                            txtDialServiceTypeMul.setText(Double.toString(items.getMultiplier()));
+                            dipServiceTypeAction.setVisible(true);
+
                         });
                     }
-                    
+
                     @Override
                     protected void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
@@ -1254,14 +1338,264 @@ public class DashboardController implements Initializable {
                         }
                     }
                 };
-            }  
+            }
         };
+        // add button to action field tableviews
+        tabcoServiceTypeAction.setCellFactory(cellFactory);
+        tavServiceType.setItems(addServiceTypeData);
+
+    }
+    
+    
+    // event for Service-Service page
+    
+     public void OnClick_DiaglogServiceCancel() {
+        dipServiceTypeAction.setVisible(false);
+
+    }
+
+    public void OnClick_DiaglogServiceSave() {
+        System.out.println("Save");
+        con = database.openConnection();
+
+        try {
+
+            String sql = "UPDATE LAUNDRY_SERVICES SET LS_name = ?, LS_multiplier = ? WHERE LS_id = ?";
+
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, txtDialServiceTypeName.getText());
+            pstmt.setDouble(2, Double.parseDouble(txtDialServiceTypeMul.getText()));
+            pstmt.setInt(3, currentService.getId());
+
+            int rows = pstmt.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Update item " + currentService.getId() + " successfully!");
+                SetUpServiceTypeTableView();
+                dipServiceTypeAction.setVisible(false);
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void OnClick_DiaglogServiceDelete() {
+        System.out.println("Delete");
+        con = database.openConnection();
+
+        try 
         
+        {
+
+            String sql = "DELETE FROM LAUNDRY_SERVICES WHERE LS_id = ?";
+
+            pstmt = con.prepareStatement(sql);
+
+            pstmt.setInt(1, currentService.getId());
+
+            int rows = pstmt.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Delete item " + currentService.getId() + " successfully!");
+                SetUpServiceTypeTableView();
+                dipServiceTypeAction.setVisible(false);
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    public void OnClick_ServiceSave() {
+        con = database.openConnection();
+        String sql = "INSERT INTO LAUNDRY_SERVICES (LS_name, LS_multiplier) VALUES (?,?)";
+
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, txtServiceName.getText());
+            pstmt.setString(2, txtServiceMultiplier.getText());
+
+            int rows = pstmt.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Insert service successfully!");
+                txtServiceName.setText("");
+                txtServiceMultiplier.setText("");
+                SetUpServiceTypeTableView();
+            }
+
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void OnClick_ServiceCancel() {
+        txtServiceName.setText("");
+        txtServiceMultiplier.setText("");
+    }
+    
+    
+    // init data for tableview's Service-Item page
+    private ObservableList<Item> addServiceItemData;
+    public ObservableList<Item> serviceItemListData() {
+
+        con = database.openConnection();
+        String sql = "select * from items";
+        ObservableList<Item> data = FXCollections.observableArrayList();
+
+        try {
+            stmt = con.createStatement();
+            res = stmt.executeQuery(sql);
+
+            while (res.next()) {
+                Item item = new Item(res.getInt("ITEM_id"), res.getString("ITEM_type"), res.getFloat("ITEM_unit_price"));
+
+                data.add(item);
+            }
+
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return data;
+    }
+    public void SetUpServiceTableView() {
+
+        addServiceItemData = serviceItemListData();
+
+        tabcoItemId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tabcoItemName.setCellValueFactory(new PropertyValueFactory<>("type"));
+        tabcoItemPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+
+        Callback<TableColumn<Item, Void>, TableCell<Item, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Item, Void> call(TableColumn<Item, Void> param) {
+                return new TableCell<>() {
+                    private final Button btn = new Button("Edit");
+
+                    {
+                        btn.setOnMouseClicked(event -> {
+                            Item items = getTableView().getItems().get(getIndex());
+                            System.out.println("Button clicked for " + items.getId());
+
+                            // set dialog edit
+                            currentItem = new Item(items.getId(), items.getType(), items.getUnitPrice());
+                            txtDialType.setText(items.getType());
+                            txtDialUnitPrice.setText(Double.toString(items.getUnitPrice()));
+                            dipAction.setVisible(true);
+
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+            }
+        };
+        // add button to action field tableviews
         tabcoAction.setCellFactory(cellFactory);
-        
-        
         tavItem.setItems(addServiceItemData);
-            
+
+    }
+    
+    // event for Service-Item page
+
+
+    public void OnClick_ServiceItemSave() {
+        con = database.openConnection();
+        String sql = "INSERT INTO ITEMS (ITEM_type, ITEM_unit_price) VALUES (?,?)";
+
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, txtServiceItemName.getText());
+            pstmt.setString(2, txtServiceItemUnitPrice.getText());
+
+            int rows = pstmt.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Insert item successfully!");
+                txtServiceItemName.setText("");
+                txtServiceItemUnitPrice.setText("");
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        SetUpServiceTableView();
+    }
+
+    public void OnClick_ServiceItemCancel() {
+        txtServiceItemName.setText("");
+        txtServiceItemUnitPrice.setText("");
+
+    }
+
+    public void OnClick_DiaglogCancel() {
+        dipAction.setVisible(false);
+
+    }
+
+    public void OnClick_DiaglogSave() {
+        System.out.println("Save");
+        con = database.openConnection();
+
+        try {
+
+            String sql = "UPDATE ITEMS SET ITEM_type = ?, ITEM_unit_price = ? WHERE ITEM_id = ?";
+
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, txtDialType.getText());
+            pstmt.setDouble(2, Double.parseDouble(txtDialUnitPrice.getText()));
+            pstmt.setInt(3, currentItem.getId());
+
+            int rows = pstmt.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Update item " + currentItem.getId() + " successfully!");
+                SetUpServiceTableView();
+                dipAction.setVisible(false);
+
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void OnClick_DiaglogDelete() {
+        System.out.println("Delete");
+        con = database.openConnection();
+
+        try {
+
+            String sql = "DELETE FROM ITEMS WHERE ITEM_id = ?";
+
+            pstmt = con.prepareStatement(sql);
+
+            pstmt.setInt(1, currentItem.getId());
+
+            int rows = pstmt.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Delete item " + currentItem.getId() + " successfully!");
+                SetUpServiceTableView();
+                dipAction.setVisible(false);
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void switchManageCategory(ActionEvent e) {
@@ -1273,125 +1607,10 @@ public class DashboardController implements Initializable {
             ItemsManage.setVisible(true);
         }
     }
-    public void OnClick_ServiceSave() {
-        con = database.openConnection();
-        String sql = "INSERT INTO LAUNDRY_SERVICES (LS_name, LS_multiplier) VALUES (?,?)";
-        
-        try {
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, txtServiceName.getText());
-            pstmt.setString(2, txtServiceMultiplier.getText());
-            
-            int rows = pstmt.executeUpdate();
-            
-            if(rows > 0){
-                System.out.println("Insert service successfully!");
-                txtServiceName.setText("");
-                txtServiceMultiplier.setText("");
-            }
-            
-            con.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public void OnClick_ServiceCancel() {
-        txtServiceName.setText("");
-        txtServiceMultiplier.setText("");
-    }
-    public void OnClick_ServiceItemSave() {
-        con = database.openConnection();
-        String sql = "INSERT INTO ITEMS (ITEM_type, ITEM_unit_price) VALUES (?,?)";
-        
-        try {
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, txtServiceItemName.getText());
-            pstmt.setString(2, txtServiceItemUnitPrice.getText());
-            
-            int rows = pstmt.executeUpdate();
-            
-            if(rows > 0) {
-                System.out.println("Insert item successfully!");
-                txtServiceItemName.setText("");
-                txtServiceItemUnitPrice.setText("");
-            }
-            con.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-        SetUpServiceTableView();
-    }
-    public void OnClick_ServiceItemCancel() {
-        txtServiceItemName.setText("");
-        txtServiceItemUnitPrice.setText("");
-
-    }
-    public void OnClick_DiaglogCancel() {
-        dipAction.setVisible(false);
-
-    }
-    public void OnClick_DiaglogSave() {
-        System.out.println("Save");
-        con = database.openConnection();
-        
-        try {
-            
-            String sql = "UPDATE ITEMS SET ITEM_type = ?, ITEM_unit_price = ? WHERE ITEM_id = ?";
-            
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, txtDialType.getText());
-            pstmt.setDouble(2, Double.parseDouble(txtDialUnitPrice.getText()));
-            pstmt.setInt(3, currentItem.getId());
-            
-            int rows = pstmt.executeUpdate();
-            
-            if(rows > 0) {
-                System.out.println("Update item "+currentItem.getId()+" successfully!");
-                SetUpServiceTableView();
-                dipAction.setVisible(false);
-
-            }
-            con.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public void OnClick_DiaglogDelete() {
-        System.out.println("Delete");
-        con = database.openConnection();
-        
-        try {
-            
-            String sql = "DELETE FROM ITEMS WHERE ITEM_id = ?";
-            
-            pstmt = con.prepareStatement(sql);
-            
-            pstmt.setInt(1, currentItem.getId());
-            
-            int rows = pstmt.executeUpdate();
-            
-            if(rows > 0) {
-                System.out.println("Delete item "+currentItem.getId()+" successfully!");
-                SetUpServiceTableView();
-                dipAction.setVisible(false);
-            }
-            con.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-        
-
-  //====================================================================================================================================================  
-  //Statistics functions
-    
-
-  //====================================================================================================================================================  
-  //Statistics functions
-    
-  
-  //====================================================================================================================================================  
-
-}   
+    //====================================================================================================================================================  
+    //Statistics functions
+    //====================================================================================================================================================  
+    //Statistics functions
+    //====================================================================================================================================================  
+}
+}

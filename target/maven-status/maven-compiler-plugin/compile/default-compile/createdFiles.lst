@@ -1,11 +1,14 @@
 com\mycompany\laundryapp\SBFrameController.class
+com\mycompany\laundryapp\Service.class
 com\mycompany\laundryapp\DashboardController$1$1.class
 com\mycompany\laundryapp\NO_Detail.class
 com\mycompany\laundryapp\Item.class
 com\mycompany\laundryapp\models\Staff.class
 com\mycompany\laundryapp\DashboardController$4.class
 com\mycompany\laundryapp\Detail.class
+com\mycompany\laundryapp\DashboardController$7.class
 module-info.class
+com\mycompany\laundryapp\DashboardController$7$1.class
 com\mycompany\laundryapp\HomePageController.class
 com\mycompany\laundryapp\database.class
 com\mycompany\laundryapp\DashboardController$2.class
