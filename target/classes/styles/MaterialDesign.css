@@ -241,3 +241,26 @@
 /*    -fx-font: system;*/
     -fx-font-size:15;
 }
+
+.vbox-result {
+        -fx-alignment: CENTER_RIGHT;
+        -fx-padding: 0 20 0 0;
+}
+
+.paid-percentage {
+        -fx-font-size: 15;
+        -fx-text-fill: #2F60A6;
+        -fx-padding: 0 0 0 5;
+}
+
+.completed-percentage {
+        -fx-font-size: 15;
+        -fx-text-fill: #4893FF;
+        -fx-padding: 0 0 0 5;
+}
+.processing-percentage {
+        -fx-font-size: 15;
+        -fx-text-fill: #B0B0B0;
+        -fx-padding: 0 0 0 5
+}
+   

@@ -24,6 +24,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: white;" stylesheets="@../../../styles/MaterialDesign.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.laundryapp.DashboardController">
     <children>
@@ -68,7 +69,7 @@
                                         <!--<FontAwesomeIcon glyphName="MONEY" layoutX="48.0" layoutY="335.0" />-->
                                         <Button fx:id="aboutUsBtn" layoutX="9.0" layoutY="440.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" styleClass="sidebar-tab" text="About Us" />
                               <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="104.0" layoutY="77.0" scaleX="7.0" scaleY="7.0" />
-                              <Button layoutX="42.0" layoutY="512.0" mnemonicParsing="false" onMouseClicked="#OnClick_Logout" text="Sign out">
+                              <Button layoutX="42.0" layoutY="512.0" mnemonicParsing="false" onMouseClicked="#OnClick_Logout" text="Log out">
                                  <graphic>
                                     <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" size="3em" />
                                  </graphic>
@@ -160,7 +161,7 @@
                               <Label fx:id="NO_Order_id" layoutX="851.0" layoutY="6.0" text="-1" visible="false" />
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="servicesForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;">
+                                <AnchorPane fx:id="servicesForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
                                     <children>
                                         <AnchorPane fx:id="servicesManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0">
                                             <children>
@@ -254,12 +255,12 @@
                                         <Button fx:id="itemManageBtn" layoutX="453.0" layoutY="519.0" mnemonicParsing="false" onAction="#switchManageCategory" prefHeight="36.0" prefWidth="83.0" text="Items" />
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="statisticsForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" visible="false">
+                                <AnchorPane fx:id="statisticsForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0">
                            <children>
                               <AnchorPane fx:id="pieArea" layoutX="43.0" layoutY="215.0" prefHeight="335.0" prefWidth="334.0">
                                  <children>
                                     <PieChart fx:id="piePie" layoutX="26.0" layoutY="1.6666666666666665" prefHeight="281.0" prefWidth="283.0" stylesheets="@../../../styles/MaterialDesign.css" AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="1.6666666666666665" />
-                                    <Circle fx:id="circleDraw" fill="DODGERBLUE" layoutX="167.0" layoutY="127.0" radius="78.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" visible="false" />
+                                    <Circle fx:id="circleDraw" fill="DODGERBLUE" layoutX="167.0" layoutY="127.0" radius="78.0" scaleX="0.9" scaleY="0.9" stroke="BLACK" strokeType="INSIDE" styleClass="circle" visible="false" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane layoutX="432.0" layoutY="138.0" prefHeight="414.0" prefWidth="411.0">
@@ -299,14 +300,12 @@
                                                          </VBox.margin></Label>
                                                    </children>
                                                 </VBox>
-                                                <VBox fx:id="vboxPaid" layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
+                                                <HBox prefHeight="100.0" prefWidth="200.0" styleClass="vbox-result">
                                                    <children>
                                                       <Label fx:id="lblPaid" style="-fx-font-weight: normal;" styleClass="result-card" text="2" />
+                                                      <Label fx:id="lblPaidPercentage" styleClass="paid-percentage" text="Label" />
                                                    </children>
-                                                   <padding>
-                                                      <Insets left="50.0" />
-                                                   </padding>
-                                                </VBox>
+                                                </HBox>
                                              </children>
                                           </HBox>
                                           <HBox prefHeight="50.0" prefWidth="200.0">
@@ -319,14 +318,12 @@
                                                          </VBox.margin></Label>
                                                    </children>
                                                 </VBox>
-                                                <VBox prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
+                                                <HBox prefHeight="100.0" prefWidth="200.0" styleClass="vbox-result">
                                                    <children>
-                                                      <Label fx:id="lblComplete" style="-fx-font-weight: normal;" styleClass="result-card" text="30">
-                                                         <padding>
-                                                            <Insets left="50.0" />
-                                                         </padding></Label>
+                                                      <Label fx:id="lblComplete" style="-fx-font-weight: normal;" styleClass="result-card" text="2" />
+                                                      <Label fx:id="lblCompletedPercentage" styleClass="completed-percentage" text="Label" />
                                                    </children>
-                                                </VBox>
+                                                </HBox>
                                              </children>
                                           </HBox>
                                           <HBox prefHeight="50.0" prefWidth="200.0">
@@ -339,19 +336,17 @@
                                                          </VBox.margin></Label>
                                                    </children>
                                                 </VBox>
-                                                <VBox layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold;" styleClass="result-box">
+                                                <HBox prefHeight="100.0" prefWidth="200.0" styleClass="vbox-result">
                                                    <children>
-                                                      <Label fx:id="lblProcessing" style="-fx-font-weight: normal;" styleClass="result-card" text="50">
-                                                         <padding>
-                                                            <Insets left="50.0" />
-                                                         </padding></Label>
+                                                      <Label fx:id="lblProcessing" style="-fx-font-weight: normal;" styleClass="result-card" text="2" />
+                                                      <Label fx:id="lblProcessingPercentage" styleClass="processing-percentage" text="Label" />
                                                    </children>
-                                                </VBox>
+                                                </HBox>
                                              </children>
                                           </HBox>
                                           <HBox layoutX="12.0" layoutY="162.0" prefHeight="50.0" prefWidth="200.0">
                                              <children>
-                                                <VBox prefHeight="60.0" prefWidth="220.0" styleClass="result-box">
+                                                <VBox prefHeight="47.0" prefWidth="125.0" styleClass="result-box">
                                                    <children>
                                                       <Label prefHeight="32.0" prefWidth="123.0" style="-fx-text-fill: #2F60A6;" styleClass="result-card" text="Revenue">
                                                          <VBox.margin>
@@ -360,15 +355,19 @@
                                                       </Label>
                                                    </children>
                                                 </VBox>
-                                                <VBox layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" style="-fx-text-fill: #2F60A6;" styleClass="result-box">
+                                                <HBox prefHeight="100.0" prefWidth="200.0" styleClass="vbox-result">
                                                    <children>
-                                                      <Label fx:id="lblProcessing1" style="-fx-font-weight: normal; -fx-text-fill: #2F60A6;" styleClass="result-card" text="50">
+                                                      <Label fx:id="lblRevenue" alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="116.0" style="-fx-font-weight: normal; -fx-text-fill: #2F60A6;" styleClass="result-card" text="50">
                                                          <padding>
                                                             <Insets left="50.0" />
                                                          </padding>
+                                                         <opaqueInsets>
+                                                            <Insets />
+                                                         </opaqueInsets>
                                                       </Label>
+                                                      <Label styleClass="paid-percentage" text="VNĐ" />
                                                    </children>
-                                                </VBox>
+                                                </HBox>
                                              </children>
                                           </HBox>
                                        </children>
@@ -408,6 +407,34 @@
                                     </HBox>
                                  </children>
                               </VBox>
+                              <AnchorPane fx:id="remainOrderInfo" layoutX="444.0" layoutY="110.0" maxWidth="377.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" prefWidth="342.0" styleClass="card">
+                                 <children>
+                                    <Text fx:id="txtRemainOrders" layoutX="73.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="result-card" text="18 orders are awaiting processing." wrappingWidth="257.1975402832031" />
+                                    <AnchorPane layoutX="19.0" layoutY="9.0" prefHeight="32.0" prefWidth="32.0" style="-fx-background-color: #2F60A6; -fx-background-radius: 20;">
+                                       <children>
+                                          <Text fill="WHITE" layoutX="12.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="!">
+                                             <font>
+                                                <Font name="Arial Rounded MT Bold" size="24.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane fx:id="remainOrderInfo2" layoutX="35.0" maxWidth="377.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" prefWidth="287.0" styleClass="card">
+                                       <children>
+                                          <Text layoutX="73.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="result-card" text="All orders are completed!" wrappingWidth="219.86422729492188" />
+                                          <AnchorPane layoutX="19.0" layoutY="9.0" prefHeight="32.0" prefWidth="32.0" style="-fx-background-color: #07E095; -fx-background-radius: 20;">
+                                             <children>
+                                                <Text fill="WHITE" layoutX="12.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="!">
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="24.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </AnchorPane>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </AnchorPane>
                            </children>
                         </AnchorPane>
                                 <AnchorPane fx:id="aboutUsForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
