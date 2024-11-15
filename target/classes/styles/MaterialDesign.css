@@ -263,4 +263,10 @@
         -fx-text-fill: #B0B0B0;
         -fx-padding: 0 0 0 5
 }
+
+.popupPane {
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2F60A6
+}
    

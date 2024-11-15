@@ -41,7 +41,7 @@
                     <left>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <children>
-                                <AnchorPane prefHeight="554.6666666666666" prefWidth="200.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.5999999999999943" AnchorPane.topAnchor="0.0">
+                                <AnchorPane layoutY="-1.6666666666666665" prefHeight="554.6666666666666" prefWidth="200.0" styleClass="sidebar" AnchorPane.bottomAnchor="2.3333333333333712" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.3333333333333428" AnchorPane.topAnchor="-1.6666666666666665">
                                     <children>
                                         <!--<FontAwesomeIcon glyphName="USER" layoutX="67.0" layoutY="114.0" size="7em" />-->
                                         <Label fx:id="lblUserName" alignment="CENTER" layoutX="11.0" layoutY="131.0" prefHeight="22.0" prefWidth="200.0" text="Kim Tran" textFill="WHITE">
@@ -50,30 +50,34 @@
                                             </font>
                                         </Label>
                                         <Line endX="82.16667175292969" layoutX="118.0" layoutY="171.0" startX="-100.0" stroke="WHITE" />
-                                        <Button fx:id="orderListBtn" layoutX="10.0" layoutY="224.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" text="Order List">
+                                        <Button fx:id="orderListBtn" layoutX="10.0" layoutY="224.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" text="%OL">
                                  <styleClass>
                                     <String fx:value="button" />
                                     <String fx:value="sidebar-tab" />
                                     <String fx:value="tab-active" />
                                  </styleClass></Button>
                                         <!--<FontAwesomeIcon glyphName="LIST" layoutX="49.0" layoutY="230.0" />-->
-                                        <Button fx:id="newOrderBtn" layoutX="10.0" layoutY="278.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" text="New Order">
+                                        <Button fx:id="newOrderBtn" layoutX="10.0" layoutY="278.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" text="%NO">
                                  <styleClass>
                                     <String fx:value="button" />
                                     <String fx:value="sidebar-tab" />
                                  </styleClass></Button>
                                         <!--<FontAwesomeIcon glyphName="PLUS" layoutX="49.0" layoutY="265.0" />-->
-                                        <Button fx:id="servicesBtn" layoutX="10.0" layoutY="332.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" styleClass="sidebar-tab" text="Services" />
+                                        <Button fx:id="servicesBtn" layoutX="10.0" layoutY="332.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" styleClass="sidebar-tab" text="%services" />
                                         <!--<FontAwesomeIcon glyphName="" layoutX="48.0" layoutY="299.0" />-->
-                                        <Button fx:id="statisticsBtn" layoutX="10.0" layoutY="386.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" styleClass="sidebar-tab" text="Statistics" />
+                                        <Button fx:id="statisticsBtn" layoutX="10.0" layoutY="386.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" styleClass="sidebar-tab" text="%statistics" />
                                         <!--<FontAwesomeIcon glyphName="MONEY" layoutX="48.0" layoutY="335.0" />-->
-                                        <Button fx:id="aboutUsBtn" layoutX="9.0" layoutY="440.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" styleClass="sidebar-tab" text="About Us" />
+                                        <Button fx:id="aboutUsBtn" layoutX="9.0" layoutY="440.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="53.0" prefWidth="200.0" styleClass="sidebar-tab" text="%aboutUs" />
                               <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="104.0" layoutY="77.0" scaleX="7.0" scaleY="7.0" />
-                              <Button layoutX="42.0" layoutY="512.0" mnemonicParsing="false" onMouseClicked="#OnClick_Logout" text="Log out">
+                              <Button layoutX="42.0" layoutY="512.0" mnemonicParsing="false" onMouseClicked="#OnClick_Logout" text="%signOut">
                                  <graphic>
                                     <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" size="3em" />
                                  </graphic>
                               </Button>
+                              <Button fx:id="btnLanguage" layoutX="11.0" mnemonicParsing="false" onAction="#switchLanguage" text="Button">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font></Button>
                                         <!--<FontAwesomeIcon glyphName="INFO" layoutX="52.0" layoutY="369.0" />-->
                                     </children>
                                 </AnchorPane>
@@ -83,7 +87,7 @@
                     <center>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <children>
-                                <AnchorPane fx:id="orderListForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
+                                <AnchorPane fx:id="orderListForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;">
                                     <children>
                                         <TableView fx:id="tavOrderList" layoutX="12.0" layoutY="167.0" prefHeight="400.0" prefWidth="834.0">
                                             <columns>
@@ -101,46 +105,47 @@
                                         <Label layoutX="182.0" layoutY="107.0" text="rows" />
                                         <TextField fx:id="txtOrderListSearch" layoutX="532.0" layoutY="97.0" onKeyPressed="#setUpOrderListTable" prefHeight="44.0" prefWidth="314.0" promptText="Search..." />
                               <Button fx:id="btnOrderListRefresh" layoutX="441.0" layoutY="106.0" mnemonicParsing="false" onAction="#OnClick_btnOrderListRefresh" text="Refresh" />
+                              <Label layoutX="19.0" layoutY="23.0" styleClass="title" text="%titleOL" />
                                     </children>
                                 </AnchorPane>
                                 <AnchorPane fx:id="newOrderForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
                                     <children>
-                              <Button fx:id="NO_CustomerSearch_btn" layoutX="572.0" layoutY="135.0" mnemonicParsing="false" onAction="#OnClick_NO_CustomerSearch_btn" text="Search" />
+                              <Button fx:id="NO_CustomerSearch_btn" layoutX="572.0" layoutY="135.0" mnemonicParsing="false" onAction="#OnClick_NO_CustomerSearch_btn" text="%searchBtnNO" />
                                         <TextField fx:id="NO_CustomerName_txt" editable="false" layoutX="32.0" layoutY="102.0" prefWidth="200.0" />
-                                        <Label layoutX="35.0" layoutY="79.0" text="Customer Name" />
+                                        <Label layoutX="35.0" layoutY="79.0" text="%cusNameNO" />
                                         <TextField fx:id="NO_Phone_txt" editable="false" layoutX="33.0" layoutY="160.0" prefWidth="200.0" />
-                                        <Label layoutX="35.0" layoutY="140.0" prefWidth="64.0" text="Phone" />
-                                        <TextField fx:id="NO_Customer_Search_txt" layoutX="317.0" layoutY="132.0" prefHeight="42.0" prefWidth="252.0" promptText="Search customer by phone#" />
-                                        <Label layoutX="35.0" layoutY="29.0" styleClass="title" text="New Laundry">
+                                        <Label layoutX="35.0" layoutY="140.0" prefWidth="70" text="%cusPhoneNO" />
+                                        <TextField fx:id="NO_Customer_Search_txt" layoutX="317.0" layoutY="132.0" prefHeight="42.0" prefWidth="252.0" promptText="%searchNO" />
+                                        <Label layoutX="35.0" layoutY="29.0" styleClass="title" text="%titleNO">
                                             <font>
                                                 <Font name="System Bold" size="18.0" />
                                             </font>
                                         </Label>
                               <AnchorPane fx:id="NO_AddDetail_pane" layoutX="-1.0" layoutY="208.0" prefHeight="346.0" prefWidth="900.0">
                                  <children>
-                                    <Label layoutX="52.0" layoutY="15.0" prefHeight="17.0" prefWidth="109.0" text="Laundry Category" />
-                                    <Label layoutX="298.0" layoutY="14.0" prefWidth="64.0" text="Weight" />
+                                    <Label layoutX="52.0" layoutY="15.0" prefHeight="17.0" prefWidth="109.0" text="%laundryCatNO" />
+                                    <Label layoutX="298.0" layoutY="14.0" prefWidth="64.0" text="%weightNO" />
                                     <ComboBox fx:id="NO_Category_add" layoutX="53.0" layoutY="37.0" maxWidth="400.0" prefHeight="28.0" prefWidth="180.0" />
-                                    <Label layoutX="529.0" layoutY="16.0" prefHeight="17.0" prefWidth="109.0" text="Service" />
+                                    <Label layoutX="529.0" layoutY="16.0" prefHeight="17.0" prefWidth="109.0" text="%serviceNO" />
                                     <ComboBox fx:id="NO_Service_add" layoutX="528.0" layoutY="38.0" prefHeight="28.0" prefWidth="165.0" />
-                                    <Button fx:id="NO_Add_btn" layoutX="778.0" layoutY="42.0" mnemonicParsing="false" onAction="#OnClick_NO_Add_btn" prefHeight="25.0" prefWidth="81.0" text="+ Add" />
-                                    <Button fx:id="NO_Save_btn" layoutX="703.0" layoutY="328.0" mnemonicParsing="false" onAction="#OnClick_NO_Save_btn" text="Save" />
-                                    <Button fx:id="NO_Cancel_btn" layoutX="790.0" layoutY="328.0" mnemonicParsing="false" onAction="#OnClick_NO_Cancel_btn" text="Cancel" />
+                                    <Button fx:id="NO_Add_btn" layoutX="778.0" layoutY="42.0" mnemonicParsing="false" onAction="#OnClick_NO_Add_btn" prefHeight="25.0" prefWidth="81.0" text="%addNO" />
+                                    <Button fx:id="NO_Save_btn" layoutX="703.0" layoutY="328.0" mnemonicParsing="false" onAction="#OnClick_NO_Save_btn" text="%saveBtnNO" />
+                                    <Button fx:id="NO_Cancel_btn" layoutX="790.0" layoutY="328.0" mnemonicParsing="false" onAction="#OnClick_NO_Cancel_btn" text="%cancelBtnNO" />
                                     <TableView fx:id="NO_Detail_table" layoutX="53.0" layoutY="116.0" prefHeight="189.0" prefWidth="809.0">
                                        <columns>
-                                          <TableColumn fx:id="NO_table_Category_col" prefWidth="151.20000457763672" text="Category" />
-                                          <TableColumn fx:id="NO_table_Weight_col" prefWidth="146.39996337890625" text="Weight" />
-                                          <TableColumn fx:id="NO_table_Service_col" prefWidth="127.199951171875" text="Service" />
-                                          <TableColumn fx:id="NO_table_PricePerKilo_col" prefWidth="122.39999389648438" text="Price per kilo" />
-                                          <TableColumn fx:id="NO_table_ServiceMulti_col" prefWidth="142.39990234375" text="Service multiplier" />
-                                          <TableColumn fx:id="NO_table_Total_col" prefWidth="117.60003662109375" text="Total Amount" />
+                                          <TableColumn fx:id="NO_table_Category_col" prefWidth="151.20000457763672" text="%ctgNO" />
+                                          <TableColumn fx:id="NO_table_Weight_col" prefWidth="146.39996337890625" text="%weighTableNO" />
+                                          <TableColumn fx:id="NO_table_Service_col" prefWidth="127.199951171875" text="%serviceTableNO" />
+                                          <TableColumn fx:id="NO_table_PricePerKilo_col" prefWidth="122.39999389648438" text="%ppkNO" />
+                                          <TableColumn fx:id="NO_table_ServiceMulti_col" prefWidth="142.39990234375" text="%smplNO" />
+                                          <TableColumn fx:id="NO_table_Total_col" prefWidth="117.60003662109375" text="%ttaNO" />
                                        </columns>
                                     </TableView>
                                     <TextField fx:id="NO_Weight_add" layoutX="298.0" layoutY="41.0" prefHeight="37.0" prefWidth="178.0" promptText="0.0 ..." />
                                     <Label layoutX="469.0" layoutY="51.0" text="Kg" />
                                  </children>
                               </AnchorPane>
-                              <Button fx:id="NO_CreateCus_btn" layoutX="694.0" layoutY="131.0" mnemonicParsing="false" onAction="#OnClick_NO_CreateCus_btn" text="+ Create new customer" />
+                              <Button fx:id="NO_CreateCus_btn" layoutX="694.0" layoutY="131.0" mnemonicParsing="false" onAction="#OnClick_NO_CreateCus_btn" text="%createNO" />
                               <DialogPane fx:id="NO_CreateCus_pane" layoutX="232.0" layoutY="160.0" prefHeight="227.0" prefWidth="340.0" visible="false">
                                  <header>
                                     <Label text="Create new customer" />
@@ -165,26 +170,26 @@
                                     <children>
                                         <AnchorPane fx:id="servicesManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0">
                                             <children>
-                                                <Label layoutX="7.0" layoutY="33.0" styleClass="title" text="Services" />
+                                                <Label layoutX="7.0" layoutY="33.0" styleClass="title" text="%servicesSERVICES" />
                                                 <TableView fx:id="tavServiceType" layoutX="-8.0" layoutY="90.0" prefHeight="354.0" prefWidth="466.0">
                                                     <columns>
                                                         <TableColumn fx:id="tabcoServiceTypeId" prefWidth="75.0" text="#" />
-                                                        <TableColumn fx:id="tabcoServiceTypeName" prefWidth="184.00003051757812" text="Service" />
-                                                        <TableColumn fx:id="tabcoServiceTypeMultiplier" prefWidth="80.79995727539062" text="Multiplier" />
-                                          <TableColumn fx:id="tabcoServiceTypeAction" prefWidth="123.20004882812498" text="Action" />
+                                                        <TableColumn fx:id="tabcoServiceTypeName" prefWidth="184.00003051757812" text="%categoryNameSERVICES" />
+                                                        <TableColumn fx:id="tabcoServiceTypeMultiplier" prefWidth="80.79995727539062" text="%multiplierSERVICES" />
+                                          <TableColumn fx:id="tabcoServiceTypeAction" prefWidth="123.20004882812498" text="%actionSERVICES" />
                                                     </columns>
                                                 </TableView>
                                                 <Pane layoutX="506.0" layoutY="117.0" maxWidth="302.0" prefHeight="314.0" prefWidth="302.0" styleClass="card">
                                                     <children>
-                                                        <Label layoutX="21.0" layoutY="25.0" styleClass="card-title" text="Laundry Service Form">
+                                                        <Label layoutX="21.0" layoutY="25.0" styleClass="card-title" text="%formNameSERVICES">
                                                             <font>
                                                                 <Font size="13.0" />
                                                             </font>
                                                         </Label>
-                                                        <TextField fx:id="txtServiceName" layoutX="16.0" layoutY="56.0" prefHeight="68.0" prefWidth="255.0" promptText="Service name..." />
-                                                        <TextField fx:id="txtServiceMultiplier" layoutX="15.0" layoutY="147.0" prefHeight="68.0" prefWidth="255.0" promptText="Service multiplier..." />
-                                                        <Button fx:id="btnServiceSave" layoutX="107.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#OnClick_ServiceSave" prefHeight="36.0" prefWidth="69.0" text="Save" />
-                                                        <Button layoutX="197.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#OnClick_ServiceCancel" text="Cancel" />
+                                                        <TextField fx:id="txtServiceName" layoutX="16.0" layoutY="56.0" prefHeight="68.0" prefWidth="255.0" promptText="%snameSERVICES" />
+                                                        <TextField fx:id="txtServiceMultiplier" layoutX="15.0" layoutY="147.0" prefHeight="68.0" prefWidth="255.0" promptText="%smulSERVICES" />
+                                                        <Button fx:id="btnServiceSave" layoutX="107.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#OnClick_ServiceSave" prefHeight="36.0" prefWidth="69.0" text="%saveSERVICES" />
+                                                        <Button layoutX="197.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#OnClick_ServiceCancel" text="%cancelSERVICES" />
                                                     </children>
                                                 </Pane>
                                     <DialogPane fx:id="dipServiceTypeAction" layoutX="316.0" layoutY="149.0" prefHeight="227.0" prefWidth="340.0" visible="false">
@@ -212,50 +217,50 @@
                                                 <Label layoutX="7.0" layoutY="33.0" styleClass="title" text="Category" />
                                                 <Pane layoutX="508.0" layoutY="82.0" maxWidth="302.0" prefHeight="314.0" prefWidth="302.0" styleClass="card">
                                                     <children>
-                                                        <Label layoutX="21.0" layoutY="25.0" styleClass="card-title" text="Item Form">
+                                                        <Label layoutX="21.0" layoutY="25.0" styleClass="card-title" text="%itemFormSERVICES">
                                                             <font>
                                                                 <Font size="13.0" />
                                                             </font>
                                                         </Label>
-                                                        <TextField fx:id="txtServiceItemName" layoutX="16.0" layoutY="56.0" prefHeight="68.0" prefWidth="255.0" promptText="Item name..." />
-                                                        <TextField fx:id="txtServiceItemUnitPrice" layoutX="15.0" layoutY="147.0" prefHeight="68.0" prefWidth="255.0" promptText="Price per kg..." />
-                                                        <Button fx:id="btnServiceItemSave" layoutX="107.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#OnClick_ServiceItemSave" prefHeight="36.0" prefWidth="69.0" text="Save" />
-                                                        <Button layoutX="197.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#OnClick_ServiceItemCancel" text="Cancel" />
+                                                        <TextField fx:id="txtServiceItemName" layoutX="16.0" layoutY="56.0" prefHeight="68.0" prefWidth="255.0" promptText="%ph1SERVICES" />
+                                                        <TextField fx:id="txtServiceItemUnitPrice" layoutX="15.0" layoutY="147.0" prefHeight="68.0" prefWidth="255.0" promptText="%ph2SERVICES" />
+                                                        <Button fx:id="btnServiceItemSave" layoutX="107.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#OnClick_ServiceItemSave" prefHeight="36.0" prefWidth="69.0" text="%saveFormSERVICES" />
+                                                        <Button layoutX="197.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#OnClick_ServiceItemCancel" text="%cancelFormSERVICES" />
                                                     </children>
                                                 </Pane>
                                     <TableView fx:id="tavItem" layoutX="7.0" layoutY="85.0" prefHeight="308.0" prefWidth="430.0" stylesheets="@../../../styles/MaterialDesign.css">
                                       <columns>
                                         <TableColumn fx:id="tabcoItemId" prefWidth="94.4000473022461" text="ID" />
-                                        <TableColumn fx:id="tabcoItemName" prefWidth="107.20001220703125" text="Type" />
-                                          <TableColumn fx:id="tabcoItemPrice" prefWidth="92.79998779296875" text="Unit Price" />
-                                          <TableColumn fx:id="tabcoAction" prefWidth="132.0000061035156" text="Action" />
+                                        <TableColumn fx:id="tabcoItemName" prefWidth="107.20001220703125" text="%itemTypeSERVICES" />
+                                          <TableColumn fx:id="tabcoItemPrice" prefWidth="92.79998779296875" text="%upSERVICES" />
+                                          <TableColumn fx:id="tabcoAction" prefWidth="132.0000061035156" text="%actioncolSERVICES" />
                                       </columns>
                                     </TableView>
-                                    <DialogPane fx:id="dipAction" layoutX="293.0" layoutY="152.0" prefHeight="227.0" prefWidth="340.0">
+                                    <DialogPane fx:id="dipAction" layoutX="293.0" layoutY="152.0" prefHeight="227.0" prefWidth="340.0" visible="false">
                                        <header>
-                                          <Label text="Edit Category" />
+                                          <Label prefWidth="314.0" styleClass="popupPane" text="%editCtgSERVICES" />
                                        </header>
                                        <content>
                                           <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                              <children>
-                                                <Label layoutX="45.0" layoutY="50.0" text="Type" />
-                                                <Button fx:id="btnDialSave" layoutX="66.0" layoutY="141.0" mnemonicParsing="false" onMouseClicked="#OnClick_DiaglogSave" text="Save" />
-                                                <Button fx:id="btnDialCancel" layoutX="225.0" layoutY="141.0" mnemonicParsing="false" onMouseClicked="#OnClick_DiaglogCancel" text="Cancel" />
+                                                <Label layoutX="45.0" layoutY="50.0" text="%typeSERVICES" />
+                                                <Button fx:id="btnDialSave" layoutX="66.0" layoutY="141.0" mnemonicParsing="false" onMouseClicked="#OnClick_DiaglogSave" text="%saveBtnSERVICE" />
+                                                <Button fx:id="btnDialCancel" layoutX="225.0" layoutY="141.0" mnemonicParsing="false" onMouseClicked="#OnClick_DiaglogCancel" text="%cnlSERVICES" />
                                                 <TextField fx:id="txtDialType" layoutX="142.0" layoutY="36.0" />
                                                 <TextField fx:id="txtDialUnitPrice" layoutX="142.0" layoutY="76.0" />
-                                                <Label layoutX="45.0" layoutY="96.0" text="Unit Price" />
-                                                <Button fx:id="btnDialDelete" layoutX="142.0" layoutY="141.0" mnemonicParsing="false" onMouseClicked="#OnClick_DiaglogDelete" text="Delete" />
+                                                <Label layoutX="45.0" layoutY="96.0" text="%upSERVICES" />
+                                                <Button fx:id="btnDialDelete" layoutX="142.0" layoutY="141.0" mnemonicParsing="false" onMouseClicked="#OnClick_DiaglogDelete" text="%dltBtnSERVICES" />
                                              </children>
                                           </AnchorPane>
                                        </content>
                                     </DialogPane>
                                             </children>
                                         </AnchorPane>
-                                        <Button fx:id="serviceManageBtn" layoutX="335.0" layoutY="520.0" mnemonicParsing="false" onAction="#switchManageCategory" text="Services" />
-                                        <Button fx:id="itemManageBtn" layoutX="453.0" layoutY="519.0" mnemonicParsing="false" onAction="#switchManageCategory" prefHeight="36.0" prefWidth="83.0" text="Items" />
+                                        <Button fx:id="serviceManageBtn" layoutX="335.0" layoutY="520.0" mnemonicParsing="false" onAction="#switchManageCategory" text="%serviceBtnSERVICES" />
+                                        <Button fx:id="itemManageBtn" layoutX="453.0" layoutY="519.0" mnemonicParsing="false" onAction="#switchManageCategory" prefHeight="36.0" prefWidth="83.0" text="%categorySERVICES" />
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="statisticsForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0">
+                                <AnchorPane fx:id="statisticsForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" visible="false">
                            <children>
                               <AnchorPane fx:id="pieArea" layoutX="43.0" layoutY="215.0" prefHeight="335.0" prefWidth="334.0">
                                  <children>
@@ -271,7 +276,7 @@
                                              <children>
                                                 <VBox prefHeight="60.0" prefWidth="220.0" styleClass="result-box">
                                                    <children>
-                                                      <Label prefHeight="32.0" prefWidth="123.0" style="-fx-font-weight: bold; -fx-text-fill: #2F60A6;" styleClass="result-card" text="Orders recieived">
+                                                      <Label prefHeight="32.0" prefWidth="123.0" style="-fx-font-weight: bold; -fx-text-fill: #2F60A6;" styleClass="result-card" text="%ordersReceivedSTATISTICS">
                                                          <VBox.margin>
                                                             <Insets left="20.0" />
                                                          </VBox.margin>
@@ -294,7 +299,7 @@
                                              <children>
                                                 <VBox prefHeight="60.0" prefWidth="220.0" styleClass="result-box">
                                                    <children>
-                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="result-card" text="Paid">
+                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="result-card" text="%paidSTATISTICS">
                                                          <VBox.margin>
                                                             <Insets left="20.0" />
                                                          </VBox.margin></Label>
@@ -312,7 +317,7 @@
                                              <children>
                                                 <VBox prefHeight="60.0" prefWidth="220.0" styleClass="result-box">
                                                    <children>
-                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="result-card" text="Completed">
+                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="result-card" text="%completedSTATISTICS">
                                                          <VBox.margin>
                                                             <Insets left="20.0" />
                                                          </VBox.margin></Label>
@@ -330,7 +335,7 @@
                                              <children>
                                                 <VBox prefHeight="60.0" prefWidth="220.0" styleClass="result-box">
                                                    <children>
-                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="result-card" text="Processing">
+                                                      <Label prefHeight="32.0" prefWidth="123.0" styleClass="result-card" text="%processingSTATISTICS">
                                                          <VBox.margin>
                                                             <Insets left="20.0" />
                                                          </VBox.margin></Label>
@@ -348,7 +353,7 @@
                                              <children>
                                                 <VBox prefHeight="47.0" prefWidth="125.0" styleClass="result-box">
                                                    <children>
-                                                      <Label prefHeight="32.0" prefWidth="123.0" style="-fx-text-fill: #2F60A6;" styleClass="result-card" text="Revenue">
+                                                      <Label prefHeight="32.0" prefWidth="123.0" style="-fx-text-fill: #2F60A6;" styleClass="result-card" text="%revenueSTATISTICS">
                                                          <VBox.margin>
                                                             <Insets left="20.0" />
                                                          </VBox.margin>
@@ -385,7 +390,7 @@
                                     <HBox layoutX="-350.0" layoutY="-4.0" prefHeight="100.0" prefWidth="200.0" />
                                  </children>
                               </AnchorPane>
-                              <Label layoutX="37.0" layoutY="22.0" styleClass="title" text="Laundry Report" />
+                              <Label layoutX="37.0" layoutY="22.0" styleClass="title" text="%laundryReport" />
                               <VBox layoutX="39.0" layoutY="53.0" prefHeight="120.0" prefWidth="240.0">
                                  <children>
                                     <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
@@ -395,7 +400,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="91.0" prefWidth="362.0">
                                        <children>
-                                          <Label alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="76.0" style="-fx-font-size: 10; -fx-text-fill: #2F60A6;" styleClass="content-text" text="Show results ">
+                                          <Label alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="76.0" style="-fx-font-size: 10; -fx-text-fill: #2F60A6;" styleClass="content-text" text="%showResultSTATISTICS">
                                              <font>
                                                 <Font size="8.0" />
                                              </font>
@@ -421,14 +426,10 @@
                                     </AnchorPane>
                                     <AnchorPane fx:id="remainOrderInfo2" layoutX="35.0" maxWidth="377.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" prefWidth="287.0" styleClass="card">
                                        <children>
-                                          <Text layoutX="73.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="result-card" text="All orders are completed!" wrappingWidth="219.86422729492188" />
+                                          <Text layoutX="73.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="result-card" text="%greenSTATISTICS" wrappingWidth="219.86422729492188" />
                                           <AnchorPane layoutX="19.0" layoutY="9.0" prefHeight="32.0" prefWidth="32.0" style="-fx-background-color: #07E095; -fx-background-radius: 20;">
                                              <children>
-                                                <Text fill="WHITE" layoutX="12.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="!">
-                                                   <font>
-                                                      <Font name="Arial Rounded MT Bold" size="24.0" />
-                                                   </font>
-                                                </Text>
+                                                <FontAwesomeIcon fill="WHITE" glyphName="CHECK" layoutX="4.0" layoutY="24.0" size="2em" />
                                              </children>
                                           </AnchorPane>
                                        </children>
@@ -448,7 +449,7 @@
                               </AnchorPane>
                               <AnchorPane layoutX="17.0" layoutY="82.0">
                                  <children>
-                                    <Label layoutY="43.857147216796875" prefHeight="32.0" prefWidth="220.0" stylesheets="@../../../styles/MaterialDesign.css" text="Address" textAlignment="CENTER">
+                                    <Label layoutY="43.857147216796875" prefHeight="32.0" prefWidth="220.0" stylesheets="@../../../styles/MaterialDesign.css" text="%addressABOUT" textAlignment="CENTER">
                                        <styleClass>
                                           <String fx:value="title" />
                                           <String fx:value="title" />
@@ -470,14 +471,14 @@
                                           <Image url="@../../../images/27Z_2103.w028.n002.14A.p15.14.jpg" />
                                        </image>
                                     </ImageView>
-                                    <Label layoutX="12.0" layoutY="8.0" text="Thank for supporting " />
+                                    <Label layoutX="12.0" layoutY="8.0" text="%thanksABOUT" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane layoutX="17.0" layoutY="237.14285278320312">
                                  <children>
                                     <FontAwesomeIcon fill="#2f60a6" glyphName="PHONE" layoutX="96.0" layoutY="31.0" size="3em" />
                                     <Label fx:id="lblContact" layoutX="2.0" layoutY="68.85714721679688" prefHeight="20.0" prefWidth="216.0" styleClass="text" stylesheets="@../../../styles/MaterialDesign.css" text="phone" />
-                                    <Label fx:id="lblContact1" layoutY="36.857147216796875" prefHeight="32.0" prefWidth="220.0" styleClass="title" text="Phone" />
+                                    <Label fx:id="lblContact1" layoutY="36.857147216796875" prefHeight="32.0" prefWidth="220.0" styleClass="title" text="%phoneABOUT" />
                                  </children>
                               </AnchorPane>
                               <Line endX="-99.99996948242188" endY="297.0" layoutX="360.0" layoutY="154.0" startX="-99.99996948242188" startY="-40.600006103515625" stroke="#2f60a6" strokeWidth="2.0" />

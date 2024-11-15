@@ -438,21 +438,19 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        setLanguage("en");
-        
         initComponents_OL();
         initComponents_NO();
         SetUpServiceTableView();
         SetUpServiceTypeTableView();
-
         aboutUs();
+        initBtnLanguage();
+
 //        statistics();
         //
 //        lblAUStaffname.setText(staff.getName());
 //        lblAUStaffAddress.setText(staff.getAddress());
 //        lblAUStaffphone.setText(staff.getPhone());
         //
-
         // TODO
         //Stage stage = (Stage) .getScene().getWindow();
     }
@@ -570,8 +568,8 @@ public class DashboardController implements Initializable {
     private int OLCurrentId;
 
     public void initComponents_OL() {
-        rmenuOrderListRows.getItems().addAll(50, 100, 500, 1000);
-        rmenuOrderListRows.setValue(50);
+        rmenuOrderListRows.getItems().addAll(Integer.valueOf(50), Integer.valueOf(100), Integer.valueOf(500), Integer.valueOf(1000));
+        rmenuOrderListRows.setValue(Integer.valueOf(50));
 
         tabcoOrderListId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tabcoOrderListCustomer.setCellValueFactory(new PropertyValueFactory<>("customer"));
@@ -641,7 +639,7 @@ public class DashboardController implements Initializable {
             res = pstmt.executeQuery();
 
             while (res.next()) {
-                orderIds.add(res.getInt("ORDER_id"));
+                orderIds.add(Integer.valueOf(res.getInt("ORDER_id")));
             }
 
             con.close();
@@ -669,7 +667,7 @@ public class DashboardController implements Initializable {
             ResultSet res = pstmt.executeQuery();
 
             while (res.next()) {
-                orderIds.add(res.getInt("ORDER_id"));
+                orderIds.add(Integer.valueOf(res.getInt("ORDER_id")));
             }
 
             con.close();
@@ -1609,9 +1607,13 @@ public class DashboardController implements Initializable {
     @FXML
     private Text txtRemainOrders;
 
+    @FXML
+    private Button btnLanguage;
+
     private int paidNum, completedNum, processingNum, totalNum;
-    private int remainOrders =0;
+    private int remainOrders = 0;
     private float totalRevenue;
+    private String languageN = "en";
 
     public void getOrderQuantity(String timeChosen) {
         paidNum = 0;
@@ -1737,8 +1739,7 @@ public class DashboardController implements Initializable {
         if (remainOrders == 0) {
             remainOrderInfo.setVisible(false);
             remainOrderInfo2.setVisible(true);
-        }
-        else {
+        } else {
             String remainString = "are awaiting processing.";
             txtRemainOrders.setText(remainOrders + remainString);
             remainOrderInfo2.setVisible(false);
@@ -1777,22 +1778,77 @@ public class DashboardController implements Initializable {
         setValuesToInterface();
     }
 
-    public void setLanguage(String lang) {
+//    public void setLanguage() {
+////        if (languageN.equals("en")) languageN = "vi";
+//        loginIni(languageN);
+//    }
+
+    public void switchLanguage() {
+        if (languageN.equals("en")) {
+            languageN = "vi";
+        } else {
+            languageN = "en";
+        }
+        loginIni(languageN);
+//        initBtnLanguage();
+    }
+
+    public void initLanguage(String langg) {
+        this.languageN = langg;
+    }
+
+    public void loginIni(String languageMm) {
+        System.out.println("The language is " + languageN);
+        int myId = this.staff.getId();
+        String myName = this.staff.getName();
+        String myUsername = this.staff.getUserName();
+        String myPhone = this.staff.getPhone();
+        String myAddress = this.staff.getAddress();
+        Staff staff = new Staff(myId, myName, myUsername, myPhone, myAddress);
+        btnLanguage.getScene().getWindow().hide();
+        System.out.println(staff.getName() + ", " + staff.getUserName()
+                + ", " + staff.getPhone() + ", " + staff.getAddress());
         try {
             ResourceBundle bundle;
-            switch (lang){
-                case "en":
-                    bundle = ResourceBundle.getBundle("language.MessageBundle",Locale.US);
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"), bundle);
-                    Parent root;
-                    root = loader.load();    
-                    Scene scene = new Scene(root);
-                    Stage stage = new Stage();
-                    stage.setScene(scene);
-                    stage.show();
+            if (languageN.equals("en")) {
+                bundle = ResourceBundle.getBundle("language.MessageBundle", Locale.US);
+            } else {
+                Locale.setDefault(new Locale("vi", "VN"));
+                bundle = ResourceBundle.getBundle("language.MessageBundle");
             }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DashBoard.fxml"), bundle);
+            Parent root = loader.load();
+
+            DashboardController dashboard = loader.getController();
+
+            dashboard.initData(staff);
+            dashboard.initLanguage(languageMm);
+            dashboard.initBtnLanguage();
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(root, 1080, 600);
+
+            stage.setScene(scene);
+
+            stage.show();
+//                        App.setRoot("Dashboard");
+
         } catch (IOException ex) {
-            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PrimaryController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+    public void initBtnLanguage() {
+//        System.out.println("INBTN "+languageN);
+        if (languageN.equals("en")) {
+            btnLanguage.setText("English");
+        } else {
+            btnLanguage.setText("Tiếng Việt");
         }
     }
     //====================================================================================================================================================  
