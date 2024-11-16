@@ -949,10 +949,18 @@ public class DashboardController implements Initializable {
 //                Item item = new Item(res.getInt("ITEM_id"), itemTypeToShow, res.getFloat("ITEM_unit_price"));
                 String otpName = res.getString("ITEM_type").trim();
                 System.out.println("OPTION name is " + otpName);
-                String otpNameToShow = bundle.getString(otpName);
-//                Option option = new Option(res.getInt("ITEM_id"), res.getString("ITEM_type"));
-                Option option = new Option(res.getInt("ITEM_id"), otpNameToShow);
-                data.add(option);
+                String otpNameToShow = otpName;
+
+                try {
+                    otpNameToShow = bundle.getString(otpName);
+
+                } catch (Exception e) {
+                    otpNameToShow = otpName;
+                } finally {
+                    // Option option = new Option(res.getInt("ITEM_id"), res.getString("ITEM_type"));
+                    Option option = new Option(res.getInt("ITEM_id"), otpNameToShow);
+                    data.add(option);
+                }
             }
             con.close();
         } catch (SQLException ex) {
@@ -1339,7 +1347,7 @@ public class DashboardController implements Initializable {
                     Service item = new Service(res.getInt("LS_id"), itemNameToShow, res.getFloat("LS_multiplier"));
                     System.out.println(item.getId() + ", " + item.getName() + ", " + item.getMultiplier());
                     data.add(item);
-                }     
+                }
             }
 
             con.close();
