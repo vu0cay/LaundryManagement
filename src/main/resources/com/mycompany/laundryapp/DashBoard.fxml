@@ -162,18 +162,21 @@
                                 </AnchorPane>
                                 <AnchorPane fx:id="servicesForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;">
                                     <children>
-                                        <AnchorPane fx:id="servicesManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0">
+                                        <AnchorPane fx:id="servicesManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0" visible="false">
                                             <children>
-                                                <Label layoutX="7.0" layoutY="33.0" styleClass="title" text="Services" />
-                                                <TableView fx:id="tavServiceType" layoutX="-8.0" layoutY="90.0" prefHeight="354.0" prefWidth="466.0">
+                                                <Label layoutX="-8.0" layoutY="35.0" styleClass="title" text="Services" textFill="#2f60a6">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Label>
+                                                <TableView fx:id="tavServiceType" layoutY="92.0" prefHeight="350.0" prefWidth="450.0">
                                                     <columns>
-                                                        <TableColumn fx:id="tabcoServiceTypeId" prefWidth="75.0" text="#" />
-                                                        <TableColumn fx:id="tabcoServiceTypeName" prefWidth="184.00003051757812" text="Service" />
-                                                        <TableColumn fx:id="tabcoServiceTypeMultiplier" prefWidth="80.79995727539062" text="Multiplier" />
-                                          <TableColumn fx:id="tabcoServiceTypeAction" prefWidth="123.20004882812498" text="Action" />
+                                                        <TableColumn fx:id="tabcoServiceTypeId" prefWidth="75.0" text="ID" />
+                                                        <TableColumn fx:id="tabcoServiceTypeName" prefWidth="133.5999755859375" text="Service" />
+                                                        <TableColumn fx:id="tabcoServiceTypeMultiplier" prefWidth="105.60002136230469" text="Multiplier" />
+                                          <TableColumn fx:id="tabcoServiceTypeAction" prefWidth="150.4000244140625" text="Action" />
                                                     </columns>
                                                 </TableView>
-                                                <Pane layoutX="506.0" layoutY="117.0" maxWidth="302.0" prefHeight="314.0" prefWidth="302.0" styleClass="card">
+                                                <Pane layoutX="494.0" layoutY="110.0" maxWidth="302.0" prefHeight="314.0" prefWidth="302.0" styleClass="card">
                                                     <children>
                                                         <Label layoutX="21.0" layoutY="25.0" styleClass="card-title" text="Laundry Service Form">
                                                             <font>
@@ -206,31 +209,31 @@
                                     </DialogPane>
                                             </children>
                                         </AnchorPane>
-                                        <AnchorPane fx:id="ItemsManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0" visible="false">
+                                        <AnchorPane fx:id="ItemsManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0">
                                             <children>
-                                                <Label layoutX="7.0" layoutY="33.0" styleClass="title" text="Category" />
-                                                <Pane layoutX="508.0" layoutY="82.0" maxWidth="302.0" prefHeight="314.0" prefWidth="302.0" styleClass="card">
+                                                <Label layoutX="7.0" layoutY="33.0" styleClass="title" text="Category" textFill="#2f60a6" />
+                                                <Pane layoutX="490.0" layoutY="113.0" maxWidth="302.0" prefHeight="314.0" prefWidth="302.0" styleClass="card">
                                                     <children>
-                                                        <Label layoutX="21.0" layoutY="25.0" styleClass="card-title" text="Item Form">
+                                                        <Label layoutX="21.0" layoutY="25.0" styleClass="card-title" text="Category Form">
                                                             <font>
                                                                 <Font size="13.0" />
                                                             </font>
                                                         </Label>
-                                                        <TextField fx:id="txtServiceItemName" layoutX="16.0" layoutY="56.0" prefHeight="68.0" prefWidth="255.0" promptText="Item name..." />
+                                                        <TextField fx:id="txtServiceItemName" layoutX="16.0" layoutY="56.0" prefHeight="68.0" prefWidth="255.0" promptText="category name..." />
                                                         <TextField fx:id="txtServiceItemUnitPrice" layoutX="15.0" layoutY="147.0" prefHeight="68.0" prefWidth="255.0" promptText="Price per kg..." />
                                                         <Button fx:id="btnServiceItemSave" layoutX="107.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#OnClick_ServiceItemSave" prefHeight="36.0" prefWidth="69.0" text="Save" />
                                                         <Button layoutX="197.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#OnClick_ServiceItemCancel" text="Cancel" />
                                                     </children>
                                                 </Pane>
-                                    <TableView fx:id="tavItem" layoutX="7.0" layoutY="85.0" prefHeight="308.0" prefWidth="430.0" stylesheets="@../../../styles/MaterialDesign.css">
+                                    <TableView fx:id="tavItem" layoutY="95.0" prefHeight="350.0" prefWidth="450.0" stylesheets="@../../../styles/MaterialDesign.css">
                                       <columns>
                                         <TableColumn fx:id="tabcoItemId" prefWidth="94.4000473022461" text="ID" />
                                         <TableColumn fx:id="tabcoItemName" prefWidth="107.20001220703125" text="Type" />
                                           <TableColumn fx:id="tabcoItemPrice" prefWidth="92.79998779296875" text="Unit Price" />
-                                          <TableColumn fx:id="tabcoAction" prefWidth="132.0000061035156" text="Action" />
+                                          <TableColumn fx:id="tabcoAction" prefWidth="151.99997558593748" text="Action" />
                                       </columns>
                                     </TableView>
-                                    <DialogPane fx:id="dipAction" layoutX="293.0" layoutY="152.0" prefHeight="227.0" prefWidth="340.0">
+                                    <DialogPane fx:id="dipAction" layoutX="293.0" layoutY="152.0" prefHeight="227.0" prefWidth="340.0" visible="false">
                                        <header>
                                           <Label text="Edit Category" />
                                        </header>
@@ -250,8 +253,8 @@
                                     </DialogPane>
                                             </children>
                                         </AnchorPane>
-                                        <Button fx:id="serviceManageBtn" layoutX="335.0" layoutY="520.0" mnemonicParsing="false" onAction="#switchManageCategory" text="Services" />
-                                        <Button fx:id="itemManageBtn" layoutX="453.0" layoutY="519.0" mnemonicParsing="false" onAction="#switchManageCategory" prefHeight="36.0" prefWidth="83.0" text="Items" />
+                                        <Button fx:id="serviceManageBtn" layoutX="459.0" layoutY="511.0" mnemonicParsing="false" onAction="#switchManageCategory" prefHeight="20.0" prefWidth="90.0" text="Services" />
+                                        <Button fx:id="itemManageBtn" layoutX="342.0" layoutY="511.0" mnemonicParsing="false" onAction="#switchManageCategory" prefHeight="20.0" prefWidth="90.0" text="Category" />
                                     </children>
                                 </AnchorPane>
                                 <AnchorPane fx:id="statisticsForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" visible="false">

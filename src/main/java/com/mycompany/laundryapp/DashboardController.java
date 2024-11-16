@@ -1348,12 +1348,22 @@ public class DashboardController implements Initializable {
     public void OnClick_DiaglogServiceSave() {
         System.out.println("Save");
         con = database.openConnection();
-
+        
+        
         try {
-
+             if(txtDialServiceTypeName.getText()== "" || txtDialServiceTypeMul.getText()=="") {
+            throw new SQLException("Please fill all text");
+            }
+            if(!txtDialServiceTypeMul.getText().matches("^[0-9]*\\.?[0-9]*$")) {
+                throw new SQLException("Only numberic character!");
+            }
+            
             String sql = "UPDATE LAUNDRY_SERVICES SET LS_name = ?, LS_multiplier = ? WHERE LS_id = ?";
 
             pstmt = con.prepareStatement(sql);
+            
+          
+            
             pstmt.setString(1, txtDialServiceTypeName.getText());
             pstmt.setDouble(2, Double.parseDouble(txtDialServiceTypeMul.getText()));
             pstmt.setInt(3, currentService.getId());
@@ -1367,7 +1377,11 @@ public class DashboardController implements Initializable {
             }
             con.close();
         } catch (SQLException ex) {
-            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+            
+//            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1391,9 +1405,12 @@ public class DashboardController implements Initializable {
                 System.out.println("Delete item " + currentService.getId() + " successfully!");
                 SetUpServiceTypeTableView();
                 dipServiceTypeAction.setVisible(false);
-            }
+            } 
             con.close();
         } catch (SQLException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -1405,9 +1422,24 @@ public class DashboardController implements Initializable {
 
         try {
             pstmt = con.prepareStatement(sql);
+            
+            try{
+                if(txtServiceName.getText()== "" || txtServiceMultiplier.getText()=="") {
+               throw new Exception("Please fill all text");
+            }
+            if(!txtServiceMultiplier.getText().matches("^[0-9]*\\.?[0-9]*$")) {
+                throw new Exception("Only numberic character!");
+            }
+            } catch(Exception ex) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setContentText(ex.getMessage());
+                alert.showAndWait();
+            }
+            
+            
             pstmt.setString(1, txtServiceName.getText());
-            pstmt.setString(2, txtServiceMultiplier.getText());
-
+            pstmt.setFloat(2, Float.parseFloat(txtServiceMultiplier.getText()));
+            
             int rows = pstmt.executeUpdate();
 
             if (rows > 0) {
@@ -1508,8 +1540,22 @@ public class DashboardController implements Initializable {
 
         try {
             pstmt = con.prepareStatement(sql);
+            
+            try{
+                if(txtServiceItemName.getText()== "" || txtServiceItemUnitPrice.getText()=="") {
+                    throw new Exception("Please fill all text");
+                }
+            if(!txtServiceItemUnitPrice.getText().matches("^[0-9]*\\.?[0-9]*$")) {
+                throw new Exception("Only numberic character!");
+            }
+            } catch(Exception ex) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setContentText(ex.getMessage());
+                alert.showAndWait();
+            }
+            
             pstmt.setString(1, txtServiceItemName.getText());
-            pstmt.setString(2, txtServiceItemUnitPrice.getText());
+            pstmt.setFloat(2, Float.parseFloat(txtServiceItemUnitPrice.getText()));
 
             int rows = pstmt.executeUpdate();
 
@@ -1544,8 +1590,23 @@ public class DashboardController implements Initializable {
         try {
 
             String sql = "UPDATE ITEMS SET ITEM_type = ?, ITEM_unit_price = ? WHERE ITEM_id = ?";
-
+            
             pstmt = con.prepareStatement(sql);
+            
+            try{
+                if(txtDialType.getText()== "" || txtDialUnitPrice.getText()=="") {
+               throw new Exception("Please fill all text");
+            }
+            if(!txtDialUnitPrice.getText().matches("^[0-9]*\\.?[0-9]*$")) {
+                throw new Exception("Only numberic character!");
+            }
+            } catch(Exception ex) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setContentText(ex.getMessage());
+                alert.showAndWait();
+            }
+            
+            
             pstmt.setString(1, txtDialType.getText());
             pstmt.setDouble(2, Double.parseDouble(txtDialUnitPrice.getText()));
             pstmt.setInt(3, currentItem.getId());
@@ -1585,6 +1646,9 @@ public class DashboardController implements Initializable {
             }
             con.close();
         } catch (SQLException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
