@@ -48,10 +48,22 @@ public class PrimaryController implements Initializable {
     PreparedStatement pstmt;
     ResultSet res;
     Connection con;
-    private String languageM = "en";
-
+    
+    ResourceBundle primaryBundle;
+    
+    public void setBundle(ResourceBundle bundle){
+        this.primaryBundle = bundle;
+    }
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle bundle) {
+        if (bundle == null) {
+            if (languageN.equals("en")) {
+                bundle = ResourceBundle.getBundle("language.MessageBundle", Locale.US);
+            } else {
+                Locale.setDefault(new Locale("vi", "VN"));
+                bundle = ResourceBundle.getBundle("language.MessageBundle");
+            }
+        }
         initBtnLanguage();
     }
 
@@ -94,6 +106,9 @@ public class PrimaryController implements Initializable {
                         DashboardController dashboard = loader.getController();
 
                         dashboard.initData(staff);
+                        dashboard.initLanguage(languageMm);
+                        dashboard.initBtnLanguage();
+                        dashboard.setBundle(bundle);
 
                         Stage stage = new Stage();
                         Scene scene = new Scene(root, 1080, 600);
@@ -125,17 +140,49 @@ public class PrimaryController implements Initializable {
     }
 
     public void login() {
-        loginIni(languageM);
+        System.out.println("Called login with "+languageN);
+        loginIni(languageN);
     }
 
     public void signUp() {
-
+//        try {
+//            App.setRoot("SignUpPage");
+//
+//        } catch (IOException ex) {
+//            Logger.getLogger(PrimaryController.class
+//                    .getName()).log(Level.SEVERE, null, ex);
+//        }
+        lblLanguageSwitch.getScene().getWindow().hide();
         try {
-            App.setRoot("SignUpPage");
+            ResourceBundle bundle;
+            if (languageN.equals("en")) {
+                bundle = ResourceBundle.getBundle("language.MessageBundle", Locale.US);
+            } else {
+                Locale.setDefault(new Locale("vi", "VN"));
+                bundle = ResourceBundle.getBundle("language.MessageBundle");
+            }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"), bundle);
+            Parent root = loader.load();
+
+            SignUpPageController sC = loader.getController();
+
+            sC.initLanguage(languageN);
+            sC.initBtnLanguage();
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+
+            stage.show();
 
         } catch (IOException ex) {
-            Logger.getLogger(PrimaryController.class
+            Logger.getLogger(SignUpPageController.class
                     .getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
         }
     }
 
@@ -166,6 +213,7 @@ public class PrimaryController implements Initializable {
 
             pmrC.initLanguage(languageMm);
             pmrC.initBtnLanguage();
+            pmrC.setBundle(bundle);
 
             Stage stage = new Stage();
             Scene scene = new Scene(root);
@@ -173,7 +221,6 @@ public class PrimaryController implements Initializable {
             stage.setScene(scene);
 
             stage.show();
-//                        App.setRoot("Dashboard");
 
         } catch (IOException ex) {
             Logger.getLogger(PrimaryController.class
@@ -210,4 +257,5 @@ public class PrimaryController implements Initializable {
     private String languageN = "en";
     @FXML
     private Label lblLanguageSwitch;
+
 }

@@ -438,6 +438,11 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        if (this.bundle == null) {
+            this.bundle = rb;
+        }
+
         initComponents_OL();
         initComponents_NO();
         SetUpServiceTableView();
@@ -544,23 +549,53 @@ public class DashboardController implements Initializable {
     public void OnClick_Logout() {
         lblUserName.getScene().getWindow().hide();
 
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"));
+//            Parent root;
+//            root = loader.load();
+////            DashboardController dashboard = loader.getController();
+//
+////            dashboard.initData(staff);
+//            Stage stage = new Stage();
+//            Scene scene = new Scene(root, 600, 400);
+//
+//            stage.setScene(scene);
+//            stage.show();
+//
+//        } catch (IOException ex) {
+//            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"));
-            Parent root;
-            root = loader.load();
-//            DashboardController dashboard = loader.getController();
+            ResourceBundle bundle;
+            if (languageN.equals("en")) {
+                bundle = ResourceBundle.getBundle("language.MessageBundle", Locale.US);
+            } else {
+                Locale.setDefault(new Locale("vi", "VN"));
+                bundle = ResourceBundle.getBundle("language.MessageBundle");
+            }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"), bundle);
+            Parent root = loader.load();
 
-//            dashboard.initData(staff);
+            PrimaryController pmrC = loader.getController();
+
+            pmrC.initLanguage(languageN);
+            pmrC.initBtnLanguage();
+
             Stage stage = new Stage();
-            Scene scene = new Scene(root, 600, 400);
+            Scene scene = new Scene(root);
 
             stage.setScene(scene);
+
             stage.show();
 
         } catch (IOException ex) {
-            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            Logger.getLogger(PrimaryController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
 
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        }
     }
 
     //====================================================================================================================================================  
@@ -583,7 +618,7 @@ public class DashboardController implements Initializable {
             @Override
             public TableCell<OrderListTable, Void> call(TableColumn<OrderListTable, Void> param) {
                 return new TableCell<>() {
-                    private final Button btn = new Button("Edit");
+                    private final Button btn = new Button(bundle.getString("tableEditBtn"));
 
                     {
                         btn.setOnMouseClicked(event -> {
@@ -594,7 +629,7 @@ public class DashboardController implements Initializable {
                             OLCurrentId = items.getId();
 
                             rmenuOrderListEdit.getItems().clear();
-                            rmenuOrderListEdit.getItems().addAll("processing", "completed", "paid");
+                            rmenuOrderListEdit.getItems().addAll(bundle.getString("processing"), bundle.getString("completed"), bundle.getString("paid"));
 //                            txtDialUnitPrice.setText(Double.toString(items.getUnitPrice()));
                             paneOrderList_editStatus.setVisible(true);
 
@@ -709,7 +744,10 @@ public class DashboardController implements Initializable {
                 Date orderDate = res.getDate("OrderDate");
                 float totalPrice = res.getFloat("TotalPrice");
                 String latestStatus = res.getString("LatestStatus");
-
+                System.out.println("LATEST STATUS IS " + latestStatus);
+                if (latestStatus != null) {
+                    latestStatus = bundle.getString(latestStatus);
+                }
                 orderRow = new OrderListTable(id, customerName, customerPhone, orderDate, totalPrice, latestStatus);
             } else {
                 System.out.println("No order found with ID: " + OrderId);
@@ -731,6 +769,13 @@ public class DashboardController implements Initializable {
 
         try (Connection con = database.openConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
 
+            if (status.equals("Paid") || status.equals("Đã thu")) {
+                status = "paid";
+            } else if (status.equals("Completed") || status.equals("Xong")) {
+                status = "completed";
+            } else {
+                status = "processing";
+            }
             pstmt.setInt(1, staffId);  // Set staffId
             pstmt.setInt(2, orderId);  // Set orderId
             pstmt.setString(3, status);  // Set status
@@ -773,7 +818,7 @@ public class DashboardController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning");
             alert.setHeaderText(null);
-            alert.setContentText("Please select a status before proceeding.");
+            alert.setContentText(bundle.getString("statusRequire"));
             alert.showAndWait();
             return;
         }
@@ -870,7 +915,10 @@ public class DashboardController implements Initializable {
             stmt = con.createStatement();
             res = stmt.executeQuery(sql);
             while (res.next()) {
-                Option option = new Option(res.getInt("LS_id"), res.getString("LS_name"));
+                String otpName = res.getString("LS_name");
+                String otpToShow = bundle.getString(otpName);
+//                Option option = new Option(res.getInt("LS_id"), res.getString("LS_name"));
+                Option option = new Option(res.getInt("LS_id"), otpToShow);
                 data.add(option);
             }
             con.close();
@@ -889,7 +937,15 @@ public class DashboardController implements Initializable {
             stmt = con.createStatement();
             res = stmt.executeQuery(sql);
             while (res.next()) {
-                Option option = new Option(res.getInt("ITEM_id"), res.getString("ITEM_type"));
+
+//                String itemT = res.getString("ITEM_type").trim();
+//                String itemTypeToShow = bundle.getString(itemT);
+//                Item item = new Item(res.getInt("ITEM_id"), itemTypeToShow, res.getFloat("ITEM_unit_price"));
+                String otpName = res.getString("ITEM_type").trim();
+                System.out.println("OPTION name is " + otpName);
+                String otpNameToShow = bundle.getString(otpName);
+//                Option option = new Option(res.getInt("ITEM_id"), res.getString("ITEM_type"));
+                Option option = new Option(res.getInt("ITEM_id"), otpNameToShow);
                 data.add(option);
             }
             con.close();
@@ -948,6 +1004,7 @@ public class DashboardController implements Initializable {
         LocalDate currentDate = LocalDate.now();
         Date sqlDate = Date.valueOf(currentDate);
         int cusId = CustomerSearch(phone).getId();
+        System.out.println("CUSTOMER ID IS "+cusId);
         con = database.openConnection();
         String sql = "insert into ORDERS (CUS_id, ORDER_order_date, ORDER_pickup_date, ORDER_total_price) values (?, ?, ?, ?);";
         try {
@@ -1084,9 +1141,16 @@ public class DashboardController implements Initializable {
 
     public void AddOrderDetail(NO_Detail detail) {
         String sql = "insert into ORDER_DETAILS (LS_id, ITEM_id, ORDER_id, OD_kilos) values(?, ?, ?, ?);";
-        Detail add = new Detail(GetServiceId(detail.getService()), GetCategoryId(detail.getCategory()), Integer.parseInt(NO_Order_id.getText()), detail.getWeight());
+        String detailService = detail.getService();
+        String detailCat = detail.getCategory();
+        String fDetailS = bundle.getString(detailService);
+        String fDetailC = bundle.getString(detailCat);
+
+        System.out.println("0000000000000000000" + fDetailS + " " + fDetailC);
+        Detail add = new Detail(GetServiceId(fDetailS), GetCategoryId(fDetailC), Integer.parseInt(NO_Order_id.getText()), detail.getWeight());
         con = database.openConnection();
         try {
+            System.out.println("LS ID IS " + GetServiceId(detail.getService()));
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, add.getServiceId());
             pstmt.setInt(2, add.getCatId());
@@ -1132,27 +1196,27 @@ public class DashboardController implements Initializable {
         alert.setHeaderText(null);
         if (NO_CreateCus_name_txt.getText() == "" || NO_CreateCus_phone_txt.getText() == "") {
             alert.setTitle("waring");
-            alert.setContentText("please fill all the fields");
+            alert.setContentText(bundle.getString("fieldRequire"));
             alert.showAndWait();
             return;
         }
         Customer cus = new Customer(0, NO_CreateCus_name_txt.getText(), NO_CreateCus_phone_txt.getText());
         if (!CustomerSearch(cus.getPhone()).getPhone().equals("")) {
             alert.setTitle("waring");
-            alert.setContentText("Customer already exist");
+            alert.setContentText(bundle.getString("existingCus"));
             alert.showAndWait();
             return;
         }
         if (CreateCustomer(cus)) {
-            alert.setTitle("Success");
-            alert.setContentText("New customer created");
+            alert.setTitle("OK!");
+            alert.setContentText(bundle.getString("createdCus"));
             alert.showAndWait();
             NO_CreateCus_pane.setVisible(false);
             NO_Customer_Search_txt.setText(cus.getPhone());
             OnClick_NO_CustomerSearch_btn();
         } else {
-            alert.setTitle("warning");
-            alert.setContentText("something went wrong when creating!");
+            alert.setTitle(bundle.getString("warning"));
+            alert.setContentText(bundle.getString("errorCreate"));
             alert.showAndWait();
         }
     }
@@ -1168,8 +1232,8 @@ public class DashboardController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         if (NO_Weight_add.getText().equals("") || NO_Service_add.getValue() == null || NO_Service_add.getValue() == null) {
-            alert.setTitle("warning");
-            alert.setContentText("please fill all the fields");
+            alert.setTitle(bundle.getString("warning"));
+            alert.setContentText(bundle.getString("fieldRequire"));
             alert.showAndWait();
             return;
         }
@@ -1200,16 +1264,16 @@ public class DashboardController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         if (NO_CustomerName_txt.getText() == "" || NO_Phone_txt.getText() == "") {
-            alert.setTitle("Warning");
-            alert.setContentText("Please choose customer");
+            alert.setTitle(bundle.getString("warning"));
+            alert.setContentText(bundle.getString("cusREquire"));
             alert.showAndWait();
             return;
         }
         float total = 0;
         ObservableList<NO_Detail> data = NO_Detail_table.getItems();
         if (data.isEmpty()) {
-            alert.setTitle("Warning");
-            alert.setContentText("The table is empty. Please add items before saving the order.");
+            alert.setTitle(bundle.getString("warning"));
+            alert.setContentText(bundle.getString("itemREquire"));
             alert.showAndWait();
             return;
         }
@@ -1219,8 +1283,8 @@ public class DashboardController implements Initializable {
 
         int orderId = CreateOrder(NO_Phone_txt.getText(), total);
         if (orderId == -1) {
-            alert.setTitle("error");
-            alert.setContentText("something went wrong while creating order!");
+            alert.setTitle(bundle.getString("warning"));
+            alert.setContentText(bundle.getString("orderFailed"));
             alert.showAndWait();
             return;
         }
@@ -1230,9 +1294,10 @@ public class DashboardController implements Initializable {
         }
         data = FXCollections.observableArrayList();
         NO_Detail_table.setItems(data);
-        insertStatus(staff.getId(), Integer.parseInt(NO_Order_id.getText()), "Pending");
-        alert.setTitle("success");
-        alert.setContentText("new order created with ID: " + NO_Order_id.getText());
+//        insertStatus(staff.getId(), Integer.parseInt(NO_Order_id.getText()), "Pending");
+        insertStatus(staff.getId(), Integer.parseInt(NO_Order_id.getText()), "processing");
+        alert.setTitle("OK!");
+        alert.setContentText(bundle.getString("okCreate") + " " + NO_Order_id.getText());
         alert.showAndWait();
         NO_Order_id.setText("");
     }
@@ -1257,7 +1322,10 @@ public class DashboardController implements Initializable {
             res = stmt.executeQuery(sql);
 
             while (res.next()) {
-                Service item = new Service(res.getInt("LS_id"), res.getString("LS_name"), res.getFloat("LS_multiplier"));
+                String itemName = res.getString("LS_name");
+                String itemNameToShow = bundle.getString(itemName);
+//                Service item = new Service(res.getInt("LS_id"), res.getString("LS_name"), res.getFloat("LS_multiplier"));
+                Service item = new Service(res.getInt("LS_id"), itemNameToShow, res.getFloat("LS_multiplier"));
                 System.out.println(item.getId() + ", " + item.getName() + ", " + item.getMultiplier());
                 data.add(item);
             }
@@ -1281,7 +1349,7 @@ public class DashboardController implements Initializable {
             @Override
             public TableCell<Service, Void> call(TableColumn<Service, Void> param) {
                 return new TableCell<>() {
-                    private final Button btn = new Button("Edit");
+                    private final Button btn = new Button(bundle.getString("tableEditBtn"));
 
                     {
                         btn.setOnMouseClicked(event -> {
@@ -1384,7 +1452,7 @@ public class DashboardController implements Initializable {
             int rows = pstmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("Insert service successfully!");
+                System.out.println(bundle.getString("insertService"));
                 txtServiceName.setText("");
                 txtServiceMultiplier.setText("");
                 SetUpServiceTypeTableView();
@@ -1415,8 +1483,11 @@ public class DashboardController implements Initializable {
             res = stmt.executeQuery(sql);
 
             while (res.next()) {
-                Item item = new Item(res.getInt("ITEM_id"), res.getString("ITEM_type"), res.getFloat("ITEM_unit_price"));
+                String itemT = res.getString("ITEM_type").trim();
 
+//                String itemType = "clothes";
+                String itemTypeToShow = bundle.getString(itemT);
+                Item item = new Item(res.getInt("ITEM_id"), itemTypeToShow, res.getFloat("ITEM_unit_price"));
                 data.add(item);
             }
 
@@ -1439,7 +1510,7 @@ public class DashboardController implements Initializable {
             @Override
             public TableCell<Item, Void> call(TableColumn<Item, Void> param) {
                 return new TableCell<>() {
-                    private final Button btn = new Button("Edit");
+                    private final Button btn = new Button(bundle.getString("tableEditBtn"));
 
                     {
                         btn.setOnMouseClicked(event -> {
@@ -1486,7 +1557,7 @@ public class DashboardController implements Initializable {
             int rows = pstmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("Insert item successfully!");
+                System.out.println(bundle.getString("insertItem"));
                 txtServiceItemName.setText("");
                 txtServiceItemUnitPrice.setText("");
             }
@@ -1706,12 +1777,15 @@ public class DashboardController implements Initializable {
     }
 
     public void setPieChart() {
+        String data1 = bundle.getString("paid");
+        String data2 = bundle.getString("completed");
+        String data3 = bundle.getString("processing");
 
         ObservableList<PieChart.Data> pieChartData
                 = FXCollections.observableArrayList(
-                        new PieChart.Data("Paid", paidNum),
-                        new PieChart.Data("Completed", completedNum),
-                        new PieChart.Data("Processing", processingNum));
+                        new PieChart.Data(data1, paidNum),
+                        new PieChart.Data(data2, completedNum),
+                        new PieChart.Data(data3, processingNum));
 
         piePie.setData(pieChartData);
 
@@ -1724,7 +1798,7 @@ public class DashboardController implements Initializable {
         lblComplete.setText(String.valueOf(completedNum));
         lblRevenue.setText(String.valueOf(totalRevenue));
         LocalDate today = LocalDate.now();
-        lblToday.setText("Date: " + today);
+        lblToday.setText(bundle.getString("date") + ": " + today);
 
         float sumP = (float) (paidNum + completedNum + processingNum);
 
@@ -1736,23 +1810,30 @@ public class DashboardController implements Initializable {
         lblCompletedPercentage.setText(completedPStr);
         lblProcessingPercentage.setText(processingPStr);
 
-        if (remainOrders == 0) {
-            remainOrderInfo.setVisible(false);
-            remainOrderInfo2.setVisible(true);
-        } else {
-            String remainString = "are awaiting processing.";
-            txtRemainOrders.setText(remainOrders + remainString);
+        if (remainOrders != 0) {
+//            remainOrderInfo.setVisible(false);
+//            remainOrderInfo2.setVisible(true);
+
+            String remainString = bundle.getString("remainOrdersMessage");
+            txtRemainOrders.setText(remainOrders + " " + remainString);
             remainOrderInfo2.setVisible(false);
             remainOrderInfo.setVisible(true);
+        } else {
+//            String remainString = bundle.getString("remainOrdersMessage");
+//            txtRemainOrders.setText(remainOrders + " " + remainString);
+//            remainOrderInfo2.setVisible(false);
+//            remainOrderInfo.setVisible(true);
+            remainOrderInfo.setVisible(false);
+            remainOrderInfo2.setVisible(true);
         }
 
     }
 
     public void statistics() {
         ObservableList<String> ol = FXCollections.observableArrayList();
-        ol.add("Today");
-        ol.add("In 7 days");
-        ol.add("This month");
+        ol.add(bundle.getString("today"));
+        ol.add(bundle.getString("seven"));
+        ol.add(bundle.getString("thismonth"));
         resultStatisticCombobox.setItems(ol);
         resultStatisticCombobox.setOnAction(e -> showResultInTime());
 
@@ -1782,7 +1863,6 @@ public class DashboardController implements Initializable {
 ////        if (languageN.equals("en")) languageN = "vi";
 //        loginIni(languageN);
 //    }
-
     public void switchLanguage() {
         if (languageN.equals("en")) {
             languageN = "vi";
@@ -1824,6 +1904,7 @@ public class DashboardController implements Initializable {
             dashboard.initData(staff);
             dashboard.initLanguage(languageMm);
             dashboard.initBtnLanguage();
+            dashboard.setBundle(bundle);
 
             Stage stage = new Stage();
             Scene scene = new Scene(root, 1080, 600);
@@ -1851,5 +1932,11 @@ public class DashboardController implements Initializable {
             btnLanguage.setText("Tiếng Việt");
         }
     }
+
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+    }
+
+    private ResourceBundle bundle;
     //====================================================================================================================================================  
 }

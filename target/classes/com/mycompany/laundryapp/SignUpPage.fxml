@@ -3,78 +3,57 @@
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.laundryapp.SignUpPageController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../styles/MaterialDesign.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.laundryapp.SignUpPageController">
    <children>
       <AnchorPane id="AnchorPane" fx:id="frm_signUp" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass">
          <stylesheets>
             <URL value="@/styles/signuppage.css" />
          </stylesheets>
          <children>
-            <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="600.0">
-               <menus>
-                  <Menu mnemonicParsing="false" text="File">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="Sign up" />
-                        <MenuItem mnemonicParsing="false" text="Sign in" />
-                     </items>
-                  </Menu>
-                  <Menu mnemonicParsing="false" text="Edit">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="Delete" />
-                        <MenuItem mnemonicParsing="false" text="Clear" />
-                     </items>
-                  </Menu>
-                  <Menu mnemonicParsing="false" text="Help">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
-                     </items>
-                  </Menu>
-               </menus>
-            </MenuBar>
             <AnchorPane layoutY="27.0" prefHeight="374.0" prefWidth="300.0">
                <children>
                   <AnchorPane layoutX="43.0" layoutY="41.0">
                      <children>
-                        <Label text="User name" />
+                        <Label styleClass="result-card" text="%snUsrname" />
                         <TextField fx:id="txtUserName" layoutY="29.0" prefHeight="30.0" prefWidth="200.0" stylesheets="@../../../styles/LoginDesign.css" />
                      </children>
                   </AnchorPane>
                   <AnchorPane layoutX="43.0" layoutY="116.0">
                      <children>
-                        <Label text="Full name" />
+                        <Label styleClass="result-card" text="%snFullname" />
                         <TextField fx:id="txtFullName" layoutY="29.0" prefHeight="30.0" prefWidth="200.0" stylesheets="@../../../styles/LoginDesign.css" />
                      </children>
                   </AnchorPane>
                   <AnchorPane layoutX="43.0" layoutY="187.0">
                      <children>
-                        <Label text="Password" />
-                        <TextField fx:id="txtPassword" layoutY="29.0" prefHeight="30.0" prefWidth="200.0" stylesheets="@../../../styles/LoginDesign.css" />
+                        <Label styleClass="result-card" text="%psword" />
                      </children>
                   </AnchorPane>
-                  <Button fx:id="btnSignUp" layoutX="43.0" layoutY="289.0" mnemonicParsing="false" onAction="#OnClick_SignUp" prefHeight="30.0" prefWidth="200.0" styleClass="login" stylesheets="@../../../styles/LoginDesign.css" text="Sign Up" textFill="WHITE" />
+                  <Button fx:id="btnBack" layoutX="129.0" layoutY="305.0" mnemonicParsing="false" onAction="#Back" prefHeight="36.0" prefWidth="114.0" stylesheets="@../../../styles/MaterialDesign.css" text="%backBtn" textFill="WHITE" />
+                  <PasswordField fx:id="txtPassword" layoutX="43.0" layoutY="215.0" prefHeight="30.0" prefWidth="200.0" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="300.0" layoutY="27.0" prefHeight="374.0" prefWidth="300.0">
+            <AnchorPane layoutX="300.0" layoutY="27.0" prefHeight="374.0" prefWidth="300.0" stylesheets="@../../../styles/MaterialDesign.css">
                <children>
                   <AnchorPane layoutX="50.0" layoutY="117.0">
                      <children>
-                        <Label text="Address" />
+                        <Label styleClass="result-card" text="%snAdrr" />
                         <TextField fx:id="txtAddress" layoutY="29.0" prefHeight="30.0" prefWidth="200.0" stylesheets="@../../../styles/LoginDesign.css" />
                      </children>
                   </AnchorPane>
                   <AnchorPane layoutX="50.0" layoutY="42.0">
                      <children>
-                        <Label text="Phone" />
+                        <Label styleClass="result-card" text="%snPhone" />
                         <TextField fx:id="txtPhone" layoutY="29.0" prefHeight="30.0" prefWidth="200.0" stylesheets="@../../../styles/LoginDesign.css" />
                      </children>
                   </AnchorPane>
+                  <Label fx:id="lblLanguageSwitchLg" alignment="CENTER" layoutX="217.0" layoutY="-24.0" minHeight="-Infinity" onMouseClicked="#switchLanguage" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: transparent; -fx-padding: 0;" styleClass="combo-box" stylesheets="@../../../styles/MaterialDesign.css" text="Label" />
+                  <Button fx:id="btnSignUp" layoutX="50.0" layoutY="304.0" mnemonicParsing="false" onAction="#OnClick_SignUp" prefHeight="30.0" prefWidth="200.0" stylesheets="@../../../styles/MaterialDesign.css" text="%signUpBtn" textFill="WHITE" />
                </children>
             </AnchorPane>
          </children>
