@@ -910,16 +910,22 @@ public class DashboardController implements Initializable {
         con = database.openConnection();
         String sql = "select * from LAUNDRY_SERVICES";
         ObservableList<Option> data = FXCollections.observableArrayList();
-
+        String otpName = "";
+        String otpToShow = "";
         try {
             stmt = con.createStatement();
             res = stmt.executeQuery(sql);
             while (res.next()) {
-                String otpName = res.getString("LS_name");
-                String otpToShow = bundle.getString(otpName);
-//                Option option = new Option(res.getInt("LS_id"), res.getString("LS_name"));
-                Option option = new Option(res.getInt("LS_id"), otpToShow);
-                data.add(option);
+                try {
+                    otpName = res.getString("LS_name");
+                    otpToShow = bundle.getString(otpName);
+                } catch (Exception e) {
+                    otpToShow = otpName;
+                } finally {
+//                    Option option = new Option(res.getInt("LS_id"), res.getString("LS_name"));
+                    Option option = new Option(res.getInt("LS_id"), otpToShow);
+                    data.add(option);
+                }
             }
             con.close();
         } catch (SQLException ex) {
@@ -1004,7 +1010,7 @@ public class DashboardController implements Initializable {
         LocalDate currentDate = LocalDate.now();
         Date sqlDate = Date.valueOf(currentDate);
         int cusId = CustomerSearch(phone).getId();
-        System.out.println("CUSTOMER ID IS "+cusId);
+        System.out.println("CUSTOMER ID IS " + cusId);
         con = database.openConnection();
         String sql = "insert into ORDERS (CUS_id, ORDER_order_date, ORDER_pickup_date, ORDER_total_price) values (?, ?, ?, ?);";
         try {
@@ -1323,11 +1329,17 @@ public class DashboardController implements Initializable {
 
             while (res.next()) {
                 String itemName = res.getString("LS_name");
-                String itemNameToShow = bundle.getString(itemName);
-//                Service item = new Service(res.getInt("LS_id"), res.getString("LS_name"), res.getFloat("LS_multiplier"));
-                Service item = new Service(res.getInt("LS_id"), itemNameToShow, res.getFloat("LS_multiplier"));
-                System.out.println(item.getId() + ", " + item.getName() + ", " + item.getMultiplier());
-                data.add(item);
+                String itemNameToShow = itemName;
+                try {
+                    itemNameToShow = bundle.getString(itemName);
+                } catch (Exception e) {
+                    itemNameToShow = itemName;
+                } finally {
+//                    Service item = new Service(res.getInt("LS_id"), res.getString("LS_name"), res.getFloat("LS_multiplier"));
+                    Service item = new Service(res.getInt("LS_id"), itemNameToShow, res.getFloat("LS_multiplier"));
+                    System.out.println(item.getId() + ", " + item.getName() + ", " + item.getMultiplier());
+                    data.add(item);
+                }     
             }
 
             con.close();
@@ -1484,11 +1496,17 @@ public class DashboardController implements Initializable {
 
             while (res.next()) {
                 String itemT = res.getString("ITEM_type").trim();
-
+                String itemTypeToShow = itemT;
 //                String itemType = "clothes";
-                String itemTypeToShow = bundle.getString(itemT);
-                Item item = new Item(res.getInt("ITEM_id"), itemTypeToShow, res.getFloat("ITEM_unit_price"));
-                data.add(item);
+                try {
+                    itemTypeToShow = bundle.getString(itemT);
+
+                } catch (Exception e) {
+                    itemTypeToShow = itemT;
+                } finally {
+                    Item item = new Item(res.getInt("ITEM_id"), itemTypeToShow, res.getFloat("ITEM_unit_price"));
+                    data.add(item);
+                }
             }
 
             con.close();
