@@ -80,6 +80,7 @@
 
 .table-view .cell {
     -fx-alignment: center;
+    -fx-text-fill:black;
     /*    -fx-background-color: white;
         -fx-border-color: #E0E0E0;
         -fx-padding: 8 4;*/
