@@ -84,6 +84,7 @@ public class SignUpPageController implements Initializable {
                     || txtPassword.getText() == ""
                     || txtPhone.getText() == ""
                     || txtAddress.getText() == "") {
+                System.out.println("Error");
                 throw new SQLException(bundle.getString("fillFieldsMessage"));
             }
 

@@ -909,13 +909,16 @@ public class DashboardController implements Initializable {
     //database connect
     public ObservableList<Option> GetServices() {
         con = database.openConnection();
-        String sql = "select * from LAUNDRY_SERVICES";
+        
+        String sql = "select * from LAUNDRY_SERVICES ls where ls.LS_status <> ?";
+        
         ObservableList<Option> data = FXCollections.observableArrayList();
         String otpName = "";
         String otpToShow = "";
         try {
-            stmt = con.createStatement();
-            res = stmt.executeQuery(sql);
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, OperationStatus.getInactive());
+            res = pstmt.executeQuery();
             while (res.next()) {
                 try {
                     otpName = res.getString("LS_name");
@@ -937,12 +940,15 @@ public class DashboardController implements Initializable {
 
     public ObservableList<Option> GetCategory() {
         con = database.openConnection();
-        String sql = "select * from ITEMS";
+        String sql = "select * from ITEMS i where i.ITEM_status <> ?";
         ObservableList<Option> data = FXCollections.observableArrayList();
 
         try {
-            stmt = con.createStatement();
-            res = stmt.executeQuery(sql);
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, OperationStatus.getInactive());  
+            
+            res = pstmt.executeQuery();
+            
             while (res.next()) {
 
 //                String itemT = res.getString("ITEM_type").trim();
@@ -1507,7 +1513,7 @@ public class DashboardController implements Initializable {
 
     public void OnClick_ServiceSave() {
         con = database.openConnection();
-        String sql = "INSERT INTO LAUNDRY_SERVICES (LS_name, LS_multiplier) VALUES (?,?)";
+        String sql = "INSERT INTO LAUNDRY_SERVICES (LS_name, LS_multiplier, LS_status) VALUES (?,?,?)";
 
         try {
             pstmt = con.prepareStatement(sql);
@@ -1528,7 +1534,8 @@ public class DashboardController implements Initializable {
             
             pstmt.setString(1, txtServiceName.getText());
             pstmt.setFloat(2, Float.parseFloat(txtServiceMultiplier.getText()));
-            
+            pstmt.setFloat(3, OperationStatus.getActive());
+
             int rows = pstmt.executeUpdate();
 
             if (rows > 0) {
@@ -1637,7 +1644,7 @@ public class DashboardController implements Initializable {
     // event for Service-Item page
     public void OnClick_ServiceItemSave() {
         con = database.openConnection();
-        String sql = "INSERT INTO ITEMS (ITEM_type, ITEM_unit_price) VALUES (?,?)";
+        String sql = "INSERT INTO ITEMS (ITEM_type, ITEM_unit_price, ITEM_status) VALUES (?,?,?)";
 
         try {
             pstmt = con.prepareStatement(sql);
@@ -1657,6 +1664,7 @@ public class DashboardController implements Initializable {
             
             pstmt.setString(1, txtServiceItemName.getText());
             pstmt.setFloat(2, Float.parseFloat(txtServiceItemUnitPrice.getText()));
+            pstmt.setFloat(3, OperationStatus.getActive());
 
             int rows = pstmt.executeUpdate();
 
