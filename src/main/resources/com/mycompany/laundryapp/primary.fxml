@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -22,28 +23,33 @@
                   </ImageView>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="268.0" layoutY="1.0" prefHeight="400.0" prefWidth="332.0" styleClass="right-form" stylesheets="@../../../styles/LoginDesign.css">
+            <AnchorPane layoutX="268.0" layoutY="1.0" prefHeight="400.0" prefWidth="332.0" styleClass="right-form" stylesheets="@../../../styles/MaterialDesign.css">
                <children>
-                  <Label layoutX="97.0" layoutY="69.0" text="Welcome Back!" textAlignment="CENTER">
-                     <font>
-                        <Font name="SansSerif Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="btnLogin" layoutX="66.0" layoutY="306.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="200.0" styleClass="login" stylesheets="@../../../styles/LoginDesign.css" text="Login" textFill="WHITE" />
+                  <Button fx:id="btnLogin" layoutX="66.0" layoutY="306.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="200.0" stylesheets="@../../../styles/LoginDesign.css" text="%mainLogin" textFill="WHITE" />
                   <AnchorPane layoutX="66.0" layoutY="123.0">
                      <children>
-                        <Label text="User name" />
+                        <Label style="-fx-font-size: 12;" styleClass="result-card" text="%usrName" />
                         <TextField fx:id="txtUserName" layoutY="29.0" prefHeight="30.0" prefWidth="200.0" stylesheets="@../../../styles/LoginDesign.css" />
                      </children>
                   </AnchorPane>
                   <AnchorPane layoutX="66.0" layoutY="200.0">
                      <children>
-                        <Label text="Password" />
-                        <TextField fx:id="txtPassword" accessibleRole="PASSWORD_FIELD" layoutY="29.0" prefHeight="30.0" prefWidth="200.0" />
+                        <Label style="-fx-font-size: 12;" styleClass="result-card" text="%psword" />
                      </children>
                   </AnchorPane>
-                  <Label fx:id="lblSignUp" layoutX="90.0" layoutY="353.0" onMouseClicked="#signUp" styleClass="text" stylesheets="@../../../styles/LoginDesign.css" text="Don't have account? Sign up" />
-                  <Label fx:id="lblForgotPass" layoutX="171.0" layoutY="270.0" styleClass="text" stylesheets="@../../../styles/LoginDesign.css" text="Forgot password?" />
+                  <Label fx:id="lblSignUp" alignment="CENTER" layoutX="90.0" layoutY="346.0" onMouseClicked="#signUp" prefHeight="30.0" prefWidth="330.0" style="-fx-font-size: 12;" styleClass="result-card" stylesheets="@../../../styles/LoginDesign.css" text="%account" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="345.0" />
+                  <Label fx:id="lblForgotPass" layoutX="171.0" layoutY="270.0" style="-fx-font-size: 12;" styleClass="result-card" stylesheets="@../../../styles/LoginDesign.css" text="%forgot" />
+                  <Label fx:id="lblLanguageSwitch" alignment="CENTER" layoutX="251.0" layoutY="4.0" minHeight="-Infinity" onMouseClicked="#switchLanguage" prefHeight="30.0" prefWidth="75.0" style="-fx-padding: 0; -fx-background-color: transparent;" styleClass="combo-box" text="Label" />
+                  <AnchorPane layoutX="1.0" layoutY="49.0" prefHeight="59.0" prefWidth="330.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="293.6666666666667" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.6666666666666856" AnchorPane.topAnchor="49.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="41.0" layoutY="16.0" prefHeight="55.333333333333314" prefWidth="328.0" text="%welcom" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <font>
+                              <Font name="SansSerif Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <PasswordField fx:id="txtPassword" layoutX="66.0" layoutY="225.0" prefHeight="36.0" prefWidth="200.0" />
                </children>
             </AnchorPane>
          </children>

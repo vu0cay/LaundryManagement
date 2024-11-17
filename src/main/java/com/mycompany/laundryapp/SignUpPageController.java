@@ -1,5 +1,6 @@
 package com.mycompany.laundryapp;
 
+import java.util.Locale;
 import com.mycompany.laundryapp.models.Staff;
 import java.io.IOException;
 import java.net.URL;
@@ -17,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -54,8 +56,12 @@ public class SignUpPageController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         // TODO
+        initBtnLanguage();
     }
+
+    ResourceBundle bundle;
 
     PreparedStatement pstmt;
     ResultSet res;
@@ -64,6 +70,13 @@ public class SignUpPageController implements Initializable {
 
     public void OnClick_SignUp() {
         con = database.openConnection();
+//        ResourceBundle bundle;
+        if (languageN.equals("en")) {
+            bundle = ResourceBundle.getBundle("language.MessageBundle", Locale.US);
+        } else {
+            Locale.setDefault(new Locale("vi", "VN"));
+            bundle = ResourceBundle.getBundle("language.MessageBundle");
+        }
         try {
             // Check if any field is empty
             if (txtFullName.getText() == ""
@@ -71,7 +84,7 @@ public class SignUpPageController implements Initializable {
                     || txtPassword.getText() == ""
                     || txtPhone.getText() == ""
                     || txtAddress.getText() == "") {
-                throw new SQLException("Please fill all fields!");
+                throw new SQLException(bundle.getString("fillFieldsMessage"));
             }
 
             // Check if the username already exists
@@ -81,7 +94,7 @@ public class SignUpPageController implements Initializable {
             res = pstmt.executeQuery();
 
             if (res.next()) {
-                throw new SQLException("User name has already been used");
+                throw new SQLException(bundle.getString("ExistingUsername"));
             }
 
             // Insert new staff record
@@ -105,27 +118,44 @@ public class SignUpPageController implements Initializable {
 
                     // Show success alert
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setContentText("Sign up successful!");
+                    alert.setContentText(bundle.getString("signUpInfo"));
                     alert.showAndWait();
 
                     // Create Staff object with the generated id
                     Staff staff = new Staff(staffId, txtFullName.getText(), txtUserName.getText(),
-                                            txtPhone.getText(), txtAddress.getText());
+                            txtPhone.getText(), txtAddress.getText());
 
                     // Close the current window and open the dashboard
                     btnSignUp.getScene().getWindow().hide();
 
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
-                        Parent root = loader.load();
-                        DashboardController dbController = loader.getController();
+//                        FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
+//                        Parent root = loader.load();
+//                        DashboardController dbController = loader.getController();
+//
+//                        // Initialize Dashboard with the staff data
+//                        dbController.initData(staff);
+//                        dbController.initLanguage(languageN);
+//
+//                        Stage stage = new Stage();
+//                        Scene scene = new Scene(root, 1080, 800);
+//                        stage.setScene(scene);
+//                        stage.show();
 
-                        // Initialize Dashboard with the staff data
-                        dbController.initData(staff);
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"), bundle);
+                        Parent root = loader.load();
+
+                        DashboardController dC = loader.getController();
+                        dC.initData(staff);
+                        System.out.println("Language pass to Dashboard is "+languageN);
+                        dC.initLanguage(languageN);
+                        dC.initBtnLanguage();
 
                         Stage stage = new Stage();
-                        Scene scene = new Scene(root, 1080, 800);
+                        Scene scene = new Scene(root);
+
                         stage.setScene(scene);
+
                         stage.show();
                     } catch (IOException ex) {
                         Logger.getLogger(SignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
@@ -133,13 +163,112 @@ public class SignUpPageController implements Initializable {
                 }
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("No changes made!");
+                alert.setContentText(bundle.getString("NoChange"));
                 alert.showAndWait();
             }
 
             con.close();
         } catch (SQLException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+    public void reloadSignUp(String languageMm) {
+        lblLanguageSwitchLg.getScene().getWindow().hide();
+        try {
+            ResourceBundle bundle;
+            if (languageN.equals("en")) {
+                bundle = ResourceBundle.getBundle("language.MessageBundle", Locale.US);
+            } else {
+                Locale.setDefault(new Locale("vi", "VN"));
+                bundle = ResourceBundle.getBundle("language.MessageBundle");
+            }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"), bundle);
+            Parent root = loader.load();
+
+            SignUpPageController sC = loader.getController();
+
+            sC.initLanguage(languageMm);
+            sC.initBtnLanguage();
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+
+            stage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(SignUpPageController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+    public void switchLanguage() {
+        if (languageN.equals("en")) {
+            languageN = "vi";
+        } else {
+            languageN = "en";
+        }
+        reloadSignUp(languageN);
+//        initBtnLanguage();
+    }
+
+    public void initLanguage(String langg) {
+        this.languageN = langg;
+    }
+
+    public void initBtnLanguage() {
+//        System.out.println("INBTN "+languageN);
+        if (languageN.equals("en")) {
+            lblLanguageSwitchLg.setText("English");
+        } else {
+            lblLanguageSwitchLg.setText("Tiếng Việt");
+        }
+    }
+    private String languageN = "en";
+    @FXML
+    private Label lblLanguageSwitchLg;
+    
+    @FXML
+    private Button btnBack;
+    
+    public void Back(){
+        btnBack.getScene().getWindow().hide();
+        try {
+            ResourceBundle bundle;
+            if (languageN.equals("en")) {
+                bundle = ResourceBundle.getBundle("language.MessageBundle", Locale.US);
+            } else {
+                Locale.setDefault(new Locale("vi", "VN"));
+                bundle = ResourceBundle.getBundle("language.MessageBundle");
+            }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"), bundle);
+            Parent root = loader.load();
+
+            PrimaryController sC = loader.getController();
+
+            sC.initLanguage(languageN);
+            sC.initBtnLanguage();
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+
+            stage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(SignUpPageController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
         }

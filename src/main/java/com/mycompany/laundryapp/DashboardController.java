@@ -4,6 +4,9 @@
  */
 package com.mycompany.laundryapp;
 
+import java.util.Locale;
+//import java.util.ResourceBundle;
+
 //import com.mycompany.laundryapp.models.Item;
 //import com.mycompany.laundryapp.models.Staff;
 import com.mycompany.laundryapp.models.Staff;
@@ -63,6 +66,7 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 /**
@@ -193,22 +197,21 @@ public class DashboardController implements Initializable {
     @FXML
     private TableColumn<Item, Number> tabcoItemPrice;
     @FXML
-    private TableColumn<Item, Void> tabcoAction;    
-
+    private TableColumn<Item, Void> tabcoAction;
 
     //Orderlist components
     @FXML
     private ComboBox<Integer> rmenuOrderListRows;
-        
+
     @FXML
     private TextField txtOrderListSearch;
-        
+
     @FXML
     private Button btnOrderListRefresh;
-    
+
     @FXML
     private TableView<OrderListTable> tavOrderList;
-    
+
     @FXML
     private TableColumn<OrderListTable, Void> tabcoOrderListAction;
 
@@ -229,19 +232,19 @@ public class DashboardController implements Initializable {
 
     @FXML
     private TableColumn<OrderListTable, String> tabcoOrderListStatus;
-    
+
     @FXML
     private Button btnOrderListEditCancel;
 
     @FXML
     private Button btnOrderListEditSave;
-    
+
     @FXML
-    private ComboBox<String> rmenuOrderListEdit;    
+    private ComboBox<String> rmenuOrderListEdit;
 
     @FXML
     private DialogPane paneOrderList_editStatus;
-    
+
     //Service components
     @FXML
     private AnchorPane NO_AddDetail_pane;
@@ -254,16 +257,16 @@ public class DashboardController implements Initializable {
 
     @FXML
     private ComboBox<Option> NO_Category_add;
-    
+
     @FXML
     private Button NO_CustomerSearch_btn;
 
     @FXML
     private Button NO_CreateCus_btn;
-    
+
     @FXML
     private DialogPane NO_CreateCus_pane;
-    
+
     @FXML
     private Button NO_CreateCus_cancel_btn;
 
@@ -287,7 +290,7 @@ public class DashboardController implements Initializable {
 
     @FXML
     private TextField NO_Phone_txt;
-    
+
     @FXML
     private Label NO_Order_id;
 
@@ -317,18 +320,13 @@ public class DashboardController implements Initializable {
 
     @FXML
     private TableColumn<NO_Detail, Float> NO_table_Weight_col;
-    
-        
-  //====================================================================================================================================================  
-  //init datas for the app
-    
-    
-    
-    
+
+    //====================================================================================================================================================  
+    //init datas for the app
     // Service - Service page component
     @FXML
     private TableView<Service> tavServiceType;
-    
+
     @FXML
     private TableColumn<Service, Void> tabcoServiceTypeAction;
 
@@ -339,10 +337,8 @@ public class DashboardController implements Initializable {
     private TableColumn<Service, String> tabcoServiceTypeName;
     @FXML
     private TableColumn<Service, Float> tabcoServiceTypeMultiplier;
-    
-    
+
     // dialog
-   
     @FXML
     private DialogPane dipServiceTypeAction;
     @FXML
@@ -353,18 +349,14 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Button btnDialServiceTypeSave;
-    
+
     @FXML
     private TextField txtDialServiceTypeMul;
 
     @FXML
     private TextField txtDialServiceTypeName;
-    
 
     //====================================================================================================================================================  
-
-
-
     //====================================================================================================================================================  
     //init datas for the app
     /* public void initComponents(){
@@ -443,24 +435,27 @@ public class DashboardController implements Initializable {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
+        if (this.bundle == null) {
+            this.bundle = rb;
+        }
+
         initComponents_OL();
         initComponents_NO();
-       SetUpServiceTableView();
+        SetUpServiceTableView();
         SetUpServiceTypeTableView();
-
         aboutUs();
+        initBtnLanguage();
+
 //        statistics();
         //
 //        lblAUStaffname.setText(staff.getName());
 //        lblAUStaffAddress.setText(staff.getAddress());
 //        lblAUStaffphone.setText(staff.getPhone());
         //
-
         // TODO
         //Stage stage = (Stage) .getScene().getWindow();
     }
@@ -554,33 +549,63 @@ public class DashboardController implements Initializable {
     public void OnClick_Logout() {
         lblUserName.getScene().getWindow().hide();
 
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"));
+//            Parent root;
+//            root = loader.load();
+////            DashboardController dashboard = loader.getController();
+//
+////            dashboard.initData(staff);
+//            Stage stage = new Stage();
+//            Scene scene = new Scene(root, 600, 400);
+//
+//            stage.setScene(scene);
+//            stage.show();
+//
+//        } catch (IOException ex) {
+//            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"));
-            Parent root;
-            root = loader.load();
-//            DashboardController dashboard = loader.getController();
+            ResourceBundle bundle;
+            if (languageN.equals("en")) {
+                bundle = ResourceBundle.getBundle("language.MessageBundle", Locale.US);
+            } else {
+                Locale.setDefault(new Locale("vi", "VN"));
+                bundle = ResourceBundle.getBundle("language.MessageBundle");
+            }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"), bundle);
+            Parent root = loader.load();
 
-//            dashboard.initData(staff);
+            PrimaryController pmrC = loader.getController();
+
+            pmrC.initLanguage(languageN);
+            pmrC.initBtnLanguage();
+
             Stage stage = new Stage();
-            Scene scene = new Scene(root, 600, 400);
+            Scene scene = new Scene(root);
 
             stage.setScene(scene);
+
             stage.show();
 
         } catch (IOException ex) {
-            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            Logger.getLogger(PrimaryController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
 
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        }
     }
-    
-    
-  //====================================================================================================================================================  
-  //Order List functions
+
+    //====================================================================================================================================================  
+    //Order List functions
     private int OLCurrentId;
+
     public void initComponents_OL() {
-        rmenuOrderListRows.getItems().addAll(50, 100, 500, 1000);
-        rmenuOrderListRows.setValue(50);
-        
+        rmenuOrderListRows.getItems().addAll(Integer.valueOf(50), Integer.valueOf(100), Integer.valueOf(500), Integer.valueOf(1000));
+        rmenuOrderListRows.setValue(Integer.valueOf(50));
+
         tabcoOrderListId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tabcoOrderListCustomer.setCellValueFactory(new PropertyValueFactory<>("customer"));
         tabcoOrderListPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
@@ -588,28 +613,26 @@ public class DashboardController implements Initializable {
         tabcoOrderListPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         tabcoOrderListStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 //        tabcoAction.setCellValueFactory(data -> data.getValue().getButton());
-        
+
         Callback<TableColumn<OrderListTable, Void>, TableCell<OrderListTable, Void>> cellFactory = new Callback<>() {
             @Override
             public TableCell<OrderListTable, Void> call(TableColumn<OrderListTable, Void> param) {
                 return new TableCell<>() {
-                    private final Button btn = new Button("Edit");
+                    private final Button btn = new Button(bundle.getString("tableEditBtn"));
 
                     {
                         btn.setOnMouseClicked(event -> {
                             OrderListTable items = getTableView().getItems().get(getIndex());
-                            System.out.println("Button clicked for " + items.getId());
+//                            System.out.println("Button clicked for " + items.getId());
 
                             // set dialog edit
                             OLCurrentId = items.getId();
-                            
-                            rmenuOrderListEdit.getItems().clear();  
-                            rmenuOrderListEdit.getItems().addAll("processing", "completed", "paid");  
+
+                            rmenuOrderListEdit.getItems().clear();
+                            rmenuOrderListEdit.getItems().addAll(bundle.getString("processing"), bundle.getString("completed"), bundle.getString("paid"));
 //                            txtDialUnitPrice.setText(Double.toString(items.getUnitPrice()));
                             paneOrderList_editStatus.setVisible(true);
-                            
-                            
-                            
+
                         });
                     }
 
@@ -625,25 +648,24 @@ public class DashboardController implements Initializable {
                 };
             }
         };
-        
-        
+
         tabcoOrderListAction.setCellFactory(cellFactory);
         OnClick_btnOrderListRefresh();
     }
-    
+
     //database stuffs
     public List<Integer> getRecentOrderIds(int amount, String excludeStatus) {
         List<Integer> orderIds = new ArrayList<>();
-        String sql = "SELECT TOP " + amount + " o.ORDER_id " +
-                     "FROM ORDERS o " +
-                     "JOIN STATUS_DETAILS sd ON o.ORDER_id = sd.ORDER_id " +
-                     "WHERE sd.SD_status <> ? " +
-                     "AND sd.SD_timestamp = (" +
-                     "    SELECT MAX(inner_sd.SD_timestamp) " +
-                     "    FROM STATUS_DETAILS inner_sd " +
-                     "    WHERE inner_sd.ORDER_id = o.ORDER_id" +
-                     ") " +
-                     "ORDER BY o.ORDER_order_date DESC";
+        String sql = "SELECT TOP " + amount + " o.ORDER_id "
+                + "FROM ORDERS o "
+                + "JOIN STATUS_DETAILS sd ON o.ORDER_id = sd.ORDER_id "
+                + "WHERE sd.SD_status <> ? "
+                + "AND sd.SD_timestamp = ("
+                + "    SELECT MAX(inner_sd.SD_timestamp) "
+                + "    FROM STATUS_DETAILS inner_sd "
+                + "    WHERE inner_sd.ORDER_id = o.ORDER_id"
+                + ") "
+                + "ORDER BY o.ORDER_order_date DESC";
 
         try {
             con = database.openConnection();
@@ -652,7 +674,7 @@ public class DashboardController implements Initializable {
             res = pstmt.executeQuery();
 
             while (res.next()) {
-                orderIds.add(res.getInt("ORDER_id"));
+                orderIds.add(Integer.valueOf(res.getInt("ORDER_id")));
             }
 
             con.close();
@@ -668,10 +690,10 @@ public class DashboardController implements Initializable {
 
     public List<Integer> findOrderIdsByPhoneNumber(String phoneNumber) {
         List<Integer> orderIds = new ArrayList<>();
-        String sql = "SELECT o.ORDER_id " +
-                     "FROM ORDERS o " +
-                     "JOIN CUSTOMERS c ON o.CUS_id = c.CUS_id " +
-                     "WHERE c.CUS_phone LIKE ?";
+        String sql = "SELECT o.ORDER_id "
+                + "FROM ORDERS o "
+                + "JOIN CUSTOMERS c ON o.CUS_id = c.CUS_id "
+                + "WHERE c.CUS_phone LIKE ?";
 
         try {
             Connection con = database.openConnection();  // Assume database.openConnection() opens your DB connection
@@ -680,7 +702,7 @@ public class DashboardController implements Initializable {
             ResultSet res = pstmt.executeQuery();
 
             while (res.next()) {
-                orderIds.add(res.getInt("ORDER_id"));
+                orderIds.add(Integer.valueOf(res.getInt("ORDER_id")));
             }
 
             con.close();
@@ -692,22 +714,22 @@ public class DashboardController implements Initializable {
         }
         return orderIds;
     }
-    
+
     public OrderListTable GetDataForOrderListTable(int OrderId) {
         OrderListTable orderRow = null;
-        String sql = "SELECT " +
-                     "o.ORDER_id AS OrderID, " +
-                     "c.CUS_name AS CustomerName, " +
-                     "c.CUS_phone AS CustomerPhone, " +
-                     "o.ORDER_order_date AS OrderDate, " +
-                     "o.ORDER_total_price AS TotalPrice, " +
-                     "(SELECT TOP 1 SD_status " +
-                     " FROM STATUS_DETAILS sd " +
-                     " WHERE sd.ORDER_id = o.ORDER_id " +
-                     " ORDER BY sd.SD_timestamp DESC) AS LatestStatus " +
-                     "FROM ORDERS o " +
-                     "JOIN CUSTOMERS c ON o.CUS_id = c.CUS_id " +
-                     "WHERE o.ORDER_id = ?";
+        String sql = "SELECT "
+                + "o.ORDER_id AS OrderID, "
+                + "c.CUS_name AS CustomerName, "
+                + "c.CUS_phone AS CustomerPhone, "
+                + "o.ORDER_order_date AS OrderDate, "
+                + "o.ORDER_total_price AS TotalPrice, "
+                + "(SELECT TOP 1 SD_status "
+                + " FROM STATUS_DETAILS sd "
+                + " WHERE sd.ORDER_id = o.ORDER_id "
+                + " ORDER BY sd.SD_timestamp DESC) AS LatestStatus "
+                + "FROM ORDERS o "
+                + "JOIN CUSTOMERS c ON o.CUS_id = c.CUS_id "
+                + "WHERE o.ORDER_id = ?";
 
         try {
             con = database.openConnection();
@@ -722,10 +744,13 @@ public class DashboardController implements Initializable {
                 Date orderDate = res.getDate("OrderDate");
                 float totalPrice = res.getFloat("TotalPrice");
                 String latestStatus = res.getString("LatestStatus");
-
+//                System.out.println("LATEST STATUS IS " + latestStatus);
+                if (latestStatus != null) {
+                    latestStatus = bundle.getString(latestStatus);
+                }
                 orderRow = new OrderListTable(id, customerName, customerPhone, orderDate, totalPrice, latestStatus);
             } else {
-                System.out.println("No order found with ID: " + OrderId);
+//                System.out.println("No order found with ID: " + OrderId);
             }
 
             con.close();
@@ -737,14 +762,20 @@ public class DashboardController implements Initializable {
 
         return orderRow;
     }
-    
+
     public void insertStatus(int staffId, int orderId, String status) {
         // SQL statement without the timestamp column
         String sql = "INSERT INTO STATUS_DETAILS (SF_id, ORDER_id, SD_status) VALUES (?, ?, ?)";
 
-        try (Connection con = database.openConnection();
-             PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try (Connection con = database.openConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
 
+            if (status.equals("Paid") || status.equals("Đã thu")) {
+                status = "paid";
+            } else if (status.equals("Completed") || status.equals("Xong")) {
+                status = "completed";
+            } else {
+                status = "processing";
+            }
             pstmt.setInt(1, staffId);  // Set staffId
             pstmt.setInt(2, orderId);  // Set orderId
             pstmt.setString(3, status);  // Set status
@@ -757,51 +788,50 @@ public class DashboardController implements Initializable {
             alert.showAndWait();
         }
     }
+
     //in-app stuffs
     //i don't know which button use this
-      public void setUpOrderListTable() {
-      }   
-      
+    public void setUpOrderListTable() {
+    }
+
     public void OnClick_btnOrderListRefresh() {
         ObservableList<OrderListTable> data = FXCollections.observableArrayList();
-        List<Integer> orderIds ;
-        if(txtOrderListSearch.getText() == "") {
+        List<Integer> orderIds;
+        if (txtOrderListSearch.getText() == "") {
             orderIds = getRecentOrderIds(rmenuOrderListRows.getValue(), "paid");
-        }else {
+        } else {
             orderIds = findOrderIdsByPhoneNumber(txtOrderListSearch.getText());
         }
-        for(int id : orderIds) {
+        for (int id : orderIds) {
             data.add(GetDataForOrderListTable(id));
         }
         tavOrderList.setItems(data);
         tavOrderList.refresh();
     }
-    
+
     public void OnClick_btnOrderListEditCancel() {
         paneOrderList_editStatus.setVisible(false);
     }
-    
-    
+
     public void OnClick_btnOrderListEditSave() {
-        if(rmenuOrderListEdit.getValue() == null) {
+        if (rmenuOrderListEdit.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning");
             alert.setHeaderText(null);
-            alert.setContentText("Please select a status before proceeding.");
-            alert.showAndWait();  
+            alert.setContentText(bundle.getString("statusRequire"));
+            alert.showAndWait();
             return;
         }
         insertStatus(staff.getId(), OLCurrentId, rmenuOrderListEdit.getValue());
         OnClick_btnOrderListRefresh();
         paneOrderList_editStatus.setVisible(false);
     }
-    
-    
-  //====================================================================================================================================================  
-  //New Order functions
+
+    //====================================================================================================================================================  
+    //New Order functions
     //----------
     //init components
-    public void initComponents_NO(){
+    public void initComponents_NO() {
         NO_Service_add.setCellFactory(lv -> new ListCell<Option>() {
             @Override
             protected void updateItem(Option item, boolean empty) {
@@ -813,10 +843,10 @@ public class DashboardController implements Initializable {
             @Override
             protected void updateItem(Option item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty ? null : item.getType());  
+                setText(empty ? null : item.getType());
             }
         });
-        
+
         NO_Category_add.setCellFactory(lv -> new ListCell<Option>() {
             @Override
             protected void updateItem(Option item, boolean empty) {
@@ -828,22 +858,22 @@ public class DashboardController implements Initializable {
             @Override
             protected void updateItem(Option item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty ? null : item.getType());  
+                setText(empty ? null : item.getType());
             }
         });
-        
+
         NO_Weight_add.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*(\\.\\d*)?")) {
                 NO_Weight_add.setText(oldValue); // Allows decimal numbers
             }
         });
-        
+
         NO_CreateCus_phone_txt.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 NO_CreateCus_phone_txt.setText(newValue.replaceAll("[^\\d]", "")); // Allow only digits
             }
         });
-        
+
         NO_Customer_Search_txt.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 NO_Customer_Search_txt.setText(newValue.replaceAll("[^\\d]", "")); // Allow only digits
@@ -851,7 +881,7 @@ public class DashboardController implements Initializable {
         });
         NO_Service_add.setItems(GetServices());
         NO_Category_add.setItems(GetCategory());
-        
+
         NO_table_Category_col.setCellValueFactory(new PropertyValueFactory<>("category"));
 
         // Weight column: Float type
@@ -868,101 +898,127 @@ public class DashboardController implements Initializable {
 
         // Total column: Float type
         NO_table_Total_col.setCellValueFactory(new PropertyValueFactory<>("total"));
-        
+
         ObservableList<NO_Detail> data = FXCollections.observableArrayList();
         NO_Detail_table.setItems(data);
         NO_Order_id.setText("");
     }
-    
+
     //----------
     //database connect
-     public ObservableList<Option> GetServices(){
+    public ObservableList<Option> GetServices() {
         con = database.openConnection();
         String sql = "select * from LAUNDRY_SERVICES";
         ObservableList<Option> data = FXCollections.observableArrayList();
-        
+        String otpName = "";
+        String otpToShow = "";
         try {
             stmt = con.createStatement();
-            res = stmt.executeQuery(sql);            
-            while(res.next()) {
-                Option option = new Option(res.getInt("LS_id"), res.getString("LS_name"));
-                data.add(option);
-            }              
+            res = stmt.executeQuery(sql);
+            while (res.next()) {
+                try {
+                    otpName = res.getString("LS_name");
+                    otpToShow = bundle.getString(otpName);
+                } catch (Exception e) {
+                    otpToShow = otpName;
+                } finally {
+//                    Option option = new Option(res.getInt("LS_id"), res.getString("LS_name"));
+                    Option option = new Option(res.getInt("LS_id"), otpToShow);
+                    data.add(option);
+                }
+            }
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
         return data;
     }
-   
-    public ObservableList<Option> GetCategory(){
+
+    public ObservableList<Option> GetCategory() {
         con = database.openConnection();
         String sql = "select * from ITEMS";
         ObservableList<Option> data = FXCollections.observableArrayList();
-        
+
         try {
             stmt = con.createStatement();
-            res = stmt.executeQuery(sql);            
-            while(res.next()) {
-                Option option = new Option(res.getInt("ITEM_id"), res.getString("ITEM_type"));
-                data.add(option);
-            }                
+            res = stmt.executeQuery(sql);
+            while (res.next()) {
+
+//                String itemT = res.getString("ITEM_type").trim();
+//                String itemTypeToShow = bundle.getString(itemT);
+//                Item item = new Item(res.getInt("ITEM_id"), itemTypeToShow, res.getFloat("ITEM_unit_price"));
+                String otpName = res.getString("ITEM_type").trim();
+//                System.out.println("OPTION name is " + otpName);
+                String otpNameToShow = otpName;
+
+                try {
+                    otpNameToShow = bundle.getString(otpName);
+
+                } catch (Exception e) {
+                    otpNameToShow = otpName;
+                } finally {
+                    // Option option = new Option(res.getInt("ITEM_id"), res.getString("ITEM_type"));
+                    Option option = new Option(res.getInt("ITEM_id"), otpNameToShow);
+                    data.add(option);
+                }
+            }
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
         return data;
     }
-    
-    public Customer CustomerSearch(String phone){
-        
+
+    public Customer CustomerSearch(String phone) {
+
         Customer result = new Customer();
         con = database.openConnection();
         String sql = "select * from Customers where CUS_phone = ?";
-        
+
         try {
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1, phone);
-            res = pstmt.executeQuery();            
-            if (res.next()){
-                result.setId(res.getInt("CUS_id"));           
+            res = pstmt.executeQuery();
+            if (res.next()) {
+                result.setId(res.getInt("CUS_id"));
                 result.setName(res.getString("CUS_name"));
                 result.setPhone(res.getString("CUS_phone"));
-            }                  
+            }
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
-        } 
+        }
         return result;
     }
-    
-    public boolean CreateCustomer(Customer cus){
+
+    public boolean CreateCustomer(Customer cus) {
         con = database.openConnection();
         String sql = "insert into customers (CUS_name, CUS_phone) values (?, ?);";
         try {
-                pstmt = con.prepareStatement(sql);
-                pstmt.setString(1, cus.getName());
-                pstmt.setString(2, cus.getPhone());
-                pstmt.executeUpdate();                     
-                con.close();
-                return true;
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, cus.getName());
+            pstmt.setString(2, cus.getPhone());
+            pstmt.executeUpdate();
+            con.close();
+            return true;
         } catch (SQLException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
             return false;
-        } 
+        }
     }
-    
+
     public int CreateOrder(String phone, float total) {
         int orderId = -1;
         LocalDate currentDate = LocalDate.now();
         Date sqlDate = Date.valueOf(currentDate);
         int cusId = CustomerSearch(phone).getId();
+//        System.out.println("CUSTOMER ID IS " + cusId);
         con = database.openConnection();
         String sql = "insert into ORDERS (CUS_id, ORDER_order_date, ORDER_pickup_date, ORDER_total_price) values (?, ?, ?, ?);";
         try {
@@ -971,11 +1027,11 @@ public class DashboardController implements Initializable {
             pstmt.setDate(2, sqlDate);
             pstmt.setDate(3, sqlDate);
             pstmt.setFloat(4, total);
-            pstmt.executeUpdate();    
-            
+            pstmt.executeUpdate();
+
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                orderId = generatedKeys.getInt(1); 
+                orderId = generatedKeys.getInt(1);
             }
 
             con.close();
@@ -987,19 +1043,19 @@ public class DashboardController implements Initializable {
         }
         return orderId;
     }
-    
-    public float GetPPK(int catId){
+
+    public float GetPPK(int catId) {
         float ppk = 0;
         con = database.openConnection();
         String sql = "select * from ITEMS where ITEM_id = ?";
         try {
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, catId);
-            res = pstmt.executeQuery();  
+            res = pstmt.executeQuery();
             if (res.next()) {
                 ppk = res.getFloat("ITEM_unit_price");
-            } else{
-                System.out.println("No record found for catId: " + catId);
+            } else {
+//                System.out.println("No record found for catId: " + catId);
             }
             con.close();
         } catch (SQLException ex) {
@@ -1007,22 +1063,23 @@ public class DashboardController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
-        } 
+        }
         return ppk;
     }
-    public float GetSMultiplier(int SId){
-        System.out.println(SId);
+
+    public float GetSMultiplier(int SId) {
+//        System.out.println(SId);
         float multiplier = 0;
         con = database.openConnection();
         String sql = "select * from LAUNDRY_SERVICES where LS_id = ?";
         try {
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, SId);
-            res = pstmt.executeQuery();            
+            res = pstmt.executeQuery();
             if (res.next()) {
-            multiplier = res.getFloat("LS_multiplier");
+                multiplier = res.getFloat("LS_multiplier");
             } else {
-                System.out.println("No record found for SId: " + SId);
+//                System.out.println("No record found for SId: " + SId);
             }
             con.close();
         } catch (SQLException ex) {
@@ -1030,38 +1087,47 @@ public class DashboardController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
-        } 
+        }
         return multiplier;
     }
-    
+
     public void DeleteOrder(int orderID) {
         con = database.openConnection();
         String sql = "delete from orders where ORDER_id = ?";
         try {
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, orderID);
-            pstmt.executeUpdate();            
+            pstmt.executeUpdate();
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
-        } 
+        }
     }
-    
-    public int GetServiceId(String service){
+
+    public int GetServiceId(String service) {
         int id = 0;
+//        System.out.println("SERVICE NAME IS " + service);
+        String serviceToFind = service;
+        try {
+            serviceToFind = bundle.getString(service);
+        } catch (Exception e) {
+            serviceToFind = service;
+        }
         con = database.openConnection();
+//        System.out.println("SERVICE TO FIND IS " + serviceToFind);
         String sql = "select * from Laundry_services where LS_name = ?;";
         try {
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, service);
-            res = pstmt.executeQuery(); 
+            pstmt.setString(1, serviceToFind);
+            res = pstmt.executeQuery();
             if (res.next()) {
-            id = res.getInt("LS_id");
+                id = res.getInt("LS_id");
             } else {
-                System.out.println("something went wrong");
+//                System.out.println("something went wrong");
+//                System.out.println("Service not found");
             }
             con.close();
         } catch (SQLException ex) {
@@ -1069,22 +1135,29 @@ public class DashboardController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
-        } 
+        }
         return id;
     }
-    
-    public int GetCategoryId(String cat){
+
+    public int GetCategoryId(String cat) {
         int id = 0;
         con = database.openConnection();
+        String catToFind = cat;
+        try {
+            catToFind = bundle.getString(cat);
+        } catch (Exception e) {
+            catToFind = cat;
+        }
+//        System.out.println("ITEM TO FIND IS " + catToFind);
         String sql = "select * from ITEMS where ITEM_type = ?;";
         try {
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, cat);
-            res = pstmt.executeQuery(); 
+            pstmt.setString(1, catToFind);
+            res = pstmt.executeQuery();
             if (res.next()) {
-            id = res.getInt("ITEM_id");
+                id = res.getInt("ITEM_id");
             } else {
-                System.out.println("something went wrong");
+//                System.out.println("something went wrong");
             }
             con.close();
         } catch (SQLException ex) {
@@ -1092,154 +1165,158 @@ public class DashboardController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
-        } 
+        }
         return id;
     }
-        
-    
+
     public void AddOrderDetail(NO_Detail detail) {
         String sql = "insert into ORDER_DETAILS (LS_id, ITEM_id, ORDER_id, OD_kilos) values(?, ?, ?, ?);";
-        Detail add = new Detail(GetServiceId(detail.getService()), GetCategoryId(detail.getCategory()), Integer.parseInt(NO_Order_id.getText()), detail.getWeight());
-        con = database.openConnection();
+        String detailService = detail.getService();
+        String detailCat = detail.getCategory();
+        String fDetailS = detailService;
+        String fDetailC = detailCat;
+
+//        System.out.println("0000000000000000000" + fDetailS + " " + fDetailC);
+        Detail add = new Detail(GetServiceId(fDetailS), GetCategoryId(fDetailC), Integer.parseInt(NO_Order_id.getText()), detail.getWeight());
         try {
+            con = database.openConnection();
+//                System.out.println("LS ID IS " + GetServiceId(detail.getService()));
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, add.getServiceId());
+//            System.out.println("DFJUODIFUDO " + add.getCatId());
             pstmt.setInt(2, add.getCatId());
             pstmt.setInt(3, add.getOrderId());
             pstmt.setFloat(4, add.getKilos());
-            pstmt.executeUpdate();            
+            pstmt.executeUpdate();
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
-        } 
+        }
+
     }
+
     //----------
     //in-app stuff
-    public void OnClick_NO_CustomerSearch_btn(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);   
+    public void OnClick_NO_CustomerSearch_btn() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         String phone = new String(NO_Customer_Search_txt.getText());
         Customer result = CustomerSearch(phone);
-        if(result.getName().equals("")) {
-            alert.setTitle("warning");
-            alert.setContentText("Customer don't exist");
+        if (result.getName().equals("")) {
+            alert.setTitle(bundle.getString("warning"));
+            alert.setContentText(bundle.getString("notExistCus"));
             alert.showAndWait();
-        }
-        else{
-            alert.setTitle("success");
-            alert.setContentText("Customer found with name " + result.getName());
+        } else {
+            alert.setTitle(bundle.getString("success"));
+            alert.setContentText(bundle.getString("foundCus")+" " + result.getName());
             alert.showAndWait();
             NO_CustomerName_txt.setText(result.getName());
             NO_Phone_txt.setText(result.getPhone());
         }
     }
-    
+
     //create customer
-    public void OnClick_NO_CreateCus_btn(){
+    public void OnClick_NO_CreateCus_btn() {
         NO_CreateCus_pane.setVisible(true);
     }
-    
-    public void OnClick_NO_CreateCus_create_btn(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION); 
+
+    public void OnClick_NO_CreateCus_create_btn() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
-        if(NO_CreateCus_name_txt.getText() == "" || NO_CreateCus_phone_txt.getText() == "") {
+        if (NO_CreateCus_name_txt.getText() == "" || NO_CreateCus_phone_txt.getText() == "") {
             alert.setTitle("waring");
-            alert.setContentText("please fill all the fields");
+            alert.setContentText(bundle.getString("fieldRequire"));
             alert.showAndWait();
             return;
         }
         Customer cus = new Customer(0, NO_CreateCus_name_txt.getText(), NO_CreateCus_phone_txt.getText());
-        if(!CustomerSearch(cus.getPhone()).getPhone().equals("")) {
+        if (!CustomerSearch(cus.getPhone()).getPhone().equals("")) {
             alert.setTitle("waring");
-            alert.setContentText("Customer already exist");
+            alert.setContentText(bundle.getString("existingCus"));
             alert.showAndWait();
             return;
         }
-        if(CreateCustomer(cus)){
-            alert.setTitle("Success");
-            alert.setContentText("New customer created");
+        if (CreateCustomer(cus)) {
+            alert.setTitle("OK!");
+            alert.setContentText(bundle.getString("createdCus"));
             alert.showAndWait();
             NO_CreateCus_pane.setVisible(false);
             NO_Customer_Search_txt.setText(cus.getPhone());
             OnClick_NO_CustomerSearch_btn();
-        }else{
-            alert.setTitle("warning");
-            alert.setContentText("something went wrong when creating!");
+        } else {
+            alert.setTitle(bundle.getString("warning"));
+            alert.setContentText(bundle.getString("errorCreate"));
             alert.showAndWait();
         }
     }
-    
-    public void OnClick_NO_CreateCus_cancel_btn(){
+
+    public void OnClick_NO_CreateCus_cancel_btn() {
         NO_CreateCus_name_txt.setText("");
         NO_CreateCus_phone_txt.setText("");
         NO_CreateCus_pane.setVisible(false);
     }
-    
 
     //add detail
-
-
     public void OnClick_NO_Add_btn() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION); 
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
-        if(NO_Weight_add.getText().equals("") || NO_Service_add.getValue() == null || NO_Service_add.getValue() == null){
-            alert.setTitle("warning");
-            alert.setContentText("please fill all the fields");
+        if (NO_Weight_add.getText().equals("") || NO_Service_add.getValue() == null || NO_Service_add.getValue() == null) {
+            alert.setTitle(bundle.getString("warning"));
+            alert.setContentText(bundle.getString("fieldRequire"));
             alert.showAndWait();
             return;
         }
-        NO_Detail newDetail = new NO_Detail(NO_Category_add.getValue().getType(), 
-                                           Float.parseFloat(NO_Weight_add.getText()), 
-                                           NO_Service_add.getValue().getType(), 
-                                           GetPPK(NO_Category_add.getSelectionModel().getSelectedItem().getId()),
-                                           GetSMultiplier(NO_Service_add.getSelectionModel().getSelectedItem().getId()));
+        NO_Detail newDetail = new NO_Detail(NO_Category_add.getValue().getType(),
+                Float.parseFloat(NO_Weight_add.getText()),
+                NO_Service_add.getValue().getType(),
+                GetPPK(NO_Category_add.getSelectionModel().getSelectedItem().getId()),
+                GetSMultiplier(NO_Service_add.getSelectionModel().getSelectedItem().getId()));
         ObservableList<NO_Detail> data = NO_Detail_table.getItems();
         boolean found = false;
         for (NO_Detail detail : data) {
-            if(newDetail.getCategory().equals(detail.getCategory()) && newDetail.getService().equals(detail.getService())){
-                System.out.println("update row");
+            if (newDetail.getCategory().equals(detail.getCategory()) && newDetail.getService().equals(detail.getService())) {
+//                System.out.println("update row");
                 detail.setWeight(newDetail.getWeight() + detail.getWeight());
                 found = true;
                 break;
             }
         }
-        if(!found) 
+        if (!found) {
             data.add(newDetail);
+        }
         NO_Detail_table.setItems(data);
         NO_Detail_table.refresh();
     }
-    
+
     //save order and details
-    public void OnClick_NO_Save_btn(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION); 
+    public void OnClick_NO_Save_btn() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
-        if(NO_CustomerName_txt.getText() == "" || NO_Phone_txt.getText() == "")
-        {
-            alert.setTitle("Warning");
-            alert.setContentText("Please choose customer");
+        if (NO_CustomerName_txt.getText() == "" || NO_Phone_txt.getText() == "") {
+            alert.setTitle(bundle.getString("warning"));
+            alert.setContentText(bundle.getString("cusREquire"));
             alert.showAndWait();
             return;
         }
         float total = 0;
         ObservableList<NO_Detail> data = NO_Detail_table.getItems();
         if (data.isEmpty()) {
-            alert.setTitle("Warning");
-            alert.setContentText("The table is empty. Please add items before saving the order.");
+            alert.setTitle(bundle.getString("warning"));
+            alert.setContentText(bundle.getString("itemREquire"));
             alert.showAndWait();
             return;
         }
         for (NO_Detail detail : data) {
             total += detail.getTotal();
         }
-        
 
         int orderId = CreateOrder(NO_Phone_txt.getText(), total);
-        if(orderId == -1){
-            alert.setTitle("error");
-            alert.setContentText("something went wrong while creating order!");
+        if (orderId == -1) {
+            alert.setTitle(bundle.getString("warning"));
+            alert.setContentText(bundle.getString("orderFailed"));
             alert.showAndWait();
             return;
         }
@@ -1249,26 +1326,23 @@ public class DashboardController implements Initializable {
         }
         data = FXCollections.observableArrayList();
         NO_Detail_table.setItems(data);
-        insertStatus(staff.getId(), Integer.parseInt(NO_Order_id.getText()), "Pending");
-        alert.setTitle("success");
-        alert.setContentText("new order created with ID: " + NO_Order_id.getText());
+//        insertStatus(staff.getId(), Integer.parseInt(NO_Order_id.getText()), "Pending");
+        insertStatus(staff.getId(), Integer.parseInt(NO_Order_id.getText()), "processing");
+        alert.setTitle("OK!");
+        alert.setContentText(bundle.getString("okCreate") + " " + NO_Order_id.getText());
         alert.showAndWait();
         NO_Order_id.setText("");
     }
 
-    
-    
     public void OnClick_NO_Cancel_btn() {
         initComponents_NO();
     }
-    
 
-  //====================================================================================================================================================  
-  //services functions
-        
+    //====================================================================================================================================================  
+    //services functions
     // init data for tableview's Service-Service page
-
     private ObservableList<Service> addServiceTypeData;
+
     public ObservableList<Service> serviceTypeListData() {
 
         con = database.openConnection();
@@ -1280,9 +1354,18 @@ public class DashboardController implements Initializable {
             res = stmt.executeQuery(sql);
 
             while (res.next()) {
-                Service item = new Service(res.getInt("LS_id"), res.getString("LS_name"), res.getFloat("LS_multiplier"));
-                System.out.println(item.getId()+", "+item.getName()+", "+item.getMultiplier());
-                data.add(item);
+                String itemName = res.getString("LS_name");
+                String itemNameToShow = itemName;
+                try {
+                    itemNameToShow = bundle.getString(itemName);
+                } catch (Exception e) {
+                    itemNameToShow = itemName;
+                } finally {
+//                    Service item = new Service(res.getInt("LS_id"), res.getString("LS_name"), res.getFloat("LS_multiplier"));
+                    Service item = new Service(res.getInt("LS_id"), itemNameToShow, res.getFloat("LS_multiplier"));
+//                    System.out.println(item.getId() + ", " + item.getName() + ", " + item.getMultiplier());
+                    data.add(item);
+                }
             }
 
             con.close();
@@ -1291,6 +1374,7 @@ public class DashboardController implements Initializable {
         }
         return data;
     }
+
     public void SetUpServiceTypeTableView() {
 
         addServiceTypeData = serviceTypeListData();
@@ -1303,12 +1387,12 @@ public class DashboardController implements Initializable {
             @Override
             public TableCell<Service, Void> call(TableColumn<Service, Void> param) {
                 return new TableCell<>() {
-                    private final Button btn = new Button("Edit");
+                    private final Button btn = new Button(bundle.getString("tableEditBtn"));
 
                     {
                         btn.setOnMouseClicked(event -> {
                             Service items = getTableView().getItems().get(getIndex());
-                            System.out.println("Button clicked for " + items.getId());
+//                            System.out.println("Button clicked for " + items.getId());
 
                             // set dialog edit
                             currentService = new Service(items.getId(), items.getName(), items.getMultiplier());
@@ -1336,17 +1420,15 @@ public class DashboardController implements Initializable {
         tavServiceType.setItems(addServiceTypeData);
 
     }
-    
-    
+
     // event for Service-Service page
-    
-     public void OnClick_DiaglogServiceCancel() {
+    public void OnClick_DiaglogServiceCancel() {
         dipServiceTypeAction.setVisible(false);
 
     }
 
     public void OnClick_DiaglogServiceSave() {
-        System.out.println("Save");
+//        System.out.println("Save");
         con = database.openConnection();
         
         
@@ -1371,7 +1453,7 @@ public class DashboardController implements Initializable {
             int rows = pstmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("Update item " + currentService.getId() + " successfully!");
+//                System.out.println("Update item " + currentService.getId() + " successfully!");
                 SetUpServiceTypeTableView();
                 dipServiceTypeAction.setVisible(false);
             }
@@ -1386,12 +1468,10 @@ public class DashboardController implements Initializable {
     }
 
     public void OnClick_DiaglogServiceDelete() {
-        System.out.println("Delete");
+//        System.out.println("Delete");
         con = database.openConnection();
 
-        try 
-        
-        {
+        try {
 
             String sql = "DELETE FROM LAUNDRY_SERVICES WHERE LS_id = ?";
 
@@ -1402,7 +1482,7 @@ public class DashboardController implements Initializable {
             int rows = pstmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("Delete item " + currentService.getId() + " successfully!");
+//                System.out.println("Delete item " + currentService.getId() + " successfully!");
                 SetUpServiceTypeTableView();
                 dipServiceTypeAction.setVisible(false);
             } 
@@ -1414,8 +1494,7 @@ public class DashboardController implements Initializable {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
     public void OnClick_ServiceSave() {
         con = database.openConnection();
         String sql = "INSERT INTO LAUNDRY_SERVICES (LS_name, LS_multiplier) VALUES (?,?)";
@@ -1443,7 +1522,7 @@ public class DashboardController implements Initializable {
             int rows = pstmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("Insert service successfully!");
+//                System.out.println(bundle.getString("insertService"));
                 txtServiceName.setText("");
                 txtServiceMultiplier.setText("");
                 SetUpServiceTypeTableView();
@@ -1459,10 +1538,10 @@ public class DashboardController implements Initializable {
         txtServiceName.setText("");
         txtServiceMultiplier.setText("");
     }
-    
-    
+
     // init data for tableview's Service-Item page
     private ObservableList<Item> addServiceItemData;
+
     public ObservableList<Item> serviceItemListData() {
 
         con = database.openConnection();
@@ -1474,9 +1553,18 @@ public class DashboardController implements Initializable {
             res = stmt.executeQuery(sql);
 
             while (res.next()) {
-                Item item = new Item(res.getInt("ITEM_id"), res.getString("ITEM_type"), res.getFloat("ITEM_unit_price"));
+                String itemT = res.getString("ITEM_type").trim();
+                String itemTypeToShow = itemT;
+//                String itemType = "clothes";
+                try {
+                    itemTypeToShow = bundle.getString(itemT);
 
-                data.add(item);
+                } catch (Exception e) {
+                    itemTypeToShow = itemT;
+                } finally {
+                    Item item = new Item(res.getInt("ITEM_id"), itemTypeToShow, res.getFloat("ITEM_unit_price"));
+                    data.add(item);
+                }
             }
 
             con.close();
@@ -1485,6 +1573,7 @@ public class DashboardController implements Initializable {
         }
         return data;
     }
+
     public void SetUpServiceTableView() {
 
         addServiceItemData = serviceItemListData();
@@ -1497,12 +1586,12 @@ public class DashboardController implements Initializable {
             @Override
             public TableCell<Item, Void> call(TableColumn<Item, Void> param) {
                 return new TableCell<>() {
-                    private final Button btn = new Button("Edit");
+                    private final Button btn = new Button(bundle.getString("tableEditBtn"));
 
                     {
                         btn.setOnMouseClicked(event -> {
                             Item items = getTableView().getItems().get(getIndex());
-                            System.out.println("Button clicked for " + items.getId());
+//                            System.out.println("Button clicked for " + items.getId());
 
                             // set dialog edit
                             currentItem = new Item(items.getId(), items.getType(), items.getUnitPrice());
@@ -1530,10 +1619,8 @@ public class DashboardController implements Initializable {
         tavItem.setItems(addServiceItemData);
 
     }
-    
+
     // event for Service-Item page
-
-
     public void OnClick_ServiceItemSave() {
         con = database.openConnection();
         String sql = "INSERT INTO ITEMS (ITEM_type, ITEM_unit_price) VALUES (?,?)";
@@ -1560,7 +1647,7 @@ public class DashboardController implements Initializable {
             int rows = pstmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("Insert item successfully!");
+//                System.out.println(bundle.getString("insertItem"));
                 txtServiceItemName.setText("");
                 txtServiceItemUnitPrice.setText("");
             }
@@ -1584,7 +1671,7 @@ public class DashboardController implements Initializable {
     }
 
     public void OnClick_DiaglogSave() {
-        System.out.println("Save");
+//        System.out.println("Save");
         con = database.openConnection();
 
         try {
@@ -1663,7 +1750,6 @@ public class DashboardController implements Initializable {
         }
     }
 
-    
     //====================================================================================================================================================  
     //Statistics functions
     @FXML
@@ -1677,23 +1763,61 @@ public class DashboardController implements Initializable {
     private Label lblPaid;
     @FXML
     private Label lblProcessing;
-    
+
     @FXML
     private Label lblToday;
 
+    @FXML
+    private Label lblRevenue;
+
+    @FXML
+    private Label lblPaidPercentage;
+    @FXML
+    private Label lblProcessingPercentage;
+    @FXML
+    private Label lblCompletedPercentage;
+
+    @FXML
+    private AnchorPane remainOrderInfo;
+
+    @FXML
+    private AnchorPane remainOrderInfo2;
+
+    @FXML
+    private Text txtRemainOrders;
+
+    @FXML
+    private Button btnLanguage;
+
     private int paidNum, completedNum, processingNum, totalNum;
+    private int remainOrders = 0;
+    private float totalRevenue;
+    private String languageN = "en";
 
     public void getOrderQuantity(String timeChosen) {
         paidNum = 0;
         completedNum = 0;
         processingNum = 0;
         totalNum = 0;
+        totalRevenue = 0;
+
         con = database.openConnection();
-        String sql = "with latestStatus as"
-                + "(select ORDER_id,SD_status, ROW_NUMBER() "
-                + "over	(partition by order_id order by sd_timestamp desc) as row_num "
-                + "from STATUS_DETAILS) "
-                + "select sd_status, count(distinct lateststatus.ORDER_id) as num "
+//        String sql = "with latestStatus as"
+//                + "(select ORDER_id,SD_status, ROW_NUMBER() "
+//                + "over	(partition by order_id order by sd_timestamp desc) as row_num "
+//                + "from STATUS_DETAILS) "
+//                + "select sd_status, count(distinct lateststatus.ORDER_id) as num "
+//                + "from "
+//                + "latestStatus join ORDERS on latestStatus.ORDER_id = ORDERS.ORDER_id "
+//                + "where "
+//                + "latestStatus.row_num=1 ";
+
+        String sql = "with latestStatus as "
+                + "(select ORDER_id,SD_status, ROW_NUMBER() over "
+                + "(partition by order_id order by sd_timestamp desc) as row_num "
+                + "from STATUS_DETAILS)"
+                + "select "
+                + "sd_status, latestStatus.ORDER_id as ORDER_ID, ORDER_total_price as total_price "
                 + "from "
                 + "latestStatus join ORDERS on latestStatus.ORDER_id = ORDERS.ORDER_id "
                 + "where "
@@ -1702,52 +1826,76 @@ public class DashboardController implements Initializable {
         if (timeChosen == "month") {
             sql
                     += "and MONTH(ORDER_order_date) = MONTH(getdate()) "
-                    + "group by SD_status;";
+                    + "group by SD_status, latestStatus.ORDER_id, ORDER_total_price;";
         } else if (timeChosen == "seven") {
             sql += "and ORDER_order_date >= DATEADD(DAY, -7, getdate())"
-                    + "group by SD_status;";
+                    + "group by SD_status, latestStatus.ORDER_id, ORDER_total_price;";
         } else {
             sql += "and ORDER_order_date = cast(getdate() as date)"
-                    + "group by SD_status;";
+                    + "group by SD_status, latestStatus.ORDER_id, ORDER_total_price;";
         }
 
         try {
             stmt = con.createStatement();
             res = stmt.executeQuery(sql);
-            int i = 1;
             while (res.next()) {
-                System.out.println(i);
                 String stt = res.getString("sd_status");
-                System.out.println("stt " + stt);
-                int count = res.getInt("num");
-                System.out.println("count " + count);
                 if ("paid".equals(stt)) {
-                    paidNum = count;
+                    paidNum++;
+                    float amount = res.getFloat("total_price");
+                    totalRevenue += amount;
                 } else if ("completed".equals(stt)) {
-                    completedNum = count;
+                    completedNum++;
                 } else {
-                    processingNum = count;
+                    processingNum++;
                 }
-                i++;
             }
             totalNum = paidNum + processingNum + completedNum;
             System.out.println(res);
             con.close();
+
         } catch (SQLException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    public void getRemainOrders() {
+        con = database.openConnection();
+        remainOrders = 0;
+        String sql2 = "with latestStatus as "
+                + "(select ORDER_id,SD_status, ROW_NUMBER() over "
+                + "(partition by order_id order by sd_timestamp desc) as row_num "
+                + "from STATUS_DETAILS)"
+                + "select count (distinct ORDER_id) as remainOrders "
+                + "from latestStatus where row_num=1 and SD_status='processing';";
+        try {
+            stmt = con.createStatement();
+            res = stmt.executeQuery(sql2);
+            while (res.next()) {
+                Integer remain = res.getObject("remainOrders", Integer.class);
+                if (remain != null) {
+                    remainOrders = remain;
+                }
+            }
+            con.close();
+        } catch (SQLException e) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
     public void setPieChart() {
-        
+        String data1 = bundle.getString("paid");
+        String data2 = bundle.getString("completed");
+        String data3 = bundle.getString("processing");
+
         ObservableList<PieChart.Data> pieChartData
                 = FXCollections.observableArrayList(
-                        new PieChart.Data("Paid", paidNum),
-                        new PieChart.Data("Completed", completedNum),
-                        new PieChart.Data("Processing", processingNum));
+                        new PieChart.Data(data1, paidNum),
+                        new PieChart.Data(data2, completedNum),
+                        new PieChart.Data(data3, processingNum));
 
         piePie.setData(pieChartData);
-        
+
     }
 
     public void setValuesToInterface() {
@@ -1755,26 +1903,58 @@ public class DashboardController implements Initializable {
         lblProcessing.setText(String.valueOf(processingNum));
         lblOrders_recieved.setText(String.valueOf(totalNum));
         lblComplete.setText(String.valueOf(completedNum));
-        
+        lblRevenue.setText(String.valueOf(totalRevenue));
         LocalDate today = LocalDate.now();
-        lblToday.setText("Date: "+today);
+        lblToday.setText(bundle.getString("date") + ": " + today);
+
+        float sumP = (float) (paidNum + completedNum + processingNum);
+
+        String paidPStr = "(" + Math.round((float) paidNum / (sumP) * 10000) / 100.0 + "%)";
+        String completedPStr = "(" + Math.round((float) completedNum / (sumP) * 10000) / 100.0 + "%)";
+//        System.out.println(completedPStr);
+        String processingPStr = "(" + Math.round((float) processingNum / (sumP) * 10000) / 100.0 + "%)";
+        lblPaidPercentage.setText(paidPStr);
+        lblCompletedPercentage.setText(completedPStr);
+        lblProcessingPercentage.setText(processingPStr);
+
+        if (remainOrders != 0) {
+//            remainOrderInfo.setVisible(false);
+//            remainOrderInfo2.setVisible(true);
+
+            String remainString = bundle.getString("remainOrdersMessage");
+            txtRemainOrders.setText(remainOrders + " " + remainString);
+            remainOrderInfo2.setVisible(false);
+            remainOrderInfo.setVisible(true);
+        } else {
+//            String remainString = bundle.getString("remainOrdersMessage");
+//            txtRemainOrders.setText(remainOrders + " " + remainString);
+//            remainOrderInfo2.setVisible(false);
+//            remainOrderInfo.setVisible(true);
+            remainOrderInfo.setVisible(false);
+            remainOrderInfo2.setVisible(true);
+        }
+
     }
 
     public void statistics() {
         ObservableList<String> ol = FXCollections.observableArrayList();
-        ol.add("Today");
-        ol.add("In 7 days");
-        ol.add("This month");
+        ol.add(bundle.getString("today"));
+        ol.add(bundle.getString("seven"));
+        ol.add(bundle.getString("thismonth"));
         resultStatisticCombobox.setItems(ol);
         resultStatisticCombobox.setOnAction(e -> showResultInTime());
 
         getOrderQuantity("today");
         setPieChart();
+        getRemainOrders();
         setValuesToInterface();
     }
 
     public void showResultInTime() {
         String selectedTime = resultStatisticCombobox.getValue();
+        if (selectedTime == null) {
+            selectedTime = "Today";
+        }
         if (selectedTime.equals("Today")) {
             getOrderQuantity("today");
         } else if (selectedTime.equals("In 7 days")) {
@@ -1786,9 +1966,84 @@ public class DashboardController implements Initializable {
         setValuesToInterface();
     }
 
+//    public void setLanguage() {
+////        if (languageN.equals("en")) languageN = "vi";
+//        loginIni(languageN);
+//    }
+    public void switchLanguage() {
+        if (languageN.equals("en")) {
+            languageN = "vi";
+        } else {
+            languageN = "en";
+        }
+        loginIni(languageN);
+//        initBtnLanguage();
+    }
 
-    //====================================================================================================================================================  
-    //Statistics functions
+    public void initLanguage(String langg) {
+        this.languageN = langg;
+    }
 
+    public void loginIni(String languageMm) {
+//        System.out.println("The language is " + languageN);
+        int myId = this.staff.getId();
+        String myName = this.staff.getName();
+        String myUsername = this.staff.getUserName();
+        String myPhone = this.staff.getPhone();
+        String myAddress = this.staff.getAddress();
+        Staff staff = new Staff(myId, myName, myUsername, myPhone, myAddress);
+        btnLanguage.getScene().getWindow().hide();
+        System.out.println(staff.getName() + ", " + staff.getUserName()
+                + ", " + staff.getPhone() + ", " + staff.getAddress());
+        try {
+            ResourceBundle bundle;
+            if (languageN.equals("en")) {
+                bundle = ResourceBundle.getBundle("language.MessageBundle", Locale.US);
+            } else {
+                Locale.setDefault(new Locale("vi", "VN"));
+                bundle = ResourceBundle.getBundle("language.MessageBundle");
+            }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DashBoard.fxml"), bundle);
+            Parent root = loader.load();
+
+            DashboardController dashboard = loader.getController();
+
+            dashboard.initData(staff);
+            dashboard.initLanguage(languageMm);
+            dashboard.initBtnLanguage();
+            dashboard.setBundle(bundle);
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(root, 1080, 600);
+
+            stage.setScene(scene);
+
+            stage.show();
+//                        App.setRoot("Dashboard");
+
+        } catch (IOException ex) {
+            Logger.getLogger(PrimaryController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+    public void initBtnLanguage() {
+//        System.out.println("INBTN "+languageN);
+        if (languageN.equals("en")) {
+            btnLanguage.setText("English");
+        } else {
+            btnLanguage.setText("Tiếng Việt");
+        }
+    }
+
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+    }
+
+    private ResourceBundle bundle;
     //====================================================================================================================================================  
 }

@@ -17,14 +17,14 @@ import java.util.logging.Logger;
  */
 public class database {
     private static String connectionUrl = "jdbc:sqlserver://localhost:1433;"
-                    + "databaseName=LaundryServices;user=root;password=root;"
+                    + "databaseName=LaundryServices;user=sa;password=sa;"
                     + "encrypt=true;trustServerCertificate=true";
 //    public static Connection con;
     public static Connection openConnection() {
         
         try {
             Connection con = DriverManager.getConnection(connectionUrl);
-            System.out.println("Connection successfully");
+//            System.out.println("Connection successfully");
             return con;
         } catch (SQLException ex) {
             Logger.getLogger(database.class.getName()).log(Level.SEVERE, null, ex);
