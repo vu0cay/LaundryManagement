@@ -24,7 +24,7 @@ public class database {
         
         try {
             Connection con = DriverManager.getConnection(connectionUrl);
-            System.out.println("Connection successfully");
+//            System.out.println("Connection successfully");
             return con;
         } catch (SQLException ex) {
             Logger.getLogger(database.class.getName()).log(Level.SEVERE, null, ex);

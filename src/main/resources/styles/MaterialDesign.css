@@ -299,7 +299,7 @@
     -fx-background-color: #618FF8;
 }
 .text:pressed{
-    -fx-text-fill: #B0B1B3;
+    -fx-text-fill: #202124;
 
 }
 .text:hover{

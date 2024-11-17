@@ -623,7 +623,7 @@ public class DashboardController implements Initializable {
                     {
                         btn.setOnMouseClicked(event -> {
                             OrderListTable items = getTableView().getItems().get(getIndex());
-                            System.out.println("Button clicked for " + items.getId());
+//                            System.out.println("Button clicked for " + items.getId());
 
                             // set dialog edit
                             OLCurrentId = items.getId();
@@ -744,13 +744,13 @@ public class DashboardController implements Initializable {
                 Date orderDate = res.getDate("OrderDate");
                 float totalPrice = res.getFloat("TotalPrice");
                 String latestStatus = res.getString("LatestStatus");
-                System.out.println("LATEST STATUS IS " + latestStatus);
+//                System.out.println("LATEST STATUS IS " + latestStatus);
                 if (latestStatus != null) {
                     latestStatus = bundle.getString(latestStatus);
                 }
                 orderRow = new OrderListTable(id, customerName, customerPhone, orderDate, totalPrice, latestStatus);
             } else {
-                System.out.println("No order found with ID: " + OrderId);
+//                System.out.println("No order found with ID: " + OrderId);
             }
 
             con.close();
@@ -948,7 +948,7 @@ public class DashboardController implements Initializable {
 //                String itemTypeToShow = bundle.getString(itemT);
 //                Item item = new Item(res.getInt("ITEM_id"), itemTypeToShow, res.getFloat("ITEM_unit_price"));
                 String otpName = res.getString("ITEM_type").trim();
-                System.out.println("OPTION name is " + otpName);
+//                System.out.println("OPTION name is " + otpName);
                 String otpNameToShow = otpName;
 
                 try {
@@ -1018,7 +1018,7 @@ public class DashboardController implements Initializable {
         LocalDate currentDate = LocalDate.now();
         Date sqlDate = Date.valueOf(currentDate);
         int cusId = CustomerSearch(phone).getId();
-        System.out.println("CUSTOMER ID IS " + cusId);
+//        System.out.println("CUSTOMER ID IS " + cusId);
         con = database.openConnection();
         String sql = "insert into ORDERS (CUS_id, ORDER_order_date, ORDER_pickup_date, ORDER_total_price) values (?, ?, ?, ?);";
         try {
@@ -1055,7 +1055,7 @@ public class DashboardController implements Initializable {
             if (res.next()) {
                 ppk = res.getFloat("ITEM_unit_price");
             } else {
-                System.out.println("No record found for catId: " + catId);
+//                System.out.println("No record found for catId: " + catId);
             }
             con.close();
         } catch (SQLException ex) {
@@ -1068,7 +1068,7 @@ public class DashboardController implements Initializable {
     }
 
     public float GetSMultiplier(int SId) {
-        System.out.println(SId);
+//        System.out.println(SId);
         float multiplier = 0;
         con = database.openConnection();
         String sql = "select * from LAUNDRY_SERVICES where LS_id = ?";
@@ -1079,7 +1079,7 @@ public class DashboardController implements Initializable {
             if (res.next()) {
                 multiplier = res.getFloat("LS_multiplier");
             } else {
-                System.out.println("No record found for SId: " + SId);
+//                System.out.println("No record found for SId: " + SId);
             }
             con.close();
         } catch (SQLException ex) {
@@ -1109,7 +1109,7 @@ public class DashboardController implements Initializable {
 
     public int GetServiceId(String service) {
         int id = 0;
-        System.out.println("SERVICE NAME IS " + service);
+//        System.out.println("SERVICE NAME IS " + service);
         String serviceToFind = service;
         try {
             serviceToFind = bundle.getString(service);
@@ -1117,7 +1117,7 @@ public class DashboardController implements Initializable {
             serviceToFind = service;
         }
         con = database.openConnection();
-        System.out.println("SERVICE TO FIND IS " + serviceToFind);
+//        System.out.println("SERVICE TO FIND IS " + serviceToFind);
         String sql = "select * from Laundry_services where LS_name = ?;";
         try {
             pstmt = con.prepareStatement(sql);
@@ -1127,7 +1127,7 @@ public class DashboardController implements Initializable {
                 id = res.getInt("LS_id");
             } else {
 //                System.out.println("something went wrong");
-                System.out.println("Service not found");
+//                System.out.println("Service not found");
             }
             con.close();
         } catch (SQLException ex) {
@@ -1148,7 +1148,7 @@ public class DashboardController implements Initializable {
         } catch (Exception e) {
             catToFind = cat;
         }
-        System.out.println("ITEM TO FIND IS " + catToFind);
+//        System.out.println("ITEM TO FIND IS " + catToFind);
         String sql = "select * from ITEMS where ITEM_type = ?;";
         try {
             pstmt = con.prepareStatement(sql);
@@ -1157,7 +1157,7 @@ public class DashboardController implements Initializable {
             if (res.next()) {
                 id = res.getInt("ITEM_id");
             } else {
-                System.out.println("something went wrong");
+//                System.out.println("something went wrong");
             }
             con.close();
         } catch (SQLException ex) {
@@ -1176,14 +1176,14 @@ public class DashboardController implements Initializable {
         String fDetailS = detailService;
         String fDetailC = detailCat;
 
-        System.out.println("0000000000000000000" + fDetailS + " " + fDetailC);
+//        System.out.println("0000000000000000000" + fDetailS + " " + fDetailC);
         Detail add = new Detail(GetServiceId(fDetailS), GetCategoryId(fDetailC), Integer.parseInt(NO_Order_id.getText()), detail.getWeight());
         try {
             con = database.openConnection();
 //                System.out.println("LS ID IS " + GetServiceId(detail.getService()));
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, add.getServiceId());
-            System.out.println("DFJUODIFUDO " + add.getCatId());
+//            System.out.println("DFJUODIFUDO " + add.getCatId());
             pstmt.setInt(2, add.getCatId());
             pstmt.setInt(3, add.getOrderId());
             pstmt.setFloat(4, add.getKilos());
@@ -1206,12 +1206,12 @@ public class DashboardController implements Initializable {
         String phone = new String(NO_Customer_Search_txt.getText());
         Customer result = CustomerSearch(phone);
         if (result.getName().equals("")) {
-            alert.setTitle("warning");
-            alert.setContentText("Customer don't exist");
+            alert.setTitle(bundle.getString("warning"));
+            alert.setContentText(bundle.getString("notExistCus"));
             alert.showAndWait();
         } else {
-            alert.setTitle("success");
-            alert.setContentText("Customer found with name " + result.getName());
+            alert.setTitle(bundle.getString("success"));
+            alert.setContentText(bundle.getString("foundCus")+" " + result.getName());
             alert.showAndWait();
             NO_CustomerName_txt.setText(result.getName());
             NO_Phone_txt.setText(result.getPhone());
@@ -1278,7 +1278,7 @@ public class DashboardController implements Initializable {
         boolean found = false;
         for (NO_Detail detail : data) {
             if (newDetail.getCategory().equals(detail.getCategory()) && newDetail.getService().equals(detail.getService())) {
-                System.out.println("update row");
+//                System.out.println("update row");
                 detail.setWeight(newDetail.getWeight() + detail.getWeight());
                 found = true;
                 break;
@@ -1363,7 +1363,7 @@ public class DashboardController implements Initializable {
                 } finally {
 //                    Service item = new Service(res.getInt("LS_id"), res.getString("LS_name"), res.getFloat("LS_multiplier"));
                     Service item = new Service(res.getInt("LS_id"), itemNameToShow, res.getFloat("LS_multiplier"));
-                    System.out.println(item.getId() + ", " + item.getName() + ", " + item.getMultiplier());
+//                    System.out.println(item.getId() + ", " + item.getName() + ", " + item.getMultiplier());
                     data.add(item);
                 }
             }
@@ -1392,7 +1392,7 @@ public class DashboardController implements Initializable {
                     {
                         btn.setOnMouseClicked(event -> {
                             Service items = getTableView().getItems().get(getIndex());
-                            System.out.println("Button clicked for " + items.getId());
+//                            System.out.println("Button clicked for " + items.getId());
 
                             // set dialog edit
                             currentService = new Service(items.getId(), items.getName(), items.getMultiplier());
@@ -1428,7 +1428,7 @@ public class DashboardController implements Initializable {
     }
 
     public void OnClick_DiaglogServiceSave() {
-        System.out.println("Save");
+//        System.out.println("Save");
         con = database.openConnection();
 
         try {
@@ -1443,7 +1443,7 @@ public class DashboardController implements Initializable {
             int rows = pstmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("Update item " + currentService.getId() + " successfully!");
+//                System.out.println("Update item " + currentService.getId() + " successfully!");
                 SetUpServiceTypeTableView();
                 dipServiceTypeAction.setVisible(false);
             }
@@ -1454,7 +1454,7 @@ public class DashboardController implements Initializable {
     }
 
     public void OnClick_DiaglogServiceDelete() {
-        System.out.println("Delete");
+//        System.out.println("Delete");
         con = database.openConnection();
 
         try {
@@ -1468,7 +1468,7 @@ public class DashboardController implements Initializable {
             int rows = pstmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("Delete item " + currentService.getId() + " successfully!");
+//                System.out.println("Delete item " + currentService.getId() + " successfully!");
                 SetUpServiceTypeTableView();
                 dipServiceTypeAction.setVisible(false);
             }
@@ -1490,7 +1490,7 @@ public class DashboardController implements Initializable {
             int rows = pstmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println(bundle.getString("insertService"));
+//                System.out.println(bundle.getString("insertService"));
                 txtServiceName.setText("");
                 txtServiceMultiplier.setText("");
                 SetUpServiceTypeTableView();
@@ -1559,7 +1559,7 @@ public class DashboardController implements Initializable {
                     {
                         btn.setOnMouseClicked(event -> {
                             Item items = getTableView().getItems().get(getIndex());
-                            System.out.println("Button clicked for " + items.getId());
+//                            System.out.println("Button clicked for " + items.getId());
 
                             // set dialog edit
                             currentItem = new Item(items.getId(), items.getType(), items.getUnitPrice());
@@ -1601,7 +1601,7 @@ public class DashboardController implements Initializable {
             int rows = pstmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println(bundle.getString("insertItem"));
+//                System.out.println(bundle.getString("insertItem"));
                 txtServiceItemName.setText("");
                 txtServiceItemUnitPrice.setText("");
             }
@@ -1625,7 +1625,7 @@ public class DashboardController implements Initializable {
     }
 
     public void OnClick_DiaglogSave() {
-        System.out.println("Save");
+//        System.out.println("Save");
         con = database.openConnection();
 
         try {
@@ -1805,7 +1805,6 @@ public class DashboardController implements Initializable {
                 + "select count (distinct ORDER_id) as remainOrders "
                 + "from latestStatus where row_num=1 and SD_status='processing';";
         try {
-            System.out.println("here");
             stmt = con.createStatement();
             res = stmt.executeQuery(sql2);
             while (res.next()) {
@@ -1848,7 +1847,7 @@ public class DashboardController implements Initializable {
 
         String paidPStr = "(" + Math.round((float) paidNum / (sumP) * 10000) / 100.0 + "%)";
         String completedPStr = "(" + Math.round((float) completedNum / (sumP) * 10000) / 100.0 + "%)";
-        System.out.println(completedPStr);
+//        System.out.println(completedPStr);
         String processingPStr = "(" + Math.round((float) processingNum / (sumP) * 10000) / 100.0 + "%)";
         lblPaidPercentage.setText(paidPStr);
         lblCompletedPercentage.setText(completedPStr);
@@ -1922,7 +1921,7 @@ public class DashboardController implements Initializable {
     }
 
     public void loginIni(String languageMm) {
-        System.out.println("The language is " + languageN);
+//        System.out.println("The language is " + languageN);
         int myId = this.staff.getId();
         String myName = this.staff.getName();
         String myUsername = this.staff.getUserName();

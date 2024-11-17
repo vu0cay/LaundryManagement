@@ -142,19 +142,22 @@
                                  </children>
                               </AnchorPane>
                               <Button fx:id="NO_CreateCus_btn" layoutX="659.0" layoutY="135.0" mnemonicParsing="false" onAction="#OnClick_NO_CreateCus_btn" text="%createNO" />
-                              <DialogPane fx:id="NO_CreateCus_pane" layoutX="232.0" layoutY="160.0" prefHeight="227.0" prefWidth="340.0" visible="false">
+                              <DialogPane fx:id="NO_CreateCus_pane" layoutX="232.0" layoutY="160.0" prefHeight="227.0" prefWidth="340.0" styleClass="card2" visible="false">
                                  <header>
-                                    <Label text="Create new customer" />
+                                    <Label prefHeight="50.0" prefWidth="361.0" styleClass="popupPane" text="%dialogCreatecusNO">
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding></Label>
                                  </header>
                                  <content>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                        <children>
-                                          <Label layoutX="14.0" layoutY="40.0" text="Customer's name :" />
-                                          <Label layoutX="14.0" layoutY="89.0" text="Customer's phone numbers :" />
+                                          <Label layoutX="14.0" layoutY="40.0" text="%cusNameFieldNO" />
+                                          <Label layoutX="14.0" layoutY="89.0" text="%cusPhoneFieldNO" />
                                           <TextField fx:id="NO_CreateCus_name_txt" layoutX="175.0" layoutY="35.0" />
                                           <TextField fx:id="NO_CreateCus_phone_txt" layoutX="175.0" layoutY="83.0" />
-                                          <Button fx:id="NO_CreateCus_cancel_btn" layoutX="258.0" layoutY="157.0" mnemonicParsing="false" onAction="#OnClick_NO_CreateCus_cancel_btn" text="Cancel" />
-                                          <Button fx:id="NO_CreateCus_create_btn" layoutX="160.0" layoutY="157.0" mnemonicParsing="false" onAction="#OnClick_NO_CreateCus_create_btn" text="Create" />
+                                          <Button fx:id="NO_CreateCus_cancel_btn" layoutX="165.0" layoutY="158.0" mnemonicParsing="false" onAction="#OnClick_NO_CreateCus_cancel_btn" text="%cancelBtnNO" />
+                                          <Button fx:id="NO_CreateCus_create_btn" layoutX="67.0" layoutY="158.0" mnemonicParsing="false" onAction="#OnClick_NO_CreateCus_create_btn" text="%saveBtnNO" />
                                        </children>
                                     </AnchorPane>
                                  </content>
