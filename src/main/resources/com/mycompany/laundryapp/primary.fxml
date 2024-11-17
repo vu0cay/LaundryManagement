@@ -25,7 +25,7 @@
             </AnchorPane>
             <AnchorPane layoutX="268.0" layoutY="1.0" prefHeight="400.0" prefWidth="332.0" styleClass="right-form" stylesheets="@../../../styles/MaterialDesign.css">
                <children>
-                  <Button fx:id="btnLogin" layoutX="66.0" layoutY="306.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="200.0" stylesheets="@../../../styles/LoginDesign.css" text="%mainLogin" textFill="WHITE" />
+                  <Button fx:id="btnLogin" layoutX="66.0" layoutY="296.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="200.0" stylesheets="@../../../styles/LoginDesign.css" text="%mainLogin" textFill="WHITE" />
                   <AnchorPane layoutX="66.0" layoutY="123.0">
                      <children>
                         <Label style="-fx-font-size: 12;" styleClass="result-card" text="%usrName" />
@@ -38,7 +38,6 @@
                      </children>
                   </AnchorPane>
                   <Label fx:id="lblSignUp" alignment="CENTER" layoutX="90.0" layoutY="346.0" onMouseClicked="#signUp" prefHeight="30.0" prefWidth="330.0" style="-fx-font-size: 12;" styleClass="result-card" stylesheets="@../../../styles/LoginDesign.css" text="%account" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="345.0" />
-                  <Label fx:id="lblForgotPass" layoutX="171.0" layoutY="270.0" style="-fx-font-size: 12;" styleClass="result-card" stylesheets="@../../../styles/LoginDesign.css" text="%forgot" />
                   <Label fx:id="lblLanguageSwitch" alignment="CENTER" layoutX="251.0" layoutY="4.0" minHeight="-Infinity" onMouseClicked="#switchLanguage" prefHeight="30.0" prefWidth="75.0" style="-fx-padding: 0; -fx-background-color: transparent;" styleClass="combo-box" text="Label" />
                   <AnchorPane layoutX="1.0" layoutY="49.0" prefHeight="59.0" prefWidth="330.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="293.6666666666667" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.6666666666666856" AnchorPane.topAnchor="49.0">
                      <children>
