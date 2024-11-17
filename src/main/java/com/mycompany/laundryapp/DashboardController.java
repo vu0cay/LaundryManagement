@@ -1109,16 +1109,25 @@ public class DashboardController implements Initializable {
 
     public int GetServiceId(String service) {
         int id = 0;
+        System.out.println("SERVICE NAME IS " + service);
+        String serviceToFind = service;
+        try {
+            serviceToFind = bundle.getString(service);
+        } catch (Exception e) {
+            serviceToFind = service;
+        }
         con = database.openConnection();
+        System.out.println("SERVICE TO FIND IS " + serviceToFind);
         String sql = "select * from Laundry_services where LS_name = ?;";
         try {
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, service);
+            pstmt.setString(1, serviceToFind);
             res = pstmt.executeQuery();
             if (res.next()) {
                 id = res.getInt("LS_id");
             } else {
-                System.out.println("something went wrong");
+//                System.out.println("something went wrong");
+                System.out.println("Service not found");
             }
             con.close();
         } catch (SQLException ex) {
@@ -1133,10 +1142,17 @@ public class DashboardController implements Initializable {
     public int GetCategoryId(String cat) {
         int id = 0;
         con = database.openConnection();
+        String catToFind = cat;
+        try {
+            catToFind = bundle.getString(cat);
+        } catch (Exception e) {
+            catToFind = cat;
+        }
+        System.out.println("ITEM TO FIND IS " + catToFind);
         String sql = "select * from ITEMS where ITEM_type = ?;";
         try {
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, cat);
+            pstmt.setString(1, catToFind);
             res = pstmt.executeQuery();
             if (res.next()) {
                 id = res.getInt("ITEM_id");
@@ -1157,16 +1173,17 @@ public class DashboardController implements Initializable {
         String sql = "insert into ORDER_DETAILS (LS_id, ITEM_id, ORDER_id, OD_kilos) values(?, ?, ?, ?);";
         String detailService = detail.getService();
         String detailCat = detail.getCategory();
-        String fDetailS = bundle.getString(detailService);
-        String fDetailC = bundle.getString(detailCat);
+        String fDetailS = detailService;
+        String fDetailC = detailCat;
 
         System.out.println("0000000000000000000" + fDetailS + " " + fDetailC);
         Detail add = new Detail(GetServiceId(fDetailS), GetCategoryId(fDetailC), Integer.parseInt(NO_Order_id.getText()), detail.getWeight());
-        con = database.openConnection();
         try {
-            System.out.println("LS ID IS " + GetServiceId(detail.getService()));
+            con = database.openConnection();
+//                System.out.println("LS ID IS " + GetServiceId(detail.getService()));
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, add.getServiceId());
+            System.out.println("DFJUODIFUDO " + add.getCatId());
             pstmt.setInt(2, add.getCatId());
             pstmt.setInt(3, add.getOrderId());
             pstmt.setFloat(4, add.getKilos());
@@ -1178,6 +1195,7 @@ public class DashboardController implements Initializable {
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
         }
+
     }
 
     //----------
