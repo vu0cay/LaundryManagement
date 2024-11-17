@@ -4,6 +4,7 @@
  */
 package com.mycompany.laundryapp;
 
+import com.mycompany.laundryapp.models.OperationStatus;
 import java.util.Locale;
 //import java.util.ResourceBundle;
 
@@ -1343,15 +1344,19 @@ public class DashboardController implements Initializable {
     // init data for tableview's Service-Service page
     private ObservableList<Service> addServiceTypeData;
 
-    public ObservableList<Service> serviceTypeListData() {
+    public ObservableList<Service> serviceTypeListData(int excludeStatus) {
 
         con = database.openConnection();
-        String sql = "select * from LAUNDRY_SERVICES";
+        String sql = "select LS_id, LS_name, LS_multiplier "
+                    + "from LAUNDRY_SERVICES ls "
+                    + "where ls.LS_status <> ?";
         ObservableList<Service> data = FXCollections.observableArrayList();
 
         try {
-            stmt = con.createStatement();
-            res = stmt.executeQuery(sql);
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, excludeStatus);
+            
+            res = pstmt.executeQuery();
 
             while (res.next()) {
                 String itemName = res.getString("LS_name");
@@ -1376,8 +1381,11 @@ public class DashboardController implements Initializable {
     }
 
     public void SetUpServiceTypeTableView() {
-
-        addServiceTypeData = serviceTypeListData();
+        // active = 1
+        // inactive = 2
+        
+        // call method to get all services that still serving
+        addServiceTypeData = serviceTypeListData(OperationStatus.getInactive());
 
         tabcoServiceTypeId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tabcoServiceTypeName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -1473,16 +1481,18 @@ public class DashboardController implements Initializable {
 
         try {
 
-            String sql = "DELETE FROM LAUNDRY_SERVICES WHERE LS_id = ?";
-
+//            String sql = "DELETE FROM LAUNDRY_SERVICES WHERE LS_id = ?";
+            String sql = " UPDATE LAUNDRY_SERVICES "
+                        +" SET LS_status = ?"
+                        +" where LS_id = ?";
             pstmt = con.prepareStatement(sql);
 
-            pstmt.setInt(1, currentService.getId());
-
+            pstmt.setInt(1, OperationStatus.getInactive());
+            pstmt.setInt(2, currentService.getId());
             int rows = pstmt.executeUpdate();
 
             if (rows > 0) {
-//                System.out.println("Delete item " + currentService.getId() + " successfully!");
+                System.out.println("Inactive service " + currentService.getId() + " successfully!");
                 SetUpServiceTypeTableView();
                 dipServiceTypeAction.setVisible(false);
             } 
@@ -1542,15 +1552,18 @@ public class DashboardController implements Initializable {
     // init data for tableview's Service-Item page
     private ObservableList<Item> addServiceItemData;
 
-    public ObservableList<Item> serviceItemListData() {
+    public ObservableList<Item> serviceItemListData(int excludeStatus) {
 
         con = database.openConnection();
-        String sql = "select * from items";
+        String sql = "select ITEM_type, ITEM_id, ITEM_unit_price "
+                + " from items i"
+                + " where i.ITEM_status <> ?";
         ObservableList<Item> data = FXCollections.observableArrayList();
 
         try {
-            stmt = con.createStatement();
-            res = stmt.executeQuery(sql);
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, excludeStatus);
+            res = pstmt.executeQuery();
 
             while (res.next()) {
                 String itemT = res.getString("ITEM_type").trim();
@@ -1575,8 +1588,9 @@ public class DashboardController implements Initializable {
     }
 
     public void SetUpServiceTableView() {
-
-        addServiceItemData = serviceItemListData();
+        // exclude the no longer item in table view
+//        final int no_longer_serve = 2;
+        addServiceItemData = serviceItemListData(OperationStatus.getInactive());
 
         tabcoItemId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tabcoItemName.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -1715,19 +1729,21 @@ public class DashboardController implements Initializable {
     public void OnClick_DiaglogDelete() {
         System.out.println("Delete");
         con = database.openConnection();
-
+        
         try {
 
-            String sql = "DELETE FROM ITEMS WHERE ITEM_id = ?";
-
+//            String sql = "DELETE FROM ITEMS WHERE ITEM_id = ?";
+            String sql = " UPDATE ITEMS "
+                        +" SET ITEM_status = ?"
+                        +" where ITEM_id = ?";
             pstmt = con.prepareStatement(sql);
 
-            pstmt.setInt(1, currentItem.getId());
-
+            pstmt.setInt(1, OperationStatus.getInactive());
+            pstmt.setInt(2, currentItem.getId());
             int rows = pstmt.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("Delete item " + currentItem.getId() + " successfully!");
+                System.out.println("Inactive item " + currentItem.getId() + " successfully!");
                 SetUpServiceTableView();
                 dipAction.setVisible(false);
             }
