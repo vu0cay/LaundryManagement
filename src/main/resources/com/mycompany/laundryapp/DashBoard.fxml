@@ -256,7 +256,7 @@
                                         <TableColumn fx:id="tabcoItemId" prefWidth="94.4000473022461" text="ID" />
                                         <TableColumn fx:id="tabcoItemName" prefWidth="107.20001220703125" text="%itemTypeSERVICES" />
                                           <TableColumn fx:id="tabcoItemPrice" prefWidth="92.79998779296875" text="%upSERVICES" />
-                                          <TableColumn fx:id="tabcoAction" prefWidth="132.0000061035156" text="%actioncolSERVICES" />
+                                          <TableColumn fx:id="tabcoAction" prefWidth="152.00003662109373" text="%actioncolSERVICES" />
                                       </columns>
                                     </TableView>
                                     <DialogPane fx:id="dipAction" layoutX="220.0" layoutY="140.0" minHeight="-Infinity" prefHeight="234.0" prefWidth="366.0" styleClass="card2" visible="false">
