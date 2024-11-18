@@ -79,11 +79,12 @@ public class SignUpPageController implements Initializable {
         }
         try {
             // Check if any field is empty
-            if (txtFullName.getText() == ""
-                    || txtUserName.getText() == ""
-                    || txtPassword.getText() == ""
-                    || txtPhone.getText() == ""
-                    || txtAddress.getText() == "") {
+            if (txtFullName.getText().equals("")
+                    || txtUserName.getText().equals("")
+                    || txtUserName.getText().equals("")
+                    || txtPassword.getText().equals("")
+                    || txtPhone.getText().equals("")
+                    || txtAddress.getText().equals("")) {
                 throw new SQLException(bundle.getString("fillFieldsMessage"));
             }
 
@@ -147,7 +148,7 @@ public class SignUpPageController implements Initializable {
 
                         DashboardController dC = loader.getController();
                         dC.initData(staff);
-                        System.out.println("Language pass to Dashboard is "+languageN);
+                        System.out.println("Language pass to Dashboard is " + languageN);
                         dC.initLanguage(languageN);
                         dC.initBtnLanguage();
 
@@ -235,11 +236,11 @@ public class SignUpPageController implements Initializable {
     private String languageN = "en";
     @FXML
     private Label lblLanguageSwitchLg;
-    
+
     @FXML
     private Button btnBack;
-    
-    public void Back(){
+
+    public void Back() {
         btnBack.getScene().getWindow().hide();
         try {
             ResourceBundle bundle;

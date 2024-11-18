@@ -26,34 +26,35 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class PrimaryController implements Initializable {
-
+    
     @FXML
     private Button btnLogin;
-
+    
     @FXML
     private AnchorPane frm_main;
-
+    
     @FXML
     private Label lblForgotPass;
-
+    
     @FXML
     private Label lblSignUp;
-
+    
     @FXML
     private TextField txtPassword;
-
+    
     @FXML
     private TextField txtUserName;
-
+    
     PreparedStatement pstmt;
     ResultSet res;
     Connection con;
     
     ResourceBundle primaryBundle;
     
-    public void setBundle(ResourceBundle bundle){
+    public void setBundle(ResourceBundle bundle) {
         this.primaryBundle = bundle;
     }
+    
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
         if (bundle == null) {
@@ -66,34 +67,40 @@ public class PrimaryController implements Initializable {
         }
         initBtnLanguage();
     }
-
+    
     public void loginIni(String languageMm) {
-
+        
         String sql = "select * from staffs where SF_username = ?";
         con = database.openConnection();
-
+        
         try {
-
-            if (txtUserName.getText() == "" || txtPassword.getText() == "") {
-                throw new SQLException("Please fill all fields!");
+            ResourceBundle bundle;
+            if (languageMm == "en") {
+                bundle = ResourceBundle.getBundle("language.MessageBundle", Locale.US);
+            } else {
+                Locale.setDefault(new Locale("vi", "VN"));
+                bundle = ResourceBundle.getBundle("language.MessageBundle");
             }
-
+            if (txtUserName.getText().equals("") || txtPassword.getText().equals("")) {
+                throw new SQLException(bundle.getString("fillFieldsMessage"));
+            }
+            
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1, txtUserName.getText());
             res = pstmt.executeQuery();
-
+            
             if (res.next()) {
                 if (res.getString("SF_password").equals(txtPassword.getText())) {
-                    System.out.println("Login successfully");
-
+                    System.out.println(bundle.getString("loginSucceed"));
+                    
                     Staff staff = new Staff(res.getInt("SF_id"), res.getString("SF_name"), res.getString("SF_username"),
                             res.getString("SF_phone"), res.getString("SF_address"));
                     btnLogin.getScene().getWindow().hide();
-
+                    
                     System.out.println(staff.getName() + ", " + staff.getUserName()
                             + ", " + staff.getPhone() + ", " + staff.getAddress());
                     try {
-                        ResourceBundle bundle;
+//                        ResourceBundle bundle;
                         if (languageMm == "en") {
                             bundle = ResourceBundle.getBundle("language.MessageBundle", Locale.US);
                         } else {
@@ -102,19 +109,19 @@ public class PrimaryController implements Initializable {
                         }
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("DashBoard.fxml"), bundle);
                         Parent root = loader.load();
-
+                        
                         DashboardController dashboard = loader.getController();
-
+                        
                         dashboard.initData(staff);
                         dashboard.initLanguage(languageMm);
                         dashboard.initBtnLanguage();
                         dashboard.setBundle(bundle);
-
+                        
                         Stage stage = new Stage();
                         Scene scene = new Scene(root, 1080, 600);
-
+                        
                         stage.setScene(scene);
-
+                        
                         stage.show();
 //                        App.setRoot("Dashboard"); 
 
@@ -122,28 +129,28 @@ public class PrimaryController implements Initializable {
                         Logger.getLogger(PrimaryController.class
                                 .getName()).log(Level.SEVERE, null, ex);
                     }
-
+                    
                 } else {
-                    throw new SQLException("Incorrect password");
+                    throw new SQLException(bundle.getString("wrongPassword"));
                 }
             } else {
-                throw new SQLException("User name not found!");
+                throw new SQLException(bundle.getString("username404"));
             }
-
+            
             con.close();
         } catch (SQLException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-
+            alert.setHeaderText(null);
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
         }
     }
-
+    
     public void login() {
-        System.out.println("Called login with "+languageN);
+        System.out.println("Called login with " + languageN);
         loginIni(languageN);
     }
-
+    
     public void signUp() {
 //        try {
 //            App.setRoot("SignUpPage");
@@ -163,39 +170,39 @@ public class PrimaryController implements Initializable {
             }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"), bundle);
             Parent root = loader.load();
-
+            
             SignUpPageController sC = loader.getController();
-
+            
             sC.initLanguage(languageN);
             sC.initBtnLanguage();
-
+            
             Stage stage = new Stage();
             Scene scene = new Scene(root);
-
+            
             stage.setScene(scene);
-
+            
             stage.show();
-
+            
         } catch (IOException ex) {
             Logger.getLogger(SignUpPageController.class
                     .getName()).log(Level.SEVERE, null, ex);
             Alert alert = new Alert(Alert.AlertType.ERROR);
-
+            alert.setHeaderText(null);
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
         }
     }
-
+    
     public void ForgotPassword() {
         try {
             App.setRoot("ForgotPassPage");
-
+            
         } catch (IOException ex) {
             Logger.getLogger(PrimaryController.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void reloadLogin(String languageMm) {
         lblLanguageSwitch.getScene().getWindow().hide();
         try {
@@ -208,30 +215,30 @@ public class PrimaryController implements Initializable {
             }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"), bundle);
             Parent root = loader.load();
-
+            
             PrimaryController pmrC = loader.getController();
-
+            
             pmrC.initLanguage(languageMm);
             pmrC.initBtnLanguage();
             pmrC.setBundle(bundle);
-
+            
             Stage stage = new Stage();
             Scene scene = new Scene(root);
-
+            
             stage.setScene(scene);
-
+            
             stage.show();
-
+            
         } catch (IOException ex) {
             Logger.getLogger(PrimaryController.class
                     .getName()).log(Level.SEVERE, null, ex);
             Alert alert = new Alert(Alert.AlertType.ERROR);
-
+            
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
         }
     }
-
+    
     public void switchLanguage() {
         if (languageN.equals("en")) {
             languageN = "vi";
@@ -241,11 +248,11 @@ public class PrimaryController implements Initializable {
         reloadLogin(languageN);
 //        initBtnLanguage();
     }
-
+    
     public void initLanguage(String langg) {
         this.languageN = langg;
     }
-
+    
     public void initBtnLanguage() {
 //        System.out.println("INBTN "+languageN);
         if (languageN.equals("en")) {
@@ -257,5 +264,5 @@ public class PrimaryController implements Initializable {
     private String languageN = "en";
     @FXML
     private Label lblLanguageSwitch;
-
+    
 }
