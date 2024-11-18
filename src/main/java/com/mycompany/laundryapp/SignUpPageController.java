@@ -79,11 +79,11 @@ public class SignUpPageController implements Initializable {
         }
         try {
             // Check if any field is empty
-            if (txtFullName.getText() == ""
-                    || txtUserName.getText() == ""
-                    || txtPassword.getText() == ""
-                    || txtPhone.getText() == ""
-                    || txtAddress.getText() == "") {
+            if (txtFullName.getText().equals("")
+                    || txtUserName.getText().equals("")
+                    || txtPassword.getText().equals("")
+                    || txtPhone.getText().equals("")
+                    || txtAddress.getText().equals("")) {
                 System.out.println("Error");
                 throw new SQLException(bundle.getString("fillFieldsMessage"));
             }

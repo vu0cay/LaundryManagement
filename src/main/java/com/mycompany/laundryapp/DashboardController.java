@@ -486,6 +486,7 @@ public class DashboardController implements Initializable {
             statisticsForm.setVisible(false);
             aboutUsForm.setVisible(false);
             circleDraw.setVisible(false);
+            OnClick_btnOrderListRefresh();
         } else if (event.getSource() == newOrderBtn) {
             orderListBtn.getStyleClass().remove("tab-active");
             newOrderBtn.getStyleClass().add("tab-active");
@@ -798,7 +799,7 @@ public class DashboardController implements Initializable {
     public void OnClick_btnOrderListRefresh() {
         ObservableList<OrderListTable> data = FXCollections.observableArrayList();
         List<Integer> orderIds;
-        if (txtOrderListSearch.getText() == "") {
+        if (txtOrderListSearch.getText().equals("")) {
             orderIds = getRecentOrderIds(rmenuOrderListRows.getValue(), "paid");
         } else {
             orderIds = findOrderIdsByPhoneNumber(txtOrderListSearch.getText());

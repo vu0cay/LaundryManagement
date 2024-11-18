@@ -48,12 +48,13 @@ public class PrimaryController implements Initializable {
     PreparedStatement pstmt;
     ResultSet res;
     Connection con;
-    
+
     ResourceBundle primaryBundle;
-    
-    public void setBundle(ResourceBundle bundle){
+
+    public void setBundle(ResourceBundle bundle) {
         this.primaryBundle = bundle;
     }
+
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
         if (bundle == null) {
@@ -73,9 +74,16 @@ public class PrimaryController implements Initializable {
         con = database.openConnection();
 
         try {
+            ResourceBundle bundleee;
+            if (languageMm == "en") {
+                bundleee = ResourceBundle.getBundle("language.MessageBundle", Locale.US);
+            } else {
+                Locale.setDefault(new Locale("vi", "VN"));
+                bundleee = ResourceBundle.getBundle("language.MessageBundle");
+            }
 
-            if (txtUserName.getText() == "" || txtPassword.getText() == "") {
-                throw new SQLException("Please fill all fields!");
+            if (txtUserName.getText().equals("") || txtPassword.getText().equals("")) {
+                throw new SQLException(bundleee.getString("fillFieldsMessage"));
             }
 
             pstmt = con.prepareStatement(sql);
@@ -124,10 +132,10 @@ public class PrimaryController implements Initializable {
                     }
 
                 } else {
-                    throw new SQLException("Incorrect password");
+                    throw new SQLException(bundleee.getString("wrongPassword"));
                 }
             } else {
-                throw new SQLException("User name not found!");
+                throw new SQLException(bundleee.getString("usrn"));
             }
 
             con.close();
@@ -140,7 +148,7 @@ public class PrimaryController implements Initializable {
     }
 
     public void login() {
-        System.out.println("Called login with "+languageN);
+        System.out.println("Called login with " + languageN);
         loginIni(languageN);
     }
 
