@@ -165,7 +165,7 @@
                               <Label fx:id="NO_Order_id" layoutX="851.0" layoutY="6.0" text="-1" visible="false" />
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="servicesForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;" visible="false">
+                                <AnchorPane fx:id="servicesForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" style="-fx-background-color: white;">
                                     <children>
                                         <AnchorPane fx:id="servicesManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0" visible="false">
                                             <children>
@@ -237,7 +237,7 @@
                                         </AnchorPane>
                                         <AnchorPane fx:id="ItemsManage" layoutX="29.0" layoutY="24.0" prefHeight="478.0" prefWidth="832.0">
                                             <children>
-                                                <Label layoutX="7.0" layoutY="33.0" styleClass="title" text="Category" textFill="#2f60a6" />
+                                                <Label layoutX="7.0" layoutY="33.0" styleClass="title" text="%categorySERVICES" />
                                                 <Pane layoutX="490.0" layoutY="113.0" maxWidth="302.0" prefHeight="314.0" prefWidth="302.0" styleClass="card">
                                                     <children>
                                                         <Label layoutX="21.0" layoutY="25.0" styleClass="card-title" text="%itemFormSERVICES">
@@ -284,7 +284,7 @@
                                             </children>
                                         </AnchorPane>
                                         <Button fx:id="serviceManageBtn" layoutX="335.0" layoutY="520.0" mnemonicParsing="false" onAction="#switchManageCategory" text="%serviceBtnSERVICES" />
-                                        <Button fx:id="itemManageBtn" layoutX="453.0" layoutY="520.0" mnemonicParsing="false" onAction="#switchManageCategory" prefHeight="36.0" prefWidth="153.0" text="%categorySERVICES" />
+                                        <Button fx:id="itemManageBtn" layoutX="453.0" layoutY="520.0" mnemonicParsing="false" onAction="#switchManageCategory" prefHeight="36.0" prefWidth="114.0" text="%categorySERVICES" />
                                     </children>
                                 </AnchorPane>
                                 <AnchorPane fx:id="statisticsForm" layoutX="8.0" layoutY="9.0" prefHeight="585.0" prefWidth="881.0" visible="false">
