@@ -1,2 +1,1 @@
-- name: Contribute List
-uses: akhilmhdh/contributors-readme-action@v2.3.10
+
